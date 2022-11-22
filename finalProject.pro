@@ -22,3 +22,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/sharableLib/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/sharableLib/debug/ -lworld
+else:unix: LIBS += -L$$PWD/sharableLib/ -lworld
+
+INCLUDEPATH += $$PWD/sharableLib
+DEPENDPATH += $$PWD/sharableLib
