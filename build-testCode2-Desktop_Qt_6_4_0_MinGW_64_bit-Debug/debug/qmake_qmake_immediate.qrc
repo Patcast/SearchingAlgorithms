@@ -1,6 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/">
-<file alias="images/mario03.png">C:/Users/thoma/Desktop/Master/Media/gitlab/MP22-Team-c5-FA/testCode2/images/mario03.png</file>
-<file alias="images/MarioJump.png">C:/Users/thoma/Desktop/Master/Media/gitlab/MP22-Team-c5-FA/testCode2/images/MarioJump.png</file>
-</qresource>
-</RCC>

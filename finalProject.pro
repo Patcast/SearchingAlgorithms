@@ -11,14 +11,19 @@ CONFIG += c++17
 SOURCES += \
     gamestring.cpp \
     main.cpp \
-    mainwindow.cpp
+    player.cpp \
+    textwindow.cpp \
+    twodwindow.cpp
 
 HEADERS += \
     gamestring.h \
-    mainwindow.h
+    player.h \
+    textwindow.h \
+    twodwindow.h
 
 FORMS += \
-    mainwindow.ui
+    textwindow.ui \
+    twodwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
