@@ -18,6 +18,7 @@ SOURCES += \
     twodwindow.cpp
 
 HEADERS += \
+    abstractview.h \
     controller.h \
     gamestring.h \
     mainwindow.h \

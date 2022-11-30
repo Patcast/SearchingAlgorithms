@@ -1,3 +1,4 @@
+#include "mainwindow.h"
 #include "textwindow.h"
 #include <iostream>
 #include <QApplication>
@@ -6,6 +7,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    MainWindow window;
+
+
     visual_text::TextWindow w;
     w.show();
     std::cout<<"hello Patt"<<std::endl;
