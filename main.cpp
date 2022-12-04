@@ -1,13 +1,18 @@
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include <iostream>
 #include <QApplication>
+#include "gameworld.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    std::cout<<"hello Patt"<<std::endl;
+    //QApplication a(argc, argv);
+    //MainWindow w;
+    //w.show();
 
-    return a.exec();
+    GameWorld gameWorld;
+    gameWorld.generateWorld(":/images/worldmap.png");
+
+
+    //return a.exec();
+    return 0;
 }
