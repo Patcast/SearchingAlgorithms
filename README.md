@@ -1,4 +1,4 @@
-# MP22-Team-c5-FA
+# MP22-Team-c5-FAA
 ## Table of Contents
 * [CI/CD/VC Guidelines in development (Git)](#cicdvc-guidelines-in-development)
 &nbsp;
