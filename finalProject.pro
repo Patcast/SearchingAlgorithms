@@ -9,11 +9,15 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    gameworld.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tilecomposition.cpp
 
 HEADERS += \
-    mainwindow.h
+    gameworld.h \
+    mainwindow.h \
+    tilecomposition.h
 
 FORMS += \
     mainwindow.ui
@@ -22,3 +26,13 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/sharableLib/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/sharableLib/debug/ -lworld
+else:unix: LIBS += -L$$PWD/sharableLib/ -lworld
+
+INCLUDEPATH += $$PWD/sharableLib
+DEPENDPATH += $$PWD/sharableLib
+
+RESOURCES += \
+    images.qrc
