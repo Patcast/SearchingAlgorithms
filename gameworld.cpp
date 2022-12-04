@@ -1,29 +1,54 @@
 # include "gameworld.h"
 #include <iostream>
 
+//TODO:
+//No need to call emplace_back, I belive that no copies are generated when moving the enemies.
+//Delete TIle Composition
 
-std::unique_ptr<TileComposition> GameWorld::generateWorld( QString pathToMap)
+
+
+
+void GameWorld::generateWorld( QString pathToMap)
 {
     World w= {};
     w.createWorld(pathToMap,20,20);
-    std::cout<<"World Size: "<<w.getRows()<<"x"<<w.getRows()<<std::endl;
-
-    std::vector<std::unique_ptr<Tile>> tiles= w.getTiles();
+    setRowsAndColumns(w.getRows(),w.getCols());
+    tiles= w.getTiles();
     std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
+    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
 
-    for(unsigned long i=0; i<tiles.size();i++){
-
-        tilesCompositionList.push_back(std::make_unique<TileComposition> (std::move(tiles[i])));
+    specialFigures.resize(tiles.size());
+    for(unsigned long i=0; i<enemies.size();i++){
+        specialFigures[getFlatIndex(enemies[i]->getXPos(),enemies[i]->getYPos())]= (std::move(enemies[i]));
     }
-
-    std::cout<<"tilesCompositionList Size: "<<tilesCompositionList.size()<<std::endl;
-
-    return NULL;
+    for(unsigned long i=0; i<healthPacks.size();i++){
+        specialFigures[getFlatIndex(healthPacks[i]->getXPos(),healthPacks[i]->getYPos())]= (std::move(healthPacks[i]));
+    }
+    //Make the protagonist
+    std::cout<<"tilesCompositionList Size: "<<specialFigures.size()<<std::endl;
 }
 
 
 
-//void GameWorld::setProtagonist(const Protagonist &newProtagonist)
-//{
-//    protagonist = newProtagonist;
-//}
+
+void GameWorld::setRowsAndColumns(int newRows, int newColumns)
+{
+    rows=newRows;
+    columns=newColumns;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
