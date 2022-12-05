@@ -3,14 +3,14 @@
 
 
 
-void AStar::breadthFirstSearch(Node start)
+void AStar::breadthFirstSearch(std::shared_ptr<Node> start)
 {
-//    frontier.push(start);
-//    reached.insert(start); // posible nodes that can be reached starting from start(Node)
+    frontier.push(start);
+    reached.insert(start); // posible nodes that can be reached starting from start(Node)
 
-//    while (!frontier.empty()) {
-//        Node current = frontier.front();
-//        frontier.pop();
+    while (!frontier.empty()) {
+        std::shared_ptr<Node> current = frontier.front();
+        frontier.pop();
 
 //        std::cout << "  Visiting " << current << '\n';
 //      for (char next : graph.neighbors(current)) {
@@ -20,6 +20,6 @@ void AStar::breadthFirstSearch(Node start)
 //        }
 //      }
 //    }
-//  }
+  }
 }
 

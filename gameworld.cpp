@@ -12,15 +12,51 @@
 // Double check that enemies and hp are placed correctly.
 
 
-void GameWorld::generateWorld(QString pathToMap,int nrEnemies,int nrHeatlhPacks ,float startingEnergyProtagonist)
+
+
+
+GameWorld::~GameWorld()
+{
+
+}
+GameWorld::GameWorld()
+{
+
+}
+
+void GameWorld::Create() //
+{
+    if(instance != 0)
+        return;
+    instance = new GameWorld();
+}
+
+void GameWorld::Destroy()
+{
+    delete instance;
+    instance = 0;
+}
+
+GameWorld *GameWorld::Instance()
+{
+    GameWorld::Create();
+    return instance;
+}
+
+void GameWorld::loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
-    std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
-    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
-    specialFigures.resize(tiles.size());
+
+// TESTTING ONY*************
+
+    makeSubsetOfTiles(3,4);
+    printSubSetOftiles();
+//    std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
+//    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
+//    specialFigures.resize(tiles.size());
 //    for(unsigned long i=0; i<enemies.size();i++){
 //        specialFigures[getFlatIndex(enemies[i]->getXPos(),enemies[i]->getYPos())]= (std::move(enemies[i]));
 //    }
@@ -28,16 +64,15 @@ void GameWorld::generateWorld(QString pathToMap,int nrEnemies,int nrHeatlhPacks 
 //        specialFigures[getFlatIndex(healthPacks[i]->getXPos(),healthPacks[i]->getYPos())]= (std::move(healthPacks[i]));
 //    }
 //    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
-//    std::cout<<"tilesCompositionList Size: "<<specialFigures.size()<<std::endl;
-}
 
+}
 
 
 
 void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
     totalRows=newRows;
-    totalRows=newColumns;
+    totalColumns=newColumns;
 }
 
 
@@ -57,6 +92,8 @@ void GameWorld::initializeProtagonist(float startingEnergy)
         }
     }
 }
+
+
 
 
 
@@ -103,13 +140,14 @@ std::vector<int> GameWorld::getNeighbourTileIndex(int row,int col)
 void GameWorld::makeSubsetOfTiles(int rows, int columns)
 {
     std::cout<<"----------- "<<std::endl;
-    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
+
     for(int i =0 ; i<rows;i++){
         for(int j =0 ; j<columns;j++){
-            subSetOfTiles.push_back( std::move(tiles[getIndexFromCoordinates(i,j)]));
+            subSetOfTiles.push_back(std::move(tiles[getIndexFromCoordinates(i,j)]));
         }
     }
     setRowsAndColumns(rows,columns);
+    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
 }
 void GameWorld::printTiles(int nrOfTiles)
 {
@@ -118,6 +156,8 @@ void GameWorld::printTiles(int nrOfTiles)
        std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
     }
 }
+
+
 void GameWorld::printSubSetOftiles()
 {
     for (unsigned long  i=0; i <subSetOfTiles.size();i++) {

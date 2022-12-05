@@ -10,18 +10,18 @@ CONFIG += c++17
 
 SOURCES += \
     astar.cpp \
+    astarcontroller.cpp \
     gameworld.cpp \
     main.cpp \
     mainwindow.cpp \
-    node.cpp \
-    tilecomposition.cpp
+    node.cpp
 
 HEADERS += \
     astar.h \
+    astarcontroller.h \
     gameworld.h \
     mainwindow.h \
-    node.h \
-    tilecomposition.h
+    node.h
 
 FORMS += \
     mainwindow.ui

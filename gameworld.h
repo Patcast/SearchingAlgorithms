@@ -2,14 +2,19 @@
 #define GAMEWORLD_H
 #include "node.h"
 #include "world.h"
+
 #define MAX_NEIGHBORS 4
 #define NODE_DIMENSION 2
 class GameWorld        
 
 {
 public:
-    GameWorld()=default;
-    void generateWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    ~GameWorld();// Ue to free memory of all collections.
+    static void Create();
+    static void Destroy();
+    static GameWorld * Instance();
+
+    void loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     std::shared_ptr<Node> getNode(int index);
 
     //Testing methods
@@ -19,6 +24,12 @@ public:
 
 
 private:
+
+
+
+    GameWorld();
+    static GameWorld* instance;
+
     void initializeProtagonist(float startingEnergy);
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
     void setRowsAndColumns(int newRows, int newColumns);

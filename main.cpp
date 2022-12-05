@@ -1,18 +1,23 @@
 //#include "mainwindow.h"
+#include "astarcontroller.h"
+#include "gameworld.h"
 #include <iostream>
 #include <QApplication>
-#include "gameworld.h"
-//#include "node.h"
 
+//#include "node.h"
+GameWorld * GameWorld::instance = 0;
 int main()
 {
 
-    GameWorld gameWorld;
-    gameWorld.generateWorld(":/images/worldmap.png",20,60,100.0);
-    gameWorld.makeSubsetOfTiles(3,4);
-    gameWorld.printSubSetOftiles();
+      AStarController controller;
 
-    std::shared_ptr<Node> n1 = gameWorld.getNode(11);
+//    GameWorld gameWorld;
+//    gameWorld.generateWorld(":/images/worldmap.png",20,60,100.0);
+//    gameWorld.makeSubsetOfTiles(3,4);
+//    gameWorld.printSubSetOftiles();
+
+
+
 
 
 
