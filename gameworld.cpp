@@ -7,6 +7,7 @@
 // Delete TIle Composition
 // Make gameworld an instance and also the protagonist.
 // Check random method to initialize protagonist
+// Can I use variant for the special characters.
 
 
 
@@ -42,7 +43,6 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 
 void GameWorld::initializeProtagonist(float startingEnergy)
 {
-
     while(protagonist==nullptr){
         int x = rand()%(columns);
         int y = rand()%(rows);
@@ -54,10 +54,7 @@ void GameWorld::initializeProtagonist(float startingEnergy)
             protagonist->setYPos(y);
             std::cout<<"Protagonist created"<<std::endl;
         }
-
     }
-
-
 }
 
 
