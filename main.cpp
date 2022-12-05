@@ -2,16 +2,19 @@
 #include <iostream>
 #include <QApplication>
 #include "gameworld.h"
+//#include "node.h"
 
-int main(int argc, char *argv[])
+int main()
 {
-    //QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
 
     GameWorld gameWorld;
-    gameWorld.generateWorld(":/images/worldmap.png",100.0,600,0);
+    gameWorld.generateWorld(":/images/worldmap.png",20,60,100.0);
+    gameWorld.makeSubsetOfTiles(3,4);
+    gameWorld.printSubSetOftiles();
 
-    //return a.exec();
+    std::shared_ptr<Node> n1 = gameWorld.getNode(11);
+
+
+
     return 0;
 }
