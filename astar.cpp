@@ -1,9 +1,9 @@
-#include "astaralgorithm.h"
+#include "astar.h"
 #include <iostream>
 
 
 
-void AStarAlgorithm::breadthFirstSearch(Node start)
+void AStar::breadthFirstSearch(Node start)
 {
 //    frontier.push(start);
 //    reached.insert(start); // posible nodes that can be reached starting from start(Node)

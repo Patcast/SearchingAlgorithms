@@ -11,27 +11,6 @@ Node::Node(int newIndex, std::vector<int> newNeighborsIndexes):
 
 }
 
-int Node::getDistance() const
-{
-    return distance;
-}
-
-void Node::setDistance(int newDistance)
-{
-    distance = newDistance;
-}
-
-void Node::setCost(int newCost)
-{
-    cost = newCost;
-}
-
-
-
-int Node::getCost() const
-{
-    return cost;
-}
 
 std::ostream &operator<<(std::ostream &os, const Node &n)
 {
@@ -48,3 +27,26 @@ std::string Node::showNode() const
   result << "  " <<n;
   return result.str();
 }
+
+//int Node::getDistance() const
+//{
+//    return distance;
+//}
+
+//void Node::setDistance(int newDistance)
+//{
+//    distance = newDistance;
+//}
+
+//void Node::setCost(int newCost)
+//{
+//    cost = newCost;
+//}
+
+
+
+//int Node::getCost() const
+//{
+//    return cost;
+//}
+

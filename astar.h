@@ -1,10 +1,10 @@
-#ifndef ASTARALGORITHM_H
-#define ASTARALGORITHM_H
+#ifndef ASTAR_H
+#define ASTAR_H
 
 #include "node.h"
 #include <queue>
 #include <unordered_set>
-class AStarAlgorithm
+class AStar
 {
 public:
     void breadthFirstSearch( Node start);
@@ -17,4 +17,4 @@ private:
     std::unordered_set<Node> reached;
 };
 
-#endif // ASTARALGORITHM_H
+#endif // ASTAR_H
