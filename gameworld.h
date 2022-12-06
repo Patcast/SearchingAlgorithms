@@ -15,7 +15,7 @@ public:
     static GameWorld * Instance();
 
     void loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
-    std::shared_ptr<Node> getNode(int index);
+    std::shared_ptr<Node> makeNode(int index);
 
     //Testing methods
     void makeSubsetOfTiles(int rows, int columns);

@@ -98,7 +98,7 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 
 
-std::shared_ptr<Node> GameWorld::getNode(int index)
+std::shared_ptr<Node> GameWorld::makeNode(int index)
 {
     //Check if tile exists
     int row_index,col_index;
@@ -117,7 +117,7 @@ std::shared_ptr<Node> GameWorld::getNode(int index)
 std::vector<int> GameWorld::getNeighbourTileIndex(int row,int col)
 {
     std::vector<int> n;
-    std::cout<<" -----("<<row<<","<<col<<")-----"<<std::endl;
+//    std::cout<<" -----("<<row<<","<<col<<")-----"<<std::endl;
     for(int i =0;i<MAX_NEIGHBORS;i++){
         int nRow = row+tileOffSets[i][0];
         int nCol = col+tileOffSets[i][1];
@@ -129,7 +129,7 @@ std::vector<int> GameWorld::getNeighbourTileIndex(int row,int col)
                 (nCol>=0)
                 ){
             n.push_back(getIndexFromCoordinates(nRow,nCol));
-            std::cout<<" ("<<nRow<<","<<nCol<<")"<<std::endl;
+//            std::cout<<" ("<<nRow<<","<<nCol<<")"<<std::endl;
         }
     }
     return n;

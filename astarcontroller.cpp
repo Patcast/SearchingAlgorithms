@@ -4,8 +4,10 @@
 AStarController::AStarController()
 {
 
-    g_ptr= GameWorld::Instance();
-    g_ptr->loadWorld(":/images/worldmap.png",20,60,100.0);
+    gameWord_ptr= GameWorld::Instance();
+    gameWord_ptr->loadWorld(":/images/worldmap.png",20,60,100.0);
+    aStar.setGameWord_ptr(gameWord_ptr);
+    aStar.breadthFirstSearch(5);
 
 }
 

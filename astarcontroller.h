@@ -13,7 +13,7 @@ class AStarController
 public:
     AStarController();
 private:
-    GameWorld* g_ptr;
+    GameWorld* gameWord_ptr;
     AStar aStar;
 };
 

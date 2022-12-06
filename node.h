@@ -18,6 +18,10 @@ public:
     std::string showNode() const;
 
 
+    const std::vector<int> &getNeighborsIndexes() const;
+
+    int getIndex() const;
+
 private:
 //    int distance;
 //    int cost;

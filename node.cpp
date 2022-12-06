@@ -28,6 +28,16 @@ std::string Node::showNode() const
   return result.str();
 }
 
+const std::vector<int> &Node::getNeighborsIndexes() const
+{
+    return neighborsIndexes;
+}
+
+int Node::getIndex() const
+{
+    return index;
+}
+
 //int Node::getDistance() const
 //{
 //    return distance;
