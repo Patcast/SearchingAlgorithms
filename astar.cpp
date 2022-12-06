@@ -1,17 +1,23 @@
 #include "astar.h"
 #include <iostream>
 
-//TODO: Add a way to visualize path found.
+//  TODO:
+//  Add a way to visualize path found.
+//  Empty collections after use or before using.
+
+
 
 std::shared_ptr<Node> AStar::breadthFirstSearch(int start_index, int goal_index)
 {
-    std::unordered_set<int> existingNodesIndexes;
-    std::shared_ptr<Node> start =gameWord_ptr->makeNode(start_index);
+    std::queue<std::shared_ptr<Node>> frontier;
+    std::unordered_map<int,std::shared_ptr<Node>> reached;
     std::shared_ptr<Node> current;
 
+    std::shared_ptr<Node> start =gameWord_ptr->makeNode(start_index);
+
+
     frontier.push(start);
-    reached.insert(start); // posible nodes that can be reached starting from start(Node)
-    existingNodesIndexes.insert(start->getIndex()); // keeps track of created nodes
+    reached[start_index] = start;
     start->setPrev_node(nullptr);
 
     std::cout << "Path finding: Start-> "<<start_index<<", Goal-> " <<goal_index<< std::endl;
@@ -25,13 +31,12 @@ std::shared_ptr<Node> AStar::breadthFirstSearch(int start_index, int goal_index)
         }
 
         for (int neighborIndex : current->getNeighborsIndexes()) {
-            if (existingNodesIndexes.find(neighborIndex) == existingNodesIndexes.end()) {
-              std::shared_ptr<Node> next = gameWord_ptr->makeNode(neighborIndex);
 
-              existingNodesIndexes.insert(next->getIndex());
+            if (reached.find(neighborIndex) == reached.end()) {
+              std::shared_ptr<Node> next = gameWord_ptr->makeNode(neighborIndex);
               next->setPrev_node(current);
               frontier.push(next);
-              reached.insert(next);
+              reached[neighborIndex]=(next);
             }
         }
     }
