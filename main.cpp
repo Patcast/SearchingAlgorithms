@@ -10,16 +10,7 @@ int main()
 {
 
       AStarController controller;
-
-//    GameWorld gameWorld;
-//    gameWorld.generateWorld(":/images/worldmap.png",20,60,100.0);
-//    gameWorld.makeSubsetOfTiles(3,4);
-//    gameWorld.printSubSetOftiles();
-
-
-
-
-
+      controller.executeBreadthFirstSearch(0,11);
 
     return 0;
 }

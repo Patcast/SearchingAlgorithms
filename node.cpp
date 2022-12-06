@@ -38,25 +38,13 @@ int Node::getIndex() const
     return index;
 }
 
-//int Node::getDistance() const
-//{
-//    return distance;
-//}
+const std::shared_ptr<Node> &Node::getPrev_node() const
+{
+    return prev_node;
+}
 
-//void Node::setDistance(int newDistance)
-//{
-//    distance = newDistance;
-//}
-
-//void Node::setCost(int newCost)
-//{
-//    cost = newCost;
-//}
-
-
-
-//int Node::getCost() const
-//{
-//    return cost;
-//}
+void Node::setPrev_node(const std::shared_ptr<Node> &newPrev_node)
+{
+    prev_node = newPrev_node;
+}
 

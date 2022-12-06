@@ -12,9 +12,12 @@ class AStarController
 {
 public:
     AStarController();
+    void executeBreadthFirstSearch(int start_index, int goal_index);
+
 private:
     GameWorld* gameWord_ptr;
     AStar aStar;
+
 };
 
 #endif // ASTARCONTROLLER_H

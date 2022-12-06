@@ -10,6 +10,7 @@
 // Can I use variant for the special characters.
 // Check for valid index, can be improved.
 // Double check that enemies and hp are placed correctly.
+// Maybe I can define my own hashing to use the un_ordered_set without an auxiliary colletion of indexes.
 
 
 
@@ -151,7 +152,7 @@ void GameWorld::makeSubsetOfTiles(int rows, int columns)
 }
 void GameWorld::printTiles(int nrOfTiles)
 {
-    std::cout<<"(x,y)"<<std::endl;
+   std::cout<<"(x,y)"<<std::endl;
     for(int i =0;i<nrOfTiles;i++){
        std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
     }

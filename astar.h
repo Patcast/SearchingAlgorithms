@@ -8,8 +8,8 @@
 class AStar
 {
 public:
-    void breadthFirstSearch(int start_index);
-
+    std::shared_ptr<Node> breadthFirstSearch(int start_index, int goal_index);
+    void printPathFound(std::shared_ptr<Node> ptr_goal);
     void setGameWord_ptr(GameWorld *newGameWord_ptr);
 
 private:

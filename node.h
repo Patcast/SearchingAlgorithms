@@ -10,11 +10,7 @@ class Node
 public:
     Node( int newIndex, std::vector<int> newNeighborsIndexes);
 
-//    int getDistance() const;
-//    void setDistance(int newDistance);
-//    int getCost() const;
-//    void setCost(int newCost);
-//    int getCombinedCost(){return distance+cost;};
+
     std::string showNode() const;
 
 
@@ -22,10 +18,12 @@ public:
 
     int getIndex() const;
 
+    const std::shared_ptr<Node> &getPrev_node() const;
+    void setPrev_node(const std::shared_ptr<Node> &newPrev_node);
+
 private:
-//    int distance;
-//    int cost;
-//    std::shared_ptr<Node> prev_node;
+
+    std::shared_ptr<Node> prev_node;
 //    std::shared_ptr<Node> next_node;
     int index;
     std::vector<int> neighborsIndexes;
