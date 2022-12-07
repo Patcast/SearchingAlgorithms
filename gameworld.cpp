@@ -51,20 +51,16 @@ void GameWorld::loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, f
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
 
-// TESTTING ONY*************
-
-    makeSubsetOfTiles(3,4);
-    printSubSetOftiles();
-//    std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
-//    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
-//    specialFigures.resize(tiles.size());
-//    for(unsigned long i=0; i<enemies.size();i++){
-//        specialFigures[getFlatIndex(enemies[i]->getXPos(),enemies[i]->getYPos())]= (std::move(enemies[i]));
-//    }
-//    for(unsigned long i=0; i<healthPacks.size();i++){
-//        specialFigures[getFlatIndex(healthPacks[i]->getXPos(),healthPacks[i]->getYPos())]= (std::move(healthPacks[i]));
-//    }
-//    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
+    std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
+    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
+    specialFigures.resize(tiles.size());
+    for(unsigned long i=0; i<enemies.size();i++){
+        specialFigures[getIndexFromCoordinates(enemies[i]->getYPos(),enemies[i]->getXPos())]= (std::move(enemies[i]));
+    }
+    for(unsigned long i=0; i<healthPacks.size();i++){
+        specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())]= (std::move(healthPacks[i]));
+    }
+    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
 
 }
 
@@ -104,9 +100,9 @@ std::shared_ptr<Node> GameWorld::makeNode(int index)
     //Check if tile exists
     int row_index,col_index;
     try {
-        row_index =subSetOfTiles[index]->getYPos(); // modify later to tiles.
-        col_index =subSetOfTiles[index]->getXPos();
-        std::shared_ptr<Node> node = std::make_shared<Node>(index,getNeighbourTileIndex(row_index,col_index));
+        row_index =tiles[index]->getYPos(); // modify later to tiles.
+        col_index =tiles[index]->getXPos();
+        std::shared_ptr<Node> node = std::make_shared<Node>(index,tiles[index]->getValue(),getNeighbourTileIndex(row_index,col_index));
         return node;
     } catch (const std::exception& e) {
         std::cout << e.what(); // information from error printed
@@ -138,36 +134,36 @@ std::vector<int> GameWorld::getNeighbourTileIndex(int row,int col)
 
 //********** TESTING**************//
 
-void GameWorld::makeSubsetOfTiles(int rows, int columns)
-{
-    std::cout<<"----------- "<<std::endl;
+//void GameWorld::makeSubsetOfTiles(int rows, int columns)
+//{
+//    std::cout<<"----------- "<<std::endl;
 
-    for(int i =0 ; i<rows;i++){
-        for(int j =0 ; j<columns;j++){
-            subSetOfTiles.push_back(std::move(tiles[getIndexFromCoordinates(i,j)]));
-        }
-    }
-    setRowsAndColumns(rows,columns);
-    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
-}
-void GameWorld::printTiles(int nrOfTiles)
-{
-   std::cout<<"(x,y)"<<std::endl;
-    for(int i =0;i<nrOfTiles;i++){
-       std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
-    }
-}
+//    for(int i =0 ; i<rows;i++){
+//        for(int j =0 ; j<columns;j++){
+//            subSetOfTiles.push_back(std::move(tiles[getIndexFromCoordinates(i,j)]));
+//        }
+//    }
+//    setRowsAndColumns(rows,columns);
+//    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
+//}
+//void GameWorld::printTiles(int nrOfTiles)
+//{
+//   std::cout<<"(x,y)"<<std::endl;
+//    for(int i =0;i<nrOfTiles;i++){
+//       std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
+//    }
+//}
 
 
-void GameWorld::printSubSetOftiles()
-{
-    for (unsigned long  i=0; i <subSetOfTiles.size();i++) {
-        int row_index,col_index;
-        row_index =subSetOfTiles[i]->getYPos(); // modify later to tiles.
-        col_index =subSetOfTiles[i]->getXPos();
-        std::cout<<row_index<<" x "<<col_index<<"  index:  " <<getIndexFromCoordinates(row_index,col_index)<<std::endl;
-    }
-}
+//void GameWorld::printSubSetOftiles()
+//{
+//    for (unsigned long  i=0; i <subSetOfTiles.size();i++) {
+//        int row_index,col_index;
+//        row_index =subSetOfTiles[i]->getYPos(); // modify later to tiles.
+//        col_index =subSetOfTiles[i]->getXPos();
+//        std::cout<<row_index<<" x "<<col_index<<"  index:  " <<getIndexFromCoordinates(row_index,col_index)<<std::endl;
+//    }
+//}
 
 
 

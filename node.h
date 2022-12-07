@@ -8,7 +8,7 @@ class Node
 {
 
 public:
-    Node( int newIndex, std::vector<int> newNeighborsIndexes);
+    Node( int newIndex,float incomingCost, std::vector<int> newNeighborsIndexes);
 
 
     std::string showNode() const;
@@ -21,12 +21,18 @@ public:
     const std::shared_ptr<Node> &getPrev_node() const;
     void setPrev_node(const std::shared_ptr<Node> &newPrev_node);
 
+    void setCostViaParent(float newCostViaParent);
+
+    float getCostViaParent() const;
+    float getIncomingCost() const;
+
 private:
 
     std::shared_ptr<Node> prev_node;
-//    std::shared_ptr<Node> next_node;
     int index;
     std::vector<int> neighborsIndexes;
+    float costViaParent;
+    float incomingCost;
 };
 
 std::ostream & operator<<(std::ostream & os, const Node & b);

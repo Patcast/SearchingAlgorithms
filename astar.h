@@ -10,6 +10,7 @@ class AStar
 {
 public:
     std::shared_ptr<Node> breadthFirstSearch(int start_index, int goal_index);
+    std::shared_ptr<Node> dijkstra_search(int start_index, int goal_index);
     void printPathFound(std::shared_ptr<Node> ptr_goal);
     void setGameWord_ptr(GameWorld *newGameWord_ptr);
 
@@ -35,6 +36,14 @@ private:
 //        return std::hash<int>()(index);
 //    }
 //};
+
+struct CompNodePtrbyIndex {
+  bool operator()(
+    std::shared_ptr<Node> n1, std::shared_ptr<Node> n2)
+  {
+    return n1->getIndex() > n2->getIndex();
+  }
+};
 
 
 
