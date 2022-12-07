@@ -9,15 +9,19 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    astar.cpp \
+    astarcontroller.cpp \
     gameworld.cpp \
     main.cpp \
     mainwindow.cpp \
-    tilecomposition.cpp
+    node.cpp
 
 HEADERS += \
+    astar.h \
+    astarcontroller.h \
     gameworld.h \
     mainwindow.h \
-    tilecomposition.h
+    node.h
 
 FORMS += \
     mainwindow.ui

@@ -1,20 +1,48 @@
 #ifndef GAMEWORLD_H
 #define GAMEWORLD_H
-#include "tilecomposition.h"
+#include "node.h"
 #include "world.h"
 
-class GameWorld
+#define MAX_NEIGHBORS 4
+#define NODE_DIMENSION 2
+class GameWorld        
 
 {
 public:
-    GameWorld()=default;
-    void setVectorOfTilesComposition(std::unique_ptr<TileComposition> newVectorOfTilesComposition);
-    void setProtagonist(const Protagonist &newProtagonist);
-    std::unique_ptr<TileComposition> generateWorld(QString pathToMap);
+    ~GameWorld();// Ue to free memory of all collections.
+    static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    static void Destroy();
+    static GameWorld * Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+
+    std::shared_ptr<Node> makeNode(int index);
+
+    //Testing methods
+    void makeSubsetOfTiles(int rows, int columns);
+    void printSubSetOftiles();
+    void printTiles(int nrOfTiles);
+
 
 private:
-    std::vector<std::unique_ptr<TileComposition>> tilesCompositionList;
-    Protagonist protagonist;
+
+
+
+    GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    static GameWorld* instance;
+
+    void initializeProtagonist(float startingEnergy);
+    int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
+    void setRowsAndColumns(int newRows, int newColumns);
+    std::vector<int> getNeighbourTileIndex(int row, int col);
+
+    std::unique_ptr<Protagonist> protagonist {nullptr};
+    std::vector<std::unique_ptr<Tile>> tiles;
+    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+    int totalRows,totalColumns;
+    const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+    // TESTING
+
+    std::vector<std::unique_ptr<Tile>> subSetOfTiles;
 
 };
 

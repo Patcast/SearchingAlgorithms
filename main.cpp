@@ -1,18 +1,16 @@
 //#include "mainwindow.h"
+#include "astarcontroller.h"
+#include "gameworld.h"
 #include <iostream>
 #include <QApplication>
-#include "gameworld.h"
 
-int main(int argc, char *argv[])
+//#include "node.h"
+GameWorld * GameWorld::instance = 0;
+int main()
 {
-    //QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
 
-    GameWorld gameWorld;
-    gameWorld.generateWorld(":/images/worldmap.png");
+      AStarController controller;
+      controller.executeBreadthFirstSearch(0,62);
 
-
-    //return a.exec();
     return 0;
 }
