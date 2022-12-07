@@ -1,21 +1,22 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "abstractview.h"
+#include "scene.h"
 #include "mainwindow.h"
 #include <string>
 
 class Controller
 {
 public:
-    Controller(MainWindow &window, AbstractView &primaryView);
+    Controller(std::shared_ptr<MainWindow> window, std::shared_ptr<Scene> primaryScene);
     void view_switch(std::string newState);
-    void addView(AbstractView &view);
+    void addView(std::shared_ptr<Scene> scene);
+    std::shared_ptr<Scene> getView(std::string searchString);
 
 protected:
-    MainWindow &controllerWindow;
-    std::string currentViewState;
-    std::vector<std::reference_wrapper<AbstractView>> viewList;
+    std::shared_ptr<MainWindow> controllerWindow;
+    std::string currentSceneState;
+    std::vector<std::shared_ptr<Scene>> sceneCollection;
 };
 
 #endif // CONTROLLER_H

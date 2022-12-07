@@ -1,17 +1,23 @@
 #include "controller.h"
 #include "ui_mainwindow.h"
 
-Controller::Controller(MainWindow &window, AbstractView &primaryView) : controllerWindow(window){
-    this->viewList.push_back(primaryView);
-    this->currentViewState = primaryView.getDescription();
-    this->controllerWindow.ui->stackedWidget->setCurrentWidget(&primaryView.getQView());
+Controller::Controller(std::shared_ptr<MainWindow> window, std::shared_ptr<Scene> primaryScene) : controllerWindow(window){
+    // window.children()
+    this->currentSceneState = primaryScene->getDescription();
+    this->sceneCollection.push_back(primaryScene);
+    this->controllerWindow->ui->stackedWidget->setCurrentWidget(primaryScene->getQView().get());
 }
 
 void Controller::view_switch(std::string newState) {
-    this->currentViewState = newState;
+    this->currentSceneState = newState;
+
 }
 
-void Controller::addView(AbstractView &view) {
-    this->viewList.push_back(view);
+void Controller::addView(std::shared_ptr<Scene> scene) {
+
+}
+
+std::shared_ptr<Scene> Controller::getView(std::string searchString) {
+
 }
 

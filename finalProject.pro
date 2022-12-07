@@ -14,15 +14,17 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
+    textscene.cpp \
     textwindow.cpp \
     twodwindow.cpp
 
 HEADERS += \
-    abstractview.h \
     controller.h \
     gamestring.h \
     mainwindow.h \
     player.h \
+    scene.h \
+    textscene.h \
     textwindow.h \
     twodwindow.h
 

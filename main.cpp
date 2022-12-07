@@ -1,5 +1,6 @@
+#include "controller.h"
 #include "mainwindow.h"
-#include "textwindow.h"
+#include "textscene.h"
 #include <iostream>
 #include <QApplication>
 #include <QtGui>
@@ -8,6 +9,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
+    textscene = TextScene()
+    controller = Controller(&window, )
 
 
     visual_text::TextWindow w;
