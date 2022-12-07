@@ -10,11 +10,10 @@ class GameWorld
 {
 public:
     ~GameWorld();// Ue to free memory of all collections.
-    static void Create();
+    static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     static void Destroy();
-    static GameWorld * Instance();
+    static GameWorld * Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
 
-    void loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     std::shared_ptr<Node> makeNode(int index);
 
     //Testing methods
@@ -27,7 +26,7 @@ private:
 
 
 
-    GameWorld();
+    GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;
 
     void initializeProtagonist(float startingEnergy);

@@ -20,31 +20,7 @@ GameWorld::~GameWorld()
 {
 
 }
-GameWorld::GameWorld()
-{
-
-}
-
-void GameWorld::Create() //
-{
-    if(instance != 0)
-        return;
-    instance = new GameWorld();
-}
-
-void GameWorld::Destroy()
-{
-    delete instance;
-    instance = 0;
-}
-
-GameWorld *GameWorld::Instance()
-{
-    GameWorld::Create();
-    return instance;
-}
-
-void GameWorld::loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
+GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
@@ -61,8 +37,28 @@ void GameWorld::loadWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, f
         specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())]= (std::move(healthPacks[i]));
     }
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
-
 }
+
+void GameWorld::Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist) //
+{
+    if(instance != 0)
+        return;
+    instance = new GameWorld( pathToMap,  nrEnemies,  nrHeatlhPacks,  startingEnergyProtagonist);
+}
+
+void GameWorld::Destroy()
+{
+    delete instance;
+    instance = 0;
+}
+
+GameWorld *GameWorld::Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
+{
+    GameWorld::Create(pathToMap,  nrEnemies,  nrHeatlhPacks,  startingEnergyProtagonist);
+    return instance;
+}
+
+
 
 
 
