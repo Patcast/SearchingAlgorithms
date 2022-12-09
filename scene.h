@@ -3,21 +3,21 @@
 
 #include <QAbstractScrollArea>
 
-class Scene : QWidget
+class Scene
 {
 public:
-    Scene(std::string desc);
+    Scene(std::string description) : desc(description){};
     virtual void drawEnemy() = 0;
     virtual void drawProtagonist() = 0;
     virtual void drawTile() = 0;
     virtual void drawHealthPack() = 0;
     virtual void drawMovement() = 0;
     std::string getDescription() { return desc; };
-    std::shared_ptr<QWidget> getQView() { return widget; };
+    QWidget *getQView() { return widget; };
 
 
 protected:
-    std::shared_ptr<QWidget> widget;
+    QWidget *widget;
     std::string desc;
 };
 

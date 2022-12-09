@@ -8,13 +8,13 @@
 class Controller
 {
 public:
-    Controller(std::shared_ptr<MainWindow> window, std::shared_ptr<Scene> primaryScene);
+    Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene);
     void view_switch(std::string newState);
     void addView(std::shared_ptr<Scene> scene);
     std::shared_ptr<Scene> getView(std::string searchString);
 
 protected:
-    std::shared_ptr<MainWindow> controllerWindow;
+    MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
 };

@@ -9,12 +9,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
-    textscene = TextScene()
-    controller = Controller(&window, )
+    TextScene textscene = TextScene();
+    std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
+
+    Controller controller = Controller(&window,sharedTextScene);
+    window.show();
 
 
-    visual_text::TextWindow w;
-    w.show();
+    //visual_text::TextWindow w;
+    // w.show();
     std::cout<<"hello Patt"<<std::endl;
 
     return a.exec();
