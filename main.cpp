@@ -10,7 +10,7 @@ int main()
 {
 
       AStarController controller;
-      controller.executeBreadthFirstSearch(0,62);
+      controller.executeBreadthFirstSearch(0,92);
 
     return 0;
 }
