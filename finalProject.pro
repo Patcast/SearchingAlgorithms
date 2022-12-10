@@ -14,14 +14,16 @@ SOURCES += \
     gameworld.cpp \
     main.cpp \
     mainwindow.cpp \
-    node.cpp
+    node.cpp \
+    protagonistview.cpp
 
 HEADERS += \
     astar.h \
     astarcontroller.h \
     gameworld.h \
     mainwindow.h \
-    node.h
+    node.h \
+    protagonistview.h
 
 FORMS += \
     mainwindow.ui
@@ -39,4 +41,10 @@ INCLUDEPATH += $$PWD/sharableLib
 DEPENDPATH += $$PWD/sharableLib
 
 RESOURCES += \
-    images.qrc
+    images
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/debug/ -lworld
+
+INCLUDEPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release
+DEPENDPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release

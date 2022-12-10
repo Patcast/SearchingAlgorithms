@@ -9,6 +9,9 @@ class GameWorld
 
 {
 public:
+    std::unique_ptr<Protagonist> protagonist {nullptr};
+    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+
     ~GameWorld();// Ue to free memory of all collections.
     static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     static void Destroy();
@@ -23,9 +26,6 @@ public:
 
 
 private:
-
-
-
     GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;
 
@@ -34,9 +34,9 @@ private:
     void setRowsAndColumns(int newRows, int newColumns);
     std::vector<int> getNeighbourTileIndex(int row, int col);
 
-    std::unique_ptr<Protagonist> protagonist {nullptr};
+//    std::unique_ptr<Protagonist> protagonist {nullptr};
     std::vector<std::unique_ptr<Tile>> tiles;
-    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+//    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
     int totalRows,totalColumns;
     const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 

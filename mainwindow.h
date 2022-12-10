@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
+#include "gameworld.h"
+#include "protagonistview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +17,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    //QGraphicsScene * scene;
+    ProtagonistView player;
+    GameWorld * gameWord_ptr;
+public slots:
+  void zoomIn();
+  void zoomOut();
 
 private:
     Ui::MainWindow *ui;
