@@ -5,7 +5,7 @@
 
 #define MAX_NEIGHBORS 4
 #define NODE_DIMENSION 2
-class GameWorld        
+class GameWorld
 
 {
 public:

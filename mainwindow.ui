@@ -6,48 +6,47 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>521</width>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>681</width>
-      <height>491</height>
+      <y>540</y>
+      <width>501</width>
+      <height>23</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>50</y>
-      <width>93</width>
-      <height>29</height>
+      <x>10</x>
+      <y>10</y>
+      <width>500</width>
+      <height>500</height>
      </rect>
     </property>
-    <property name="text">
-     <string>ZoomIn</string>
-    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>100</y>
-      <width>93</width>
-      <height>29</height>
+      <x>10</x>
+      <y>570</y>
+      <width>501</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>ZoomOut</string>
+     <string>Please input a command...</string>
     </property>
    </widget>
   </widget>
@@ -56,51 +55,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>26</height>
+     <width>521</width>
+     <height>29</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>771</x>
-     <y>85</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>734</x>
-     <y>254</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>pressed()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>763</x>
-     <y>147</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <signal>ZoomIn()</signal>
-  <slot>zoomIn()</slot>
-  <slot>zoomOut()</slot>
- </slots>
+ <connections/>
 </ui>
