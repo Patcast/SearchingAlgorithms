@@ -12,8 +12,9 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     world->setZValue(0.5);
     graphScene->addItem(world);
     gameWord_ptr = GameWorld::Instance(":/images/worldmap.png", 20, 60, 100.0);
-    player.place(gameWord_ptr->protagonist->getXPos() * 50, gameWord_ptr->protagonist->getYPos() * 50);
-    graphScene->addItem(&player);
+    player_ptr = new ProtagonistView();
+    player_ptr->place(gameWord_ptr->protagonist->getXPos() * 50, gameWord_ptr->protagonist->getYPos() * 50);
+    graphScene->addItem(player_ptr);
     // std::cout<<gameWord_ptr->protagonist->getXPos()<<gameWord_ptr->protagonist->getYPos() << std::endl;
 
     QGraphicsView *view = new QGraphicsView(graphScene);
@@ -37,8 +38,10 @@ void GraphicsScene::drawMovement(){
 
 }
 void GraphicsScene::zoomIn(){
-    this->widget->scale(1.2, 1.2);
+    QGraphicsView* viewWidget = static_cast<QGraphicsView*>(this->widget);
+    viewWidget->scale(1.2, 1.2);
 }
 void GraphicsScene::zoomOut(){
-    this->widget->scale(0.8, 0.8);
+    QGraphicsView* viewWidget = static_cast<QGraphicsView*>(this->widget);
+    viewWidget->scale(0.8, 0.8);
 }

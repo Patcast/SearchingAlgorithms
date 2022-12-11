@@ -1,7 +1,7 @@
 #include "controller.h"
 #include "graphicsscene.h"
-#include "astarcontroller.h"
-#include "gameworld.h"
+//#include "astarcontroller.h"
+//#include "gameworld.h"
 #include "mainwindow.h"
 #include "textscene.h"
 #include <iostream>
@@ -9,7 +9,7 @@
 #include <QtGui>
 
 //#include "node.h"
-GameWorld * GameWorld::instance = 0;
+//GameWorld * GameWorld::instance = 0;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
     controller.addView(sharedTextScene);
     window.show();
 
-    AStarController controller;
-    controller.executeBreadthFirstSearch(0, 62);
+    //AStarController aStarController;
+    //aStarController.executeBreadthFirstSearch(0, 62);
 
     return a.exec();
 }

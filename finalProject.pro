@@ -32,7 +32,7 @@ HEADERS += \
     graphicsscene.h \
     mainwindow.h \
     node.h \
-    protagonistview.h
+    protagonistview.h \
     scene.h \
     textscene.h
 
