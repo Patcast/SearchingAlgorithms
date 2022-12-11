@@ -9,8 +9,8 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-#    astar.cpp \
-#    astarcontroller.cpp \
+    astar.cpp \
+    astarcontroller.cpp \
     controller.cpp \
     gamestring.cpp \
     gameworld.cpp \
@@ -22,8 +22,8 @@ SOURCES += \
     textscene.cpp
 
 HEADERS += \
-#    astar.h \
-#    astarcontroller.h \
+    astar.h \
+    astarcontroller.h \
     controller.h \
     gamestring.h \
     gameworld.h \

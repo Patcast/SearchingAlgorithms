@@ -3,6 +3,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 
+
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
     QGraphicsScene *graphScene = new QGraphicsScene();
