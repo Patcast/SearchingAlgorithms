@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>606</height>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,12 +29,25 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>501</width>
-      <height>501</height>
+      <width>500</width>
+      <height>500</height>
      </rect>
     </property>
     <widget class="QWidget" name="page"/>
     <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>570</y>
+      <width>501</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Please input a command...</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -43,7 +56,7 @@
      <x>0</x>
      <y>0</y>
      <width>521</width>
-     <height>20</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

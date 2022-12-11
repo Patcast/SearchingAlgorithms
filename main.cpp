@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "graphicsscene.h"
 #include "mainwindow.h"
 #include "textscene.h"
 #include <iostream>
@@ -12,8 +13,14 @@ int main(int argc, char *argv[])
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
 
-    Controller controller = Controller(&window,sharedTextScene);
+    GraphicsScene twoDScene = GraphicsScene();
+    std::shared_ptr<GraphicsScene> sharedGraphScene = std::make_shared<GraphicsScene>(twoDScene);
+
+    Controller controller = Controller(&window,sharedGraphScene);
+    controller.addView(sharedTextScene);
     window.show();
+
+
 
 
     //visual_text::TextWindow w;

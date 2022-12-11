@@ -5,13 +5,18 @@
 #include "mainwindow.h"
 #include <string>
 
-class Controller
+class Controller: public QObject
 {
 public:
     Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene);
     void view_switch(std::string newState);
     void addView(std::shared_ptr<Scene> scene);
     std::shared_ptr<Scene> getView(std::string searchString);
+    void handleCommand(std::string funct, std::vector<std::string> commands);
+    std::vector<std::string> splitString(std::string fullString, std::string delimiter);
+    void displayError(std::string error);
+private slots:
+  void handleCommand();
 
 protected:
     MainWindow *controllerWindow;

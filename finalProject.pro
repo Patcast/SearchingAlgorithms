@@ -11,29 +11,32 @@ CONFIG += c++17
 SOURCES += \
     controller.cpp \
     gamestring.cpp \
+    graphicsscene.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
     textscene.cpp \
-    textwindow.cpp \
-    twodwindow.cpp
+    textwindow.cpp
 
 HEADERS += \
     controller.h \
     gamestring.h \
+    graphicsscene.h \
     mainwindow.h \
     player.h \
     scene.h \
     textscene.h \
-    textwindow.h \
-    twodwindow.h
+    textwindow.h
 
 FORMS += \
     mainwindow.ui \
-    textwindow.ui \
-    twodwindow.ui
+    textwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    images/MarioJump.png \
+    images/mario03.png

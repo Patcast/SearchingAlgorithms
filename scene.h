@@ -14,6 +14,7 @@ public:
     virtual void drawMovement() = 0;
     std::string getDescription() { return desc; };
     QWidget *getQView() { return widget; };
+    bool operator == (const std::string s) const {return s == desc; }
 
 
 protected:
