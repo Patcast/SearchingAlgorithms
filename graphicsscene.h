@@ -13,6 +13,15 @@ public:
     void drawTile();
     void drawHealthPack();
     void drawMovement();
+    
+public slots:
+    void zoomIn();
+    void zoomOut();
+
+private:
+    // QGraphicsScene * scene;
+    ProtagonistView player;
+    GameWorld *gameWord_ptr;
 };
 
 #endif // GRAPHICSSCENE_H

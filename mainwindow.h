@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
+#include "gameworld.h"
+#include "protagonistview.h"
 
 namespace Ui {
 class MainWindow;

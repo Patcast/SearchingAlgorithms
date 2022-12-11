@@ -1,15 +1,22 @@
 #include "controller.h"
 #include "graphicsscene.h"
+#include "astarcontroller.h"
+#include "gameworld.h"
 #include "mainwindow.h"
 #include "textscene.h"
 #include <iostream>
 #include <QApplication>
 #include <QtGui>
 
+//#include "node.h"
+GameWorld * GameWorld::instance = 0;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
+
+    // GameWorld * gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
+
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
 
@@ -20,43 +27,8 @@ int main(int argc, char *argv[])
     controller.addView(sharedTextScene);
     window.show();
 
-
-
-
-    //visual_text::TextWindow w;
-    // w.show();
-    std::cout<<"hello Patt"<<std::endl;
+    AStarController controller;
+    controller.executeBreadthFirstSearch(0, 62);
 
     return a.exec();
-
-//    QApplication app(argc,argv);
-//    QTextEdit monoEdit;
-//    QTextDocument *doc = monoEdit.document();
-//    QFont font = doc->defaultFont();
-//    font.setFamily("Courier New");
-//    doc->setDefaultFont(font);
-//    monoEdit.setReadOnly(true);
-
-//    QString PTText = "+---+---+---+---+---+---+\n| g |   |   | x |   |   |\n+---+---+---+---+---+---+";
-
-//    monoEdit.setPlainText(PTText);
-
-//    monoEdit.show();
-//    return app.exec();
-
-    // QApplication a(argc, argv);
-    // TwoDWindow w;
-    // QGraphicsScene * scene = new QGraphicsScene();
-    // scene->setSceneRect(0,0,500,600);
-    // Player * pl = new Player();
-    // pl->setPixmap(QPixmap(":/images/mario03.png"));
-    // pl->setFlag(QGraphicsItem::ItemIsFocusable);
-    // pl->setFocus();
-
-    // scene->addItem(pl);
-    // QGraphicsView * view = new QGraphicsView(scene);
-    // // show the view
-    // view->show();
-
-    // return a.exec();
 }
