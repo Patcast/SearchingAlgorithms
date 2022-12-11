@@ -15,8 +15,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
-    textscene.cpp \
-    textwindow.cpp
+    textscene.cpp
 
 HEADERS += \
     controller.h \
@@ -25,12 +24,10 @@ HEADERS += \
     mainwindow.h \
     player.h \
     scene.h \
-    textscene.h \
-    textwindow.h
+    textscene.h
 
 FORMS += \
-    mainwindow.ui \
-    textwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -14,7 +14,16 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
 }
 
 void Controller::view_switch(std::string newState) {
-    this->currentSceneState = newState;
+    try {
+        std::shared_ptr<Scene> destination = getView(newState);
+        this->currentSceneState = newState;
+        this->controllerWindow->ui->stackedWidget->setCurrentWidget(destination->getQView());
+        displayStatus("switch: scene '" + newState + "' set");
+    }
+    catch (std::string errorScene) {
+        displayStatus("switch: scene '" + errorScene + "' not found");
+    }
+
 
 }
 
@@ -25,29 +34,39 @@ void Controller::addView(std::shared_ptr<Scene> scene) {
 }
 
 std::shared_ptr<Scene> Controller::getView(std::string searchString) {
-
+    auto ptr = std::find_if(begin(this->sceneCollection), end(this->sceneCollection), [&](std::shared_ptr<Scene> const& current)
+    {
+      return *current == searchString;
+    });
+    if (ptr != end(this->sceneCollection)) {
+        std::shared_ptr<Scene> foundScene = *ptr;
+        return foundScene;
+    } else {
+        throw(searchString);
+    }
 }
 
 void Controller::handleCommand() {
     Ui::MainWindow *ui = this->controllerWindow->ui;
-    std::string command = ui->lineEdit->text().toStdString();
-    std::vector<std::string> commands = Controller::splitString(command, " ");
+    std::string commandString = ui->lineEdit->text().toStdString();
+    std::vector<std::string> commands = Controller::splitString(commandString, " ");
     std::string funct = commands[commands.size() - 1];
     commands.pop_back();
     ui->lineEdit->setText("");
-    if (funct == "switch") {
-        if (commands.size() != 1) {
-            displayError("switch: Incorrect amount of arguments specified");
-        } else {
-            view_switch(commands[0]);
-        }
-    } else {
-        displayError("Incorrect command");
-    }
+    handleCommand(funct, &commands);
 }
 
-void Controller::handleCommand(std::string funct, std::vector<std::string> commands) {
-
+void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
+    if (funct == "switch") {
+        if (commands->size() != 1) {
+            displayStatus("switch: Incorrect amount of arguments specified");
+        } else {
+            std::string result = commands->at(0);
+            view_switch(result);
+        }
+    } else {
+        displayStatus("Incorrect command");
+    }
 }
 
 std::vector<std::string> Controller::splitString(std::string fullString, std::string delimiter) {
@@ -61,4 +80,8 @@ std::vector<std::string> Controller::splitString(std::string fullString, std::st
     }
     std::reverse(seglist.begin(), seglist.end());
     return seglist;
+}
+
+void Controller::displayStatus(std::string error) {
+    this->controllerWindow->ui->label->setText(QString::fromStdString(error));
 }
