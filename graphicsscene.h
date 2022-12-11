@@ -21,7 +21,7 @@ public slots:
     void zoomOut();
 
 private:
-    // QGraphicsScene * scene;
+    QGraphicsScene * scene;
     ProtagonistView *player_ptr;
     GameWorld *gameWord_ptr;
 };
