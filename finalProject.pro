@@ -42,8 +42,21 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/sharableLib/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/sharableLib/debug/ -lworld
+else:unix: LIBS += -L$$PWD/sharableLib/ -lworld
+
+INCLUDEPATH += $$PWD/sharableLib
+DEPENDPATH += $$PWD/sharableLib
+
 RESOURCES += \
     images
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/debug/ -lworld
+
+INCLUDEPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release
+DEPENDPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release
 
 win32: LIBS += -L$$PWD/../build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Release/release/ -lworld
 
