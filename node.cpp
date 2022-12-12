@@ -5,7 +5,7 @@
 
 
 
-Node::Node(int newIndex,float newIncomingCost, std::vector<int> newNeighborsIndexes):
+Node::Node(int newIndex, float newIncomingCost, std::vector<int> newNeighborsIndexes):
     index{newIndex},neighborsIndexes{newNeighborsIndexes},incomingCost{newIncomingCost}
 {
 
@@ -21,9 +21,7 @@ std::ostream &operator<<(std::ostream &os, const Node &n)
 std::string Node::showNode() const
 {
   std::stringstream result;
-  result << "Node: indx:" <<index;
-  result << "\t inCost:" <<incomingCost;
-  result << "\tneighbours:{";
+  result << "Node: indx:" <<index << "\t inCost: " <<incomingCost<<"\t costSoFar: " <<costSoFar << "\t neighbours:{";
   for(auto n: neighborsIndexes) result << " " <<n;
   result << "}";
   return result.str();
@@ -42,11 +40,11 @@ int Node::getIndex() const
 
 const std::shared_ptr<Node> &Node::getPrev_node() const
 {
-    return prev_node;
+    return prevNode;
 }
-float Node::getCostViaParent() const
+float Node::getCostSoFar() const
 {
-    return costViaParent;
+    return costSoFar;
 }
 
 float Node::getIncomingCost() const
@@ -54,15 +52,30 @@ float Node::getIncomingCost() const
     return incomingCost;
 }
 
+bool Node::getCompleted() const
+{
+    return completed;
+}
+
+void Node::setCompleted(bool newCompleted)
+{
+    completed = newCompleted;
+}
+
 
 void Node::setPrev_node(const std::shared_ptr<Node> &newPrev_node)
 {
-    prev_node = newPrev_node;
+    prevNode = newPrev_node;
 }
 
-void Node::setCostViaParent(float newCostViaParent)
+void Node::setCostSoFar(float costSoFarOfParent)
 {
-    costViaParent = newCostViaParent;
+    costSoFar = costSoFarOfParent+incomingCost;
+}
+
+void Node::setCostSoFarToZero()
+{
+    costSoFar=0.0;
 }
 
 

@@ -9,17 +9,23 @@
 class AStar
 {
 public:
+    AStar(int totalRows, int totalColumns);
+
     std::shared_ptr<Node> breadthFirstSearch(int start_index, int goal_index);
-    std::shared_ptr<Node> dijkstra_search(int start_index, int goal_index);
+    std::shared_ptr<Node> dijkstraSearch(int start_index, int goal_index);
     void printPathFound(std::shared_ptr<Node> ptr_goal);
     void setGameWord_ptr(GameWorld *newGameWord_ptr);
+    void testQueue();
 
 private:
-    // probably use a priority queu for the list
-    // OPEN QUEU
-    // Close QUEU
 
+    int totalRows,totalColumns;
+    std::shared_ptr<Node> makeNode(int index);
+    std::vector<int> getNeighbourTileIndex(int row, int col);
     GameWorld* gameWord_ptr;
+    std::unordered_map<int,std::shared_ptr<Node>> nodes;
+    const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
 };
 
 //struct NodePtrEqualByIndex {
@@ -36,12 +42,13 @@ private:
 //        return std::hash<int>()(index);
 //    }
 //};
+typedef std::pair<float, int> queuePair;
 
-struct CompNodePtrbyIndex {
+struct CompNodePtByCostSoFar {
   bool operator()(
     std::shared_ptr<Node> n1, std::shared_ptr<Node> n2)
   {
-    return n1->getIndex() > n2->getIndex();
+    return n1->getCostSoFar() < n2->getCostSoFar();
   }
 };
 

@@ -9,8 +9,7 @@ GameWorld * GameWorld::instance = 0;
 int main()
 {
 
-      AStarController controller;
-      controller.executeBreadthFirstSearch(0,92);
-
+    AStarController controller;
+    controller.runDijktra(180,102);
     return 0;
 }

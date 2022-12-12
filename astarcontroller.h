@@ -12,11 +12,11 @@ class AStarController
 {
 public:
     AStarController();
-    void executeBreadthFirstSearch(int start_index, int goal_index);
+    void runDijktra(int start_index, int goal_index);
 
 private:
     GameWorld* gameWord_ptr;
-    AStar aStar;
+    std::unique_ptr<AStar> aStar;
 
 };
 
