@@ -37,16 +37,12 @@ std::shared_ptr<Node> AStar::dijkstraSearch(int start_index, int goal_index)
 
                     if (nodes.find(neighborIndex) == nodes.end()) {
                         nodes.emplace(neighborIndex, std::make_shared<Node>(neighborIndex,gameWord_ptr->getTiles()[neighborIndex]->getValue(),getNeighbourTileIndex(gameWord_ptr->getTiles()[neighborIndex]->getYPos(),gameWord_ptr->getTiles()[neighborIndex]->getXPos())));
-                        nodes[neighborIndex]->setCostSoFar(nodes[topIndex]->getCostSoFar());
-                        nodes[neighborIndex]->setPrev_node(nodes[topIndex]);
-                        openQueue.push(std::make_pair((-1)*(nodes[neighborIndex]->getCostSoFar()),neighborIndex));
+                        updateNode(nodes[neighborIndex],nodes[topIndex],openQueue);
                     }
 
                     else if((!nodes[neighborIndex]->getCompleted()&& nodes[topIndex]-> getCostSoFar() +nodes[neighborIndex]->getIncomingCost() < nodes[neighborIndex]->getCostSoFar()))
                     {
-                        nodes[neighborIndex]->setCostSoFar(nodes[topIndex]->getCostSoFar());
-                        nodes[neighborIndex]->setPrev_node(nodes[topIndex]);
-                        openQueue.push(std::make_pair((-1)*(nodes[neighborIndex]->getCostSoFar()),neighborIndex));
+                        updateNode(nodes[neighborIndex],nodes[topIndex],openQueue);
                     }
             }
             nodes[topIndex]->setCompleted(true);
@@ -54,6 +50,8 @@ std::shared_ptr<Node> AStar::dijkstraSearch(int start_index, int goal_index)
     }
     return nodes[topIndex];
 }
+
+
 
 void AStar::printPathFound(std::shared_ptr<Node> ptr_goal)
 {
@@ -110,6 +108,14 @@ std::vector<int> AStar::getNeighbourTileIndex(int row,int col)
         }
     }
     return n;
+}
+
+void AStar::updateNode(std::shared_ptr<Node> neighborNode, std::shared_ptr<Node> topNode, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
+{
+    // Is the call by reference correct for the queue
+    neighborNode->setCostSoFar(topNode->getCostSoFar());
+    neighborNode->setPrev_node(topNode);
+    openQueueRef.push(std::make_pair((-1)*(neighborNode->getCostSoFar()),neighborNode->getIndex()));
 }
 
 
