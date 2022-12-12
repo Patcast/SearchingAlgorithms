@@ -16,3 +16,15 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::ZoomIn()
+  {
+  //ui->graphicsView->scale(1.1, 1.1);
+    std::cout<<"ZoomIn"<<std::endl;
+  }
+
+void MainWindow::ZoomOut()
+  {
+  //ui->graphicsView->scale(1.1, 1.1);
+    std::cout<<"ZoomOut"<<std::endl;
+  }

@@ -9,6 +9,8 @@ void ProtagonistView::place(int x, int y)
     yPos = y;
     setPos(xPos,yPos);
     setZValue(1);
+    setFlag(QGraphicsItem::ItemIsFocusable);
+    focusItem();
 }
 
 void ProtagonistView::defeated()

@@ -9,13 +9,15 @@ class GraphicsScene : public Scene
 {
 public:
     GraphicsScene();
+    QGraphicsScene *graphScene;
 
     void drawEnemy();
     void drawProtagonist();
     void drawTile();
     void drawHealthPack();
     void drawMovement();
-    
+    void drawDeathEnemy(Enemy en);
+
 public slots:
     void zoomIn();
     void zoomOut();
