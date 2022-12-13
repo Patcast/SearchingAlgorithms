@@ -21,12 +21,6 @@ public:
     static GameWorld * Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
 
 
-    //Testing methods
-    void makeSubsetOfTiles(int rows, int columns);
-    void printSubSetOftiles();
-    void printTiles(int nrOfTiles);
-
-
     const std::vector<std::unique_ptr<Tile> > &getTiles() const;
 
     int getTotalRows() const;
