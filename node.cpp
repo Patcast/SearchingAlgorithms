@@ -24,7 +24,9 @@ std::string Node::showNode() const
   result << "Node: indx:" <<index << "\t inCost: " <<incomingCost<<"\t costSoFar: " <<costSoFar << "\t neighbours:{";
   for(auto n: neighborsIndexes) result << " " <<n;
   result << "}";
+
   return result.str();
+
 
 }
 

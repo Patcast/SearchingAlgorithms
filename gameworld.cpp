@@ -78,6 +78,8 @@ int GameWorld::getTotalColumns() const
     return totalColumns;
 }
 
+
+
 const std::vector<std::unique_ptr<Tile> > &GameWorld::getTiles() const
 {
     return tiles;

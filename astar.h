@@ -13,23 +13,28 @@ class AStar
 public:
     AStar(int totalRows, int totalColumns);
 
-    std::shared_ptr<Node> breadthFirstSearch(int start_index, int goal_index);
-    std::shared_ptr<Node> dijkstraSearch(int start_index, int goal_index);
+    std::shared_ptr<Node> aStarSearch(int start_index, int goal_index);
     void printPathFound(std::shared_ptr<Node> ptr_goal);
     void setGameWord_ptr(GameWorld *newGameWord_ptr);
-    void testQueue();
+
+
+    void setHeuristicFactor(float newHeuristicFactor);
+
+    float getHeuristicFactor() const;
 
 private:
 
-
     std::shared_ptr<Node> makeNode(int index);
-    std::vector<int> getNeighbourTileIndex(int row, int col);
-    void updateNode(std::shared_ptr<Node> neighborNode,std::shared_ptr<Node>  topNode ,std::priority_queue<queuePair, std::vector<queuePair>> &openQueueRef);
+    std::vector<int> getNeighboursTileIndex(std::pair<int, int> coordinates);
+    void updateNode(int goalIndex, std::shared_ptr<Node> neighborNode, std::shared_ptr<Node>  topNode , std::priority_queue<queuePair, std::vector<queuePair>> &openQueueRef);
+    void updateNode(std::shared_ptr<Node> neighborNode, std::shared_ptr<Node>  topNode , std::priority_queue<queuePair, std::vector<queuePair>> &openQueueRef);
+    float heuristic(int neighborIndex, int goalIndex);
+
     GameWorld* gameWord_ptr;
     int totalRows,totalColumns;
     std::unordered_map<int,std::shared_ptr<Node>> nodes;
     const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
+    float heuristicFactor{0.2}; //shortest path can only be found if the heuristic is admisable. i.e. meaning it never overstimates the remaining distance.
 };
 
 

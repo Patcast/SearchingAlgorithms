@@ -26,7 +26,7 @@ public:
     int getTotalRows() const;
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
-
+    std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
 
 private:
     GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);

@@ -10,6 +10,9 @@ int main()
 {
 
     AStarController controller;
-    controller.runDijktra(180,102);
+    int start = 180;
+    int end = 102;
+    controller.runDijktra(start,end);
+    controller.runAStar(start,end);
     return 0;
 }
