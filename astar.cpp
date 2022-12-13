@@ -5,7 +5,6 @@
 //  TODO:
 //  Add a way to visualize path found.
 //  Empty collections after use or before using.
-//  Handle exemption if makeNode() returns NULL.
 
 
 

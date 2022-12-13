@@ -39,7 +39,7 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
         specialFigures[getIndexFromCoordinates(healthPacksList[i]->getYPos(),healthPacksList[i]->getXPos())] = (std::move(healthPacksList[i]));
     }
 
-//    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
+    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
 
 }
 
@@ -95,48 +95,17 @@ const std::vector<std::unique_ptr<Tile> > &GameWorld::getTiles() const
 
 void GameWorld::initializeProtagonist(float startingEnergy)
 {
-    /*
     while(protagonist==nullptr){
-        int x = rand()%(totalRows);
-        int y = rand()%(totalRows);
-        std::cout<<"(X,Y): "<<x<<"x"<<y<<std::endl;
-        if(!specialFigures[getIndexFromCoordinates(x,y)].has_value()){
+        int index = rand()%(totalRows*totalColumns);
+        if(!specialFigures[index].has_value()&& tiles[index]->getValue()<100){
             protagonist= std::make_unique<Protagonist>();
             protagonist->setEnergy(startingEnergy);
-            protagonist->setXPos(x);
-            protagonist->setYPos(y);
-            std::cout<<"Protagonist created"<<std::endl;
+            std::pair<int,int> coordinatesProtagonist= getCoordinatesFromIndex(index);
+            protagonist->setYPos(coordinatesProtagonist.first);
+            protagonist->setXPos(coordinatesProtagonist.second);
+            std::cout<<"Protagonist("<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")created at Index:"<<index<<std::endl;
         }
     }
-    */
-    bool free = true;
-    while(protagonist==nullptr){
-        free = true;
-        int x = rand()%(totalRows);
-        int y = rand()%(totalRows);
-        std::cout<<"(X,Y): "<<x<<"x"<<y<<std::endl;
-        for(std::unique_ptr<Enemy> &t:enemies){
-            if((t->getXPos()==x)&&(t->getYPos()==y)){
-                std::cout<<"same Pos"<<std::endl;
-                free = false;
-                break;
-            }
-        }
-        for(std::unique_ptr<Tile> &t:healthPacks){
-            if((t->getXPos()==x)&&(t->getYPos()==y)){
-                std::cout<<"same Pos"<<std::endl;
-                free = false;
-                break;
-            }
-        }
-        if(free){
-            protagonist= std::make_unique<Protagonist>();
-            protagonist->setEnergy(startingEnergy);
-            protagonist->setXPos(x);
-            protagonist->setYPos(y);
-            }
-        }
-
 }
 
 
