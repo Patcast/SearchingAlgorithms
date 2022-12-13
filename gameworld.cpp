@@ -28,16 +28,18 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
 
-    enemies = w.getEnemies();
-    healthPacks = w.getHealthPacks();
+    std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
+    std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
     specialFigures.resize(tiles.size());
-    for(unsigned long i=0; i<enemies.size();i++){
-        specialFigures[getIndexFromCoordinates(enemies[i]->getYPos(),enemies[i]->getXPos())];//= (std::move(enemies[i]));
+
+    for(unsigned long i=0; i<enemiesList.size();i++){
+        specialFigures[getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos())]= (std::move(enemiesList[i]));
     }
-    for(unsigned long i=0; i<healthPacks.size();i++){
-        specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())];//= (std::move(healthPacks[i]));
+    for(unsigned long i=0; i<healthPacksList.size();i++){
+        specialFigures[getIndexFromCoordinates(healthPacksList[i]->getYPos(),healthPacksList[i]->getXPos())] = (std::move(healthPacksList[i]));
     }
-    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
+
+//    initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
 
 }
 
@@ -79,6 +81,8 @@ int GameWorld::getTotalColumns() const
 {
     return totalColumns;
 }
+
+
 
 
 
@@ -141,38 +145,9 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 
 
-//********** TESTING**************//
-
-//void GameWorld::makeSubsetOfTiles(int rows, int columns)
-//{
-//    std::cout<<"----------- "<<std::endl;
-
-//    for(int i =0 ; i<rows;i++){
-//        for(int j =0 ; j<columns;j++){
-//            subSetOfTiles.push_back(std::move(tiles[getIndexFromCoordinates(i,j)]));
-//        }
-//    }
-//    setRowsAndColumns(rows,columns);
-//    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
-//}
-//void GameWorld::printTiles(int nrOfTiles)
-//{
-//   std::cout<<"(x,y)"<<std::endl;
-//    for(int i =0;i<nrOfTiles;i++){
-//       std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
-//    }
-//}
 
 
-//void GameWorld::printSubSetOftiles()
-//{
-//    for (unsigned long  i=0; i <subSetOfTiles.size();i++) {
-//        int row_index,col_index;
-//        row_index =subSetOfTiles[i]->getYPos(); // modify later to tiles.
-//        col_index =subSetOfTiles[i]->getXPos();
-//        std::cout<<row_index<<" x "<<col_index<<"  index:  " <<getIndexFromCoordinates(row_index,col_index)<<std::endl;
-//    }
-//}
+
 
 
 

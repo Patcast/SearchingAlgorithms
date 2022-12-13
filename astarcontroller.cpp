@@ -4,9 +4,10 @@
 
 AStarController::AStarController()
 {
-    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
+    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
     aStar = std::make_unique <AStar>(gameWord_ptr->getTotalRows(),gameWord_ptr->getTotalColumns());
     aStar->setGameWord_ptr(gameWord_ptr);
+    aStar->testSpecialFigures();
 }
 
 void AStarController::runDijktra(int start_index, int goal_index)

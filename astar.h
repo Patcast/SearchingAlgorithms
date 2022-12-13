@@ -22,6 +22,7 @@ public:
 
     float getHeuristicFactor() const;
 
+    void testSpecialFigures();
 private:
 
     std::shared_ptr<Node> makeNode(int index);

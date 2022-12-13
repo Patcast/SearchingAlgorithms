@@ -11,9 +11,11 @@ class GameWorld
 {
 public:
     std::unique_ptr<Protagonist> protagonist {nullptr};
-    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
-    std::vector<std::unique_ptr<Enemy>> enemies;
-    std::vector<std::unique_ptr<Tile>> healthPacks;
+    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures; //make private
+    std::vector<std::unique_ptr<Enemy>> enemies;// DELETE
+    std::vector<std::unique_ptr<Tile>> healthPacks; // DELETE
+
+
 
     ~GameWorld();// Ue to free memory of all collections.
     static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
@@ -27,6 +29,9 @@ public:
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
     std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
+
+    // TESTING
+
 
 private:
     GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
