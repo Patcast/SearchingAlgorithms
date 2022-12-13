@@ -11,17 +11,28 @@ CONFIG += c++17
 SOURCES += \
     astar.cpp \
     astarcontroller.cpp \
+    controller.cpp \
+    gamestring.cpp \
     gameworld.cpp \
+    graphicsscene.cpp \
     main.cpp \
     mainwindow.cpp \
-    node.cpp
+    node.cpp \
+    protagonistview.cpp \
+    textscene.cpp
 
 HEADERS += \
     astar.h \
     astarcontroller.h \
+    controller.h \
+    gamestring.h \
     gameworld.h \
+    graphicsscene.h \
     mainwindow.h \
-    node.h
+    node.h \
+    protagonistview.h \
+    scene.h \
+    textscene.h
 
 FORMS += \
     mainwindow.ui
@@ -39,4 +50,15 @@ INCLUDEPATH += $$PWD/sharableLib
 DEPENDPATH += $$PWD/sharableLib
 
 RESOURCES += \
-    images.qrc
+    images
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/debug/ -lworld
+
+INCLUDEPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release
+DEPENDPATH += $$PWD/../../final/build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/release
+
+win32: LIBS += -L$$PWD/../build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Release/release/ -lworld
+
+INCLUDEPATH += $$PWD/../build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Release/release
+DEPENDPATH += $$PWD/../build-world-Desktop_Qt_6_4_0_MinGW_64_bit-Release/release

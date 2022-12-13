@@ -2,13 +2,19 @@
 #define GAMEWORLD_H
 
 #include "world.h"
+#include <QVariant>
 
 #define MAX_NEIGHBORS 4
 #define NODE_DIMENSION 2
-class GameWorld        
+class GameWorld
 
 {
 public:
+    std::unique_ptr<Protagonist> protagonist {nullptr};
+    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Tile>> healthPacks;
+
     ~GameWorld();// Ue to free memory of all collections.
     static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
     static void Destroy();
@@ -35,9 +41,9 @@ private:
     void setRowsAndColumns(int newRows, int newColumns);
 
 
-    std::unique_ptr<Protagonist> protagonist {nullptr};
+//    std::unique_ptr<Protagonist> protagonist {nullptr};
     std::vector<std::unique_ptr<Tile>> tiles;
-    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+//    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
     int totalRows,totalColumns;
 
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 
+
 // TODO:
 // No need to call emplace_back, I belive that no copies are generated when moving the enemies.
 // Delete TIle Composition
@@ -27,16 +28,17 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
 
-    std::vector<std::unique_ptr<Enemy>> enemies = w.getEnemies();
-    std::vector<std::unique_ptr<Tile>> healthPacks = w.getHealthPacks();
+    enemies = w.getEnemies();
+    healthPacks = w.getHealthPacks();
     specialFigures.resize(tiles.size());
     for(unsigned long i=0; i<enemies.size();i++){
-        specialFigures[getIndexFromCoordinates(enemies[i]->getYPos(),enemies[i]->getXPos())]= (std::move(enemies[i]));
+        specialFigures[getIndexFromCoordinates(enemies[i]->getYPos(),enemies[i]->getXPos())];//= (std::move(enemies[i]));
     }
     for(unsigned long i=0; i<healthPacks.size();i++){
-        specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())]= (std::move(healthPacks[i]));
+        specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())];//= (std::move(healthPacks[i]));
     }
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
+
 }
 
 void GameWorld::Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist) //
@@ -89,6 +91,7 @@ const std::vector<std::unique_ptr<Tile> > &GameWorld::getTiles() const
 
 void GameWorld::initializeProtagonist(float startingEnergy)
 {
+    /*
     while(protagonist==nullptr){
         int x = rand()%(totalRows);
         int y = rand()%(totalRows);
@@ -101,6 +104,35 @@ void GameWorld::initializeProtagonist(float startingEnergy)
             std::cout<<"Protagonist created"<<std::endl;
         }
     }
+    */
+    bool free = true;
+    while(protagonist==nullptr){
+        free = true;
+        int x = rand()%(totalRows);
+        int y = rand()%(totalRows);
+        std::cout<<"(X,Y): "<<x<<"x"<<y<<std::endl;
+        for(std::unique_ptr<Enemy> &t:enemies){
+            if((t->getXPos()==x)&&(t->getYPos()==y)){
+                std::cout<<"same Pos"<<std::endl;
+                free = false;
+                break;
+            }
+        }
+        for(std::unique_ptr<Tile> &t:healthPacks){
+            if((t->getXPos()==x)&&(t->getYPos()==y)){
+                std::cout<<"same Pos"<<std::endl;
+                free = false;
+                break;
+            }
+        }
+        if(free){
+            protagonist= std::make_unique<Protagonist>();
+            protagonist->setEnergy(startingEnergy);
+            protagonist->setXPos(x);
+            protagonist->setYPos(y);
+            }
+        }
+
 }
 
 
@@ -141,7 +173,6 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 //        std::cout<<row_index<<" x "<<col_index<<"  index:  " <<getIndexFromCoordinates(row_index,col_index)<<std::endl;
 //    }
 //}
-
 
 
 

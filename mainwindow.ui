@@ -6,17 +6,128 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>694</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>580</y>
+      <width>501</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>500</width>
+      <height>500</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>610</y>
+      <width>501</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Please input a command...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>40</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ZoomIn</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>80</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ZoomOut</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>694</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ZoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>599</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>588</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ZoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>607</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>ZoomIn()</slot>
+  <slot>ZoomOut()</slot>
+ </slots>
 </ui>
