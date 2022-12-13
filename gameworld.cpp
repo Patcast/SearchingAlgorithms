@@ -27,7 +27,6 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
-
     std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
     std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
     specialFigures.resize(tiles.size());
@@ -42,6 +41,7 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
 
 }
+
 
 void GameWorld::Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist) //
 {
@@ -72,6 +72,11 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
     totalColumns=newColumns;
 }
 
+const std::vector<std::optional<std::unique_ptr<Tile> > > &GameWorld::getSpecialFigures() const
+{
+    return specialFigures;
+}
+
 int GameWorld::getTotalRows() const
 {
     return totalRows;
@@ -80,6 +85,27 @@ int GameWorld::getTotalRows() const
 int GameWorld::getTotalColumns() const
 {
     return totalColumns;
+}
+
+int GameWorld::moveProtagonist(int destinationIndex)
+{
+     std::cout<<"Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    if(destinationIndex<getTotalColumns()*getTotalRows()){//checks that character is not moving outside of the map.
+
+        protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);
+        if(specialFigures[destinationIndex].has_value()){
+            protagonist->setHealth(protagonist->getHealth()-getSpecialFigures()[destinationIndex]->get()->getValue());
+        }
+        protagonist->setEnergy(protagonist->getEnergy()-getTiles()[destinationIndex]->getValue());
+    }
+    std::cout<<"Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+     return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)?1:0;
+}
+
+void GameWorld::testing()
+{
+    moveProtagonist(20);
+    moveProtagonist(30);
 }
 
 

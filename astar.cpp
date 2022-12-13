@@ -17,9 +17,9 @@ AStar::AStar(int totalRows, int totalColumns) : totalRows(totalRows),
 void AStar::testSpecialFigures(){
     int numEnemies=0;
     int numHealthPacks = 0;
-    for(unsigned long i=0;i<gameWord_ptr->specialFigures.size();i++){
-        if(gameWord_ptr->specialFigures[i].has_value()){ //Check if there is a value in that index.
-            if(Enemy* enemyReference =dynamic_cast<Enemy*>(gameWord_ptr->specialFigures[i]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+    for(unsigned long i=0;i<gameWord_ptr->getSpecialFigures().size();i++){
+        if(gameWord_ptr->getSpecialFigures()[i].has_value()){ //Check if there is a value in that index.
+            if(Enemy* enemyReference =dynamic_cast<Enemy*>(gameWord_ptr->getSpecialFigures()[i]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
                 numEnemies++;
                std::cout<<"I am an enemy defeatedStatus = "<<enemyReference->getDefeated()<<std::endl;
             }
