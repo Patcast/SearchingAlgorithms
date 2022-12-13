@@ -70,6 +70,23 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
     totalColumns=newColumns;
 }
 
+int GameWorld::getTotalRows() const
+{
+    return totalRows;
+}
+
+int GameWorld::getTotalColumns() const
+{
+    return totalColumns;
+}
+
+
+
+const std::vector<std::unique_ptr<Tile> > &GameWorld::getTiles() const
+{
+    return tiles;
+}
+
 
 
 void GameWorld::initializeProtagonist(float startingEnergy)
@@ -123,42 +140,6 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 
 
-std::shared_ptr<Node> GameWorld::makeNode(int index)
-{
-    //Check if tile exists
-    int row_index,col_index;
-    try {
-        row_index =tiles[index]->getYPos(); // modify later to tiles.
-        col_index =tiles[index]->getXPos();
-        std::shared_ptr<Node> node = std::make_shared<Node>(index,tiles[index]->getValue(),getNeighbourTileIndex(row_index,col_index));
-        return node;
-    } catch (const std::exception& e) {
-        std::cout << e.what(); // information from error printed
-        return NULL;
-    }
-}
-
-
-std::vector<int> GameWorld::getNeighbourTileIndex(int row,int col)
-{
-    std::vector<int> n;
-//    std::cout<<" -----("<<row<<","<<col<<")-----"<<std::endl;
-    for(int i =0;i<MAX_NEIGHBORS;i++){
-        int nRow = row+tileOffSets[i][0];
-        int nCol = col+tileOffSets[i][1];
-
-        if(
-                (nRow<totalRows)&&
-                (nCol<totalColumns)&&
-                (nRow>=0)&&
-                (nCol>=0)
-                ){
-            n.push_back(getIndexFromCoordinates(nRow,nCol));
-//            std::cout<<" ("<<nRow<<","<<nCol<<")"<<std::endl;
-        }
-    }
-    return n;
-}
 
 //********** TESTING**************//
 

@@ -4,7 +4,8 @@
 
 #include <memory>
 #include <vector>
-class Node
+#include <QObject>
+class Node : public QObject
 {
 
 public:
@@ -20,19 +21,24 @@ public:
 
     const std::shared_ptr<Node> &getPrev_node() const;
     void setPrev_node(const std::shared_ptr<Node> &newPrev_node);
-
-    void setCostViaParent(float newCostViaParent);
-
-    float getCostViaParent() const;
+    void setCostSoFar(float costSoFarOfParent);
+    void setCostSoFarToZero();
+    float getCostSoFar() const;
     float getIncomingCost() const;
+    bool getCompleted() const;
+    void setCompleted(bool newCompleted);
+
+signals:
+    void iluminateNode();
 
 private:
 
-    std::shared_ptr<Node> prev_node;
+    std::shared_ptr<Node> prevNode{nullptr};
     int index;
     std::vector<int> neighborsIndexes;
-    float costViaParent;
+    float costSoFar;
     float incomingCost;
+    bool completed {false};
 };
 
 std::ostream & operator<<(std::ostream & os, const Node & b);
