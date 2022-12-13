@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 
+
 // TODO:
 // No need to call emplace_back, I belive that no copies are generated when moving the enemies.
 // Delete TIle Composition
@@ -87,25 +88,45 @@ int GameWorld::getTotalColumns() const
     return totalColumns;
 }
 
-int GameWorld::moveProtagonist(int destinationIndex)
+int GameWorld::moveProtagonist(NextDirection direction) //if return value is 1 -> GameOver
 {
-     std::cout<<"Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
-    if(destinationIndex<getTotalColumns()*getTotalRows()){//checks that character is not moving outside of the map.
+    int destinationIndex = getDestinationIndex(direction,protagonist->getYPos(),protagonist->getXPos());
+    if(destinationIndex>=0){//checks that character is not moving outside of the map.
+        std::cout<<"moving"<<std::endl;
 
-        protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);
+        protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
         if(specialFigures[destinationIndex].has_value()){
             protagonist->setHealth(protagonist->getHealth()-getSpecialFigures()[destinationIndex]->get()->getValue());
         }
         protagonist->setEnergy(protagonist->getEnergy()-getTiles()[destinationIndex]->getValue());
     }
-    std::cout<<"Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    std::cout<<"END Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
      return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)?1:0;
+}
+
+int GameWorld::getDestinationIndex(NextDirection direction, int row, int column){
+    int newRow =row,newCol=column;
+    switch(direction){
+        case UP:
+            --newRow;
+            break;
+        case DOWN:
+            ++newRow;
+            break;
+        case RIGHT:
+            ++newCol;
+            break;
+        case LEFT:
+            --newCol;
+            break;
+    }
+    //returns -1 if movement is outside the map.
+    return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
 }
 
 void GameWorld::testing()
 {
-    moveProtagonist(20);
-    moveProtagonist(30);
+    moveProtagonist(UP);
 }
 
 

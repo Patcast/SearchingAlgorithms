@@ -3,6 +3,7 @@
 
 #include "world.h"
 #include <QVariant>
+#include "game_config.h"
 
 #define MAX_NEIGHBORS 4
 #define NODE_DIMENSION 2
@@ -24,16 +25,17 @@ public:
 
 
     const std::vector<std::unique_ptr<Tile> > &getTiles() const;
+    const std::vector<std::optional<std::unique_ptr<Tile> > > &getSpecialFigures() const;
     int getTotalRows() const;
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
     std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
-    int moveProtagonist(int destinationIndex);
-
+    int moveProtagonist(NextDirection direction);
+    int getDestinationIndex(NextDirection direction, int row, int column);
     // TESTING
     void testing();
 
-    const std::vector<std::optional<std::unique_ptr<Tile> > > &getSpecialFigures() const;
+
 
 private:
     GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);

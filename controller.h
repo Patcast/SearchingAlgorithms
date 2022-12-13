@@ -5,6 +5,9 @@
 #include "mainwindow.h"
 #include <string>
 
+
+
+
 class Controller: public QObject
 {
 public:
@@ -15,8 +18,10 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
+
 private slots:
   void handleCommand();
+  void move(int directionOfMovement);
 
 protected:
     MainWindow *controllerWindow;

@@ -13,6 +13,7 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
 }
 
+
 void Controller::view_switch(std::string newState) {
     try {
         std::shared_ptr<Scene> destination = getView(newState);
@@ -55,6 +56,13 @@ void Controller::handleCommand() {
     ui->lineEdit->setText("");
     handleCommand(funct, &commands);
 }
+
+void Controller::move(int directionOfMovement)
+{
+
+}
+
+
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
     if (funct == "switch") {
