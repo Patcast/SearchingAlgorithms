@@ -4,7 +4,6 @@
 
 //  TODO:
 //  Add a way to visualize path found.
-//  Empty collections after use or before using.
 
 
 
@@ -14,34 +13,21 @@ AStar::AStar(int totalRows, int totalColumns) : totalRows(totalRows),
 
 }
 
-//void AStar::testSpecialFigures(){
-//    int numEnemies=0;
-//    int numHealthPacks = 0;
-//    for(unsigned long i=0;i<gameWord_ptr->getSpecialFigures().size();i++){
-//        if(gameWord_ptr->getSpecialFigures()[i].has_value()){ //Check if there is a value in that index.
-//            if(Enemy* enemyReference =dynamic_cast<Enemy*>(gameWord_ptr->getSpecialFigures()[i]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-//                numEnemies++;
-//               std::cout<<"I am an enemy defeatedStatus = "<<enemyReference->getDefeated()<<std::endl;
-//            }
-//            else {
-//                numHealthPacks++;
-//            }
-//        }
-//    }
-//    std::cout<<"Number of Enemies: "<<numEnemies<<std::endl;
-//    std::cout<<"Number of HealthPacks: "<<numHealthPacks<<std::endl;
-//}
 
 
-std::shared_ptr<Node> AStar::aStarSearch(int start_index, int goalIndex)
+
+int AStar::aStarSearch(int start_index, int goalIndex, float heuristic)
 {
 
     std::priority_queue<queuePair, std::vector<queuePair>> openQueue;
     int topIndex;
+    setHeuristicFactor(heuristic);
 
-    nodes.clear();
-//    nodes.emplace(start_index, std::make_shared<Node>(start_index,gameWord_ptr->getTiles()[start_index]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(start_index))));
-    nodes[start_index]->setCostSoFarToZero();
+    std::for_each(gameWord_ptr->getNodes().begin(), gameWord_ptr->getNodes().end(), [](const std::unique_ptr<Node>& node_ptr) {
+        node_ptr->resetNodeForSearch();
+    });
+    gameWord_ptr->getNodes()[start_index]->setCostSoFarToZero();
+
     openQueue.push(std::make_pair(0,start_index));
     std::cout << "aStar search: Start-> "<<start_index<<", Goal-> " <<goalIndex<< std::endl;
 
@@ -54,25 +40,18 @@ std::shared_ptr<Node> AStar::aStarSearch(int start_index, int goalIndex)
               std::cout << "Goal Found"<< std::endl;
               break;
         }
-        if( !nodes[topIndex]->getCompleted()){ // implies that a node with an index in the queue, must exists in nodes[].
+        if( !gameWord_ptr->getNodes()[topIndex]->getCompleted()){ // implies that a node with an index in the queue, must exists in nodes[].
+            for (int neighborIndex : gameWord_ptr->getNodes()[topIndex]->getNeighborsIndexes()) {
 
-            for (int neighborIndex : nodes[topIndex]->getNeighborsIndexes()) {
-
-                    if (nodes.find(neighborIndex) == nodes.end()) {
-//                        nodes.emplace(neighborIndex, std::make_shared<Node>(neighborIndex,gameWord_ptr->getTiles()[neighborIndex]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(neighborIndex))));
-                        updateNode(goalIndex,nodes[neighborIndex],nodes[topIndex],openQueue);
-                    }
-
-//                    else if((!nodes[neighborIndex]->getCompleted()&& nodes[topIndex]-> getCostSoFar() +nodes[neighborIndex]->getIncomingCost() < nodes[neighborIndex]->getCostSoFar()))
-                    else if((nodes[topIndex]-> getCostSoFar() +nodes[neighborIndex]->getIncomingCost() < nodes[neighborIndex]->getCostSoFar()))
-                    {
-                        updateNode(goalIndex,nodes[neighborIndex],nodes[topIndex],openQueue);
-                    }
+                if((gameWord_ptr->getNodes()[topIndex]-> getCostSoFar() +gameWord_ptr->getNodes()[neighborIndex]->getIncomingCost() <= gameWord_ptr->getNodes()[neighborIndex]->getCostSoFar()))
+                {
+                    updateNode(goalIndex,neighborIndex,topIndex,openQueue);
+                }
             }
-            nodes[topIndex]->setCompleted(true);
+            gameWord_ptr->getNodes()[topIndex]->setCompleted(true);
         }
     }
-    return nodes[topIndex];
+    return topIndex;
 }
 
 
@@ -95,17 +74,16 @@ void AStar::setHeuristicFactor(float newHeuristicFactor)
 
 
 
-void AStar::printPathFound(std::shared_ptr<Node> ptr_goal)
+void AStar::printPathFound(int goalIndex)
 {
-    std::shared_ptr<Node> current =  ptr_goal;
-    std::cout<<"Tiles opened:"<<nodes.size()<<std::endl;
-    // Goto
+
+    int nextNode = goalIndex;
     do{
 
-        std::cout << *current << std::endl;
-        current =current->getPrev_node();
+        std::cout << *gameWord_ptr->getNodes()[nextNode] << std::endl;
+        nextNode =gameWord_ptr->getNodes()[nextNode]->getPrevNodeIndex();
 
-    }while(current!=nullptr);
+    }while(nextNode!=-1);
 }
 
 
@@ -120,12 +98,11 @@ void AStar::setGameWord_ptr(GameWorld *newGameWord_ptr)
 
 
 
-void AStar::updateNode(int goalIndex,std::shared_ptr<Node> neighborNode, std::shared_ptr<Node> topNode, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
+inline void AStar::updateNode(int goalIndex,int neighborIndex, int topIndex, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
 {
-    // aStar Implementation
-    neighborNode->setCostSoFar(topNode->getCostSoFar());
-    neighborNode->setPrev_node(topNode);
-    openQueueRef.push(std::make_pair((-1)*(neighborNode->getCostSoFar()+heuristic(neighborNode->getIndex(),goalIndex)),neighborNode->getIndex()));
+    gameWord_ptr->getNodes()[neighborIndex]->setCostSoFar(gameWord_ptr->getNodes()[topIndex]->getCostSoFar());
+    gameWord_ptr->getNodes()[neighborIndex]->setPrevNodeIndex(topIndex);
+    openQueueRef.push(std::make_pair((-1)*(gameWord_ptr->getNodes()[neighborIndex]->getCostSoFar()+heuristic(gameWord_ptr->getNodes()[neighborIndex]->getIndex(),goalIndex)),gameWord_ptr->getNodes()[neighborIndex]->getIndex()));
 }
 
 

@@ -23,17 +23,18 @@ public:
 
     int getIndex() const;
 
-    const std::shared_ptr<Node> &getPrev_node() const;
-    void setPrev_node(const std::shared_ptr<Node> &newPrev_node);
     void setCostSoFar(float costSoFarOfParent);
     void setCostSoFarToZero();
     float getCostSoFar() const;
     float getIncomingCost() const;
     bool getCompleted() const;
     void setCompleted(bool newCompleted);
-
+    void resetNodeForSearch();
     const std::shared_ptr<Tile> &getSpecialFigure_ptr() const;
     void setSpecialFigure_ptr(const std::shared_ptr<Tile> &newSpecialFigure_ptr);
+
+    int getPrevNodeIndex() const;
+    void setPrevNodeIndex(int newPrevNodeIndex);
 
 signals:
     void iluminateNode();
@@ -42,8 +43,8 @@ private:
 
     inline std::vector<int> getNeighboursTileIndex();
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
-    std::pair<int, int> getCoordinatesFromIndex(){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
-    std::shared_ptr<Node> prevNode{nullptr};
+    std::pair<int, int> getCoordinates(){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
+    int prevNodeIndex {-1};
     int index;
     const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     std::vector<int> neighborsIndexes;

@@ -15,11 +15,21 @@ inline std::vector<int> Node::getNeighboursTileIndex()
 {
     std::vector<int> n;
     for(int i =0;i<MAX_NEIGHBORS;i++){
-        int nRow = getCoordinatesFromIndex().first+tileOffSets[i][0];
-        int nCol = getCoordinatesFromIndex().second+tileOffSets[i][1];
+        int nRow = getCoordinates().first+tileOffSets[i][0];
+        int nCol = getCoordinates().second+tileOffSets[i][1];
         if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
     }
     return n;
+}
+
+int Node::getPrevNodeIndex() const
+{
+    return prevNodeIndex;
+}
+
+void Node::setPrevNodeIndex(int newPrevNodeIndex)
+{
+    prevNodeIndex = newPrevNodeIndex;
 }
 
 const std::shared_ptr<Tile> &Node::getSpecialFigure_ptr() const
@@ -59,10 +69,7 @@ int Node::getIndex() const
     return index;
 }
 
-const std::shared_ptr<Node> &Node::getPrev_node() const
-{
-    return prevNode;
-}
+
 float Node::getCostSoFar() const
 {
     return costSoFar;
@@ -83,11 +90,15 @@ void Node::setCompleted(bool newCompleted)
     completed = newCompleted;
 }
 
-
-void Node::setPrev_node(const std::shared_ptr<Node> &newPrev_node)
+void Node::resetNodeForSearch()
 {
-    prevNode = newPrev_node;
+    setCostSoFar(std::numeric_limits<double>::infinity());
+    setPrevNodeIndex(-1);
+    setCompleted(false);
 }
+
+
+
 
 void Node::setCostSoFar(float costSoFarOfParent)
 {

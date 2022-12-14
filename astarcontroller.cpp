@@ -12,13 +12,12 @@ AStarController::AStarController()
 
 void AStarController::runDijktra(int start_index, int goal_index)
 {
-    float defaultHeuristic =aStar->getHeuristicFactor();
-    aStar->setHeuristicFactor(0.0);
-    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index));
-    aStar->setHeuristicFactor(defaultHeuristic);
+
+    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,0.0));
+
 }
 
-void AStarController::runAStar(int start_index, int goal_index)
+void AStarController::runAStar(int start_index, int goal_index,float heuristic)
 {
-    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index));
+    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
 }

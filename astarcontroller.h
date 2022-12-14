@@ -13,7 +13,7 @@ class AStarController
 public:
     AStarController();
     void runDijktra(int start_index, int goal_index);
-    void runAStar(int start_index, int goal_index);
+    void runAStar(int start_index, int goal_index, float heuristic);
 
 
 private:
