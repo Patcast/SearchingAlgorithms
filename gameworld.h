@@ -3,8 +3,8 @@
 
 #include "node.h"
 #include "world.h"
-#include "game_config.h"
 #include <QObject>
+#include"game_config.h"
 
 
 
@@ -13,8 +13,6 @@ class GameWorld : public QObject
 {
     Q_OBJECT
 public:
-    std::vector<std::unique_ptr<Tile>> tiles;
-    int totalRows,totalColumns;
 
     ~GameWorld();// Ue to free memory of all collections.
     static void Create(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
@@ -29,6 +27,16 @@ public:
     //return: <row,column>
     std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
 
+    Protagonist*getProtagonist() const;
+
+    const std::vector<std::shared_ptr<Tile> > &getSpecialFiguresVector() const;
+    const std::vector<std::unique_ptr<Node> > &getNodes() const;
+
+    int moveProtagonist(NextDirection direction);
+
+    void testing();
+signals:
+    void healthPackedUsed(int specialFigureIndex);
 private:
     GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;
@@ -46,6 +54,8 @@ private:
 
 
 
+    void activateSpecialFigure(int specialFigureIndex);
+    int getDestinationIndex(NextDirection direction, int row, int column);
 };
 
 #endif // GAMEWORLD_H

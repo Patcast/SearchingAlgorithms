@@ -1,4 +1,5 @@
 # include "gameworld.h"
+#include "game_config.h"
 #include "node.h"
 #include <iostream>
 
@@ -43,6 +44,9 @@ void GameWorld::createNodes(World &w)
         nodes.emplace_back(std::make_unique<Node>(i,(1-tiles[i]->getValue()),totalRows,totalColumns));
     }
 }
+
+
+
 
 Protagonist*GameWorld::getProtagonist() const
 {

@@ -80,14 +80,14 @@ void GraphicsScene::drawDeathEnemy(Enemy en){
 
 void GraphicsScene::drawProtagonist(){
     player_ptr = new ProtagonistView();
-    player_ptr->place(gameWord_ptr->getProtagonist()->getXPos() * 50, gameWord_ptr->getProtagonist()->getYPos() * 50);
+//    player_ptr->place(gameWord_ptr->getProtagonist()->getXPos() * 50, gameWord_ptr->getProtagonist()->getYPos() * 50);
     graphScene->addItem(player_ptr);
 }
 void GraphicsScene::drawTile(){
-    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
-        specialMap * e = new specialMap(t->getXPos()*50,t->getYPos()*50,t->getValue());
-        graphScene->addItem(e);
-    }
+//    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
+//        specialMap * e = new specialMap(t->getXPos()*50,t->getYPos()*50,t->getValue());
+//        graphScene->addItem(e);
+//    }
 
 }
 void GraphicsScene::drawHealthPack(){
@@ -105,30 +105,30 @@ void GraphicsScene::drawMovement(){
     // if right
     for(int y = ypos-rangeAroundPro; y<ypos+rangeAroundPro;y++ ){
         if(y >=0 && y <= rows && xpos + rangeAroundPro < columns){
-            specialMap * e = new specialMap(xpos+rangeAroundPro,y,gameWord_ptr->tiles.at(xpos+rangeAroundPro+y*columns)->getValue());
-            graphScene->addItem(e);
+//            specialMap * e = new specialMap(xpos+rangeAroundPro,y,gameWord_ptr->tiles.at(xpos+rangeAroundPro+y*columns)->getValue());
+//            graphScene->addItem(e);
         }
     }
 
     // if left
     for(int y = ypos-rangeAroundPro; y<ypos+rangeAroundPro;y++ ){
         if(y >=0 && y <= rows && xpos +rangeAroundPro < columns){
-            specialMap * e = new specialMap(xpos-rangeAroundPro,y,gameWord_ptr->tiles.at(xpos-rangeAroundPro+y*columns)->getValue());
-            graphScene->addItem(e);
+//            specialMap * e = new specialMap(xpos-rangeAroundPro,y,gameWord_ptr->tiles.at(xpos-rangeAroundPro+y*columns)->getValue());
+//            graphScene->addItem(e);
         }
     }
     // if up
     for(int x = xpos-rangeAroundPro; x<ypos+rangeAroundPro;x++ ){
         if(x >=0 && x <= columns && ypos-rangeAroundPro > 0){
-            specialMap * e = new specialMap(x,ypos-rangeAroundPro,gameWord_ptr->tiles.at(x+ypos-rangeAroundPro*columns)->getValue());
-            graphScene->addItem(e);
+//            specialMap * e = new specialMap(x,ypos-rangeAroundPro,gameWord_ptr->tiles.at(x+ypos-rangeAroundPro*columns)->getValue());
+//            graphScene->addItem(e);
         }
     }
     // if down
     for(int x = xpos-rangeAroundPro; x<ypos+rangeAroundPro;x++ ){
         if(x >=0 && x <= columns && ypos-rangeAroundPro > 0){
-            specialMap * e = new specialMap(x,ypos+rangeAroundPro,gameWord_ptr->tiles.at(x+ypos-rangeAroundPro*columns)->getValue());
-            graphScene->addItem(e);
+//            specialMap * e = new specialMap(x,ypos+rangeAroundPro,gameWord_ptr->tiles.at(x+ypos-rangeAroundPro*columns)->getValue());
+//            graphScene->addItem(e);
         }
     }
 }
