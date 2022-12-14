@@ -34,7 +34,6 @@ private:
     GameWorld* gameWord_ptr;
     int totalRows,totalColumns;
     std::unordered_map<int,std::shared_ptr<Node>> nodes;
-    const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     float heuristicFactor{0.2}; //shortest path can only be found if the heuristic is admisable. i.e. meaning it never overstimates the remaining distance.
 };
 

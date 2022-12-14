@@ -1,60 +1,60 @@
 #ifndef GAMEWORLD_H
 #define GAMEWORLD_H
 
+#include "node.h"
 #include "world.h"
-#include <QVariant>
 #include "game_config.h"
+#include <QObject>
 
-#define MAX_NEIGHBORS 4
-#define NODE_DIMENSION 2
 
-class GameWorld
+
+
+class GameWorld : public QObject
 {
+    Q_OBJECT
 public:
-    std::unique_ptr<Protagonist> protagonist {nullptr}; //Make private
-    std::vector<std::unique_ptr<Enemy>> enemies;// DELETE
-    std::vector<std::unique_ptr<Tile>> healthPacks; // DELETE
-
-
 
     ~GameWorld();// Ue to free memory of all collections.
-    static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    static void Create(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     static void Destroy();
-    static GameWorld * Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    static GameWorld * Instance(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
 
 
 
-    const std::vector<std::unique_ptr<Tile> > &getTiles() const;
-    const std::vector<std::optional<std::unique_ptr<Tile> > > &getSpecialFigures() const;
     int getTotalRows() const;
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
-    std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
+    //return: <row,column>
+    std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
+    //return: 1 if game is over or 0 is game continues
     int moveProtagonist(NextDirection direction);
+    void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);
+    const std::vector<std::unique_ptr<Node> > &getNodes() const;
+    const std::vector<std::shared_ptr<Tile> > &getSpecialFiguresVector() const;
+    Protagonist*getProtagonist() const;
     // TESTING
     void testing();
 
 signals:
-
-    void healthPackedUsed();
+    void healthPackedUsed(int specialFigureIndex);
 
 
 
 
 private:
-    GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
+    GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;
     void initializeProtagonist(float startingEnergy);
     void setRowsAndColumns(int newRows, int newColumns);
-    int activateSpecialFigure(int specialFigureIndex);
+    void loadEnemies(World &world);
+    void createNodes(World &w);
+    std::vector<int> getNeighboursTileIndex(int row, int col);
+    std::unique_ptr<Protagonist> protagonist {nullptr};
+    std::vector<std::shared_ptr<Tile>> specialFiguresVector;
+    std::vector<std::unique_ptr<Node>> nodes;
 
-    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures; //make private
 
-
-//    std::unique_ptr<Protagonist> protagonist {nullptr};
-    std::vector<std::unique_ptr<Tile>> tiles;
-//    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
     int totalRows,totalColumns;
     bool gameOver{false};
 

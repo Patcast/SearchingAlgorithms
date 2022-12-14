@@ -14,23 +14,23 @@ AStar::AStar(int totalRows, int totalColumns) : totalRows(totalRows),
 
 }
 
-void AStar::testSpecialFigures(){
-    int numEnemies=0;
-    int numHealthPacks = 0;
-    for(unsigned long i=0;i<gameWord_ptr->getSpecialFigures().size();i++){
-        if(gameWord_ptr->getSpecialFigures()[i].has_value()){ //Check if there is a value in that index.
-            if(Enemy* enemyReference =dynamic_cast<Enemy*>(gameWord_ptr->getSpecialFigures()[i]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-                numEnemies++;
-               std::cout<<"I am an enemy defeatedStatus = "<<enemyReference->getDefeated()<<std::endl;
-            }
-            else {
-                numHealthPacks++;
-            }
-        }
-    }
-    std::cout<<"Number of Enemies: "<<numEnemies<<std::endl;
-    std::cout<<"Number of HealthPacks: "<<numHealthPacks<<std::endl;
-}
+//void AStar::testSpecialFigures(){
+//    int numEnemies=0;
+//    int numHealthPacks = 0;
+//    for(unsigned long i=0;i<gameWord_ptr->getSpecialFigures().size();i++){
+//        if(gameWord_ptr->getSpecialFigures()[i].has_value()){ //Check if there is a value in that index.
+//            if(Enemy* enemyReference =dynamic_cast<Enemy*>(gameWord_ptr->getSpecialFigures()[i]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+//                numEnemies++;
+//               std::cout<<"I am an enemy defeatedStatus = "<<enemyReference->getDefeated()<<std::endl;
+//            }
+//            else {
+//                numHealthPacks++;
+//            }
+//        }
+//    }
+//    std::cout<<"Number of Enemies: "<<numEnemies<<std::endl;
+//    std::cout<<"Number of HealthPacks: "<<numHealthPacks<<std::endl;
+//}
 
 
 std::shared_ptr<Node> AStar::aStarSearch(int start_index, int goalIndex)
@@ -40,7 +40,7 @@ std::shared_ptr<Node> AStar::aStarSearch(int start_index, int goalIndex)
     int topIndex;
 
     nodes.clear();
-    nodes.emplace(start_index, std::make_shared<Node>(start_index,gameWord_ptr->getTiles()[start_index]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(start_index))));
+//    nodes.emplace(start_index, std::make_shared<Node>(start_index,gameWord_ptr->getTiles()[start_index]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(start_index))));
     nodes[start_index]->setCostSoFarToZero();
     openQueue.push(std::make_pair(0,start_index));
     std::cout << "aStar search: Start-> "<<start_index<<", Goal-> " <<goalIndex<< std::endl;
@@ -59,7 +59,7 @@ std::shared_ptr<Node> AStar::aStarSearch(int start_index, int goalIndex)
             for (int neighborIndex : nodes[topIndex]->getNeighborsIndexes()) {
 
                     if (nodes.find(neighborIndex) == nodes.end()) {
-                        nodes.emplace(neighborIndex, std::make_shared<Node>(neighborIndex,gameWord_ptr->getTiles()[neighborIndex]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(neighborIndex))));
+//                        nodes.emplace(neighborIndex, std::make_shared<Node>(neighborIndex,gameWord_ptr->getTiles()[neighborIndex]->getValue(),getNeighboursTileIndex(gameWord_ptr->getCoordinatesFromIndex(neighborIndex))));
                         updateNode(goalIndex,nodes[neighborIndex],nodes[topIndex],openQueue);
                     }
 
@@ -118,22 +118,7 @@ void AStar::setGameWord_ptr(GameWorld *newGameWord_ptr)
 
 
 
-std::vector<int> AStar::getNeighboursTileIndex( std::pair<int, int> coordinates)
-{
-    std::vector<int> n;
-    for(int i =0;i<MAX_NEIGHBORS;i++){
-        int nRow = coordinates.first+tileOffSets[i][0];
-        int nCol = coordinates.second+tileOffSets[i][1];
-        if(
-                (nRow<totalRows)&&
-                (nCol<totalColumns)&&
-                (nRow>=0)&&
-                (nCol>=0)
-                ){
-            n.push_back(gameWord_ptr->getIndexFromCoordinates(nRow,nCol));        }
-    }
-    return n;
-}
+
 
 void AStar::updateNode(int goalIndex,std::shared_ptr<Node> neighborNode, std::shared_ptr<Node> topNode, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
 {
