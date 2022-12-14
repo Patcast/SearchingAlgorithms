@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include "commands.h"
 #include "scene.h"
 #include "mainwindow.h"
 #include <string>
@@ -15,6 +16,15 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
+    Commands commandsProcessor = Commands();
+
+signals:
+    void playerMoveLeft();
+    void playerMoveRight();
+    void playerMoveUp();
+    void playerMoveDown();
+    void playerMove(int x, int y);
+
 private slots:
   void handleCommand();
 
