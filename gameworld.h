@@ -14,6 +14,8 @@ public:
     std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Tile>> healthPacks;
+    std::vector<std::unique_ptr<Tile>> tiles;
+    int totalRows,totalColumns;
 
     ~GameWorld();// Ue to free memory of all collections.
     static void Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist);
@@ -36,9 +38,14 @@ private:
 
 
 //    std::unique_ptr<Protagonist> protagonist {nullptr};
-    std::vector<std::unique_ptr<Tile>> tiles;
+//    std::vector<std::unique_ptr<Tile>> tiles;
 //    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
+<<<<<<< Updated upstream
     int totalRows,totalColumns;
+=======
+//    int totalRows,totalColumns;
+    const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+>>>>>>> Stashed changes
 
 
 

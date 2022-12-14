@@ -10,6 +10,15 @@ class GraphicsScene : public Scene
 public:
     GraphicsScene();
     QGraphicsScene *graphScene;
+//    std::vector<std::unique_ptr<Tile>> tiles;
+
+
+    int xpos;
+    int ypos;
+    int rangeAroundPro;
+
+    int rows;
+    int columns;
 
     void drawEnemy();
     void drawProtagonist();
@@ -17,6 +26,8 @@ public:
     void drawHealthPack();
     void drawMovement();
     void drawDeathEnemy(Enemy en);
+    int stepsize = 25;
+
 
 public slots:
     void zoomIn();

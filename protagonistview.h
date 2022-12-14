@@ -10,10 +10,10 @@ class ProtagonistView: public QGraphicsPixmapItem
 {
 public:
 
-    void place(int x, int y);
+    void place(int x, int y,int size);
     int xPos;
     int yPos;
-    int StepSize = 50;
+    int StepSize = 5;
     void defeated();
 };
 

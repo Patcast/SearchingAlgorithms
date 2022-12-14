@@ -19,6 +19,7 @@ SOURCES += \
     mainwindow.cpp \
     node.cpp \
     protagonistview.cpp \
+    specialmap.cpp \
     textscene.cpp
 
 HEADERS += \
@@ -32,6 +33,7 @@ HEADERS += \
     node.h \
     protagonistview.h \
     scene.h \
+    specialmap.h \
     textscene.h
 
 FORMS += \
