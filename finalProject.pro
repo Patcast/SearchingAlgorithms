@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     astar.cpp \
     astarcontroller.cpp \
+    commands.cpp \
     controller.cpp \
     gamestring.cpp \
     gameworld.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 HEADERS += \
     astar.h \
     astarcontroller.h \
+    commands.h \
     controller.h \
     gamestring.h \
     gameworld.h \
