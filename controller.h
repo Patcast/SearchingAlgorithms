@@ -5,6 +5,9 @@
 #include "scene.h"
 #include "mainwindow.h"
 #include <string>
+#include "game_config.h"
+
+
 
 class Controller: public QObject
 {
@@ -16,8 +19,8 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
-    Commands commandsProcessor = Commands();
 
+    Commands commandsProcessor = Commands();
 signals:
     void playerMoveLeft();
     void playerMoveRight();
@@ -27,11 +30,13 @@ signals:
 
 private slots:
   void handleCommand();
+  void move(NextDirection directionOfMovement);
 
 protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
+    GameWorld* gameWord_ptr;
 };
 
 #endif // CONTROLLER_H

@@ -9,9 +9,10 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     this->addView(primaryScene);
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
-
+    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
 }
+
 
 void Controller::view_switch(std::string newState) {
     try {
@@ -55,6 +56,14 @@ void Controller::handleCommand() {
     ui->lineEdit->setText("");
     handleCommand(funct, &commands);
 }
+
+void Controller::move(NextDirection directionOfMovement)
+{
+    gameWord_ptr->moveProtagonist(directionOfMovement);
+    //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
+}
+
+
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
     baseCommand result;

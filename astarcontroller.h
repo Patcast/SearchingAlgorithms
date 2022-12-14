@@ -15,6 +15,7 @@ public:
     void runDijktra(int start_index, int goal_index);
     void runAStar(int start_index, int goal_index);
 
+
 private:
     GameWorld* gameWord_ptr;
     std::unique_ptr<AStar> aStar;

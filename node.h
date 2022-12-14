@@ -2,14 +2,18 @@
 #define NODE_H
 
 
+#include "world.h"
 #include <memory>
 #include <vector>
 #include <QObject>
+
+#define MAX_NEIGHBORS 4
+#define NODE_DIMENSION 2
 class Node : public QObject
 {
 
 public:
-    Node( int newIndex,float incomingCost, std::vector<int> newNeighborsIndexes);
+    Node(int newIndex, float incomingCost, int totalRows, int totalColumns);
 
 
     std::string showNode() const;
@@ -28,17 +32,26 @@ public:
     bool getCompleted() const;
     void setCompleted(bool newCompleted);
 
+    const std::shared_ptr<Tile> &getSpecialFigure_ptr() const;
+    void setSpecialFigure_ptr(const std::shared_ptr<Tile> &newSpecialFigure_ptr);
+
 signals:
     void iluminateNode();
 
 private:
+    inline std::vector<int> getNeighboursTileIndex(int index, int totalRows, int totalColumns);
+    int getIndexFromCoordinates(const int row_index, const int col_index, const int totalColumns ){return totalColumns*row_index +col_index;};
+    std::pair<int, int> getCoordinatesFromIndex(int index, int totalColumns){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
 
     std::shared_ptr<Node> prevNode{nullptr};
     int index;
+    const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
     std::vector<int> neighborsIndexes;
     float costSoFar;
     float incomingCost;
     bool completed {false};
+    std::shared_ptr<Tile> specialFigure_ptr {nullptr};
 };
 
 std::ostream & operator<<(std::ostream & os, const Node & b);

@@ -28,6 +28,7 @@ HEADERS += \
     astarcontroller.h \
     commands.h \
     controller.h \
+    game_config.h \
     gamestring.h \
     gameworld.h \
     graphicsscene.h \

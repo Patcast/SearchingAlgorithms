@@ -1,47 +1,69 @@
 # include "gameworld.h"
+#include "node.h"
 #include <iostream>
-#include <cstdlib>
-
-
-// TODO:
-// No need to call emplace_back, I belive that no copies are generated when moving the enemies.
-// Delete TIle Composition
-// Make gameworld an instance and also the protagonist.
-// Check random method to initialize protagonist
-// Can I use variant for the special characters.
-// Check for valid index, can be improved.
-// Double check that enemies and hp are placed correctly.
-// Maybe I can define my own hashing to use the un_ordered_set without an auxiliary colletion of indexes.
-
-
-
 
 
 GameWorld::~GameWorld()
 {
-
+    //Should clean up memory.
 }
-GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
+GameWorld::GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
     setRowsAndColumns(w.getRows(),w.getCols());
-    tiles= w.getTiles();
-
-    enemies = w.getEnemies();
-    healthPacks = w.getHealthPacks();
-    specialFigures.resize(tiles.size());
-    for(unsigned long i=0; i<enemies.size();i++){
-        specialFigures[getIndexFromCoordinates(enemies[i]->getYPos(),enemies[i]->getXPos())];//= (std::move(enemies[i]));
-    }
-    for(unsigned long i=0; i<healthPacks.size();i++){
-        specialFigures[getIndexFromCoordinates(healthPacks[i]->getYPos(),healthPacks[i]->getXPos())];//= (std::move(healthPacks[i]));
-    }
+    createNodes(w);
+    loadEnemies(w);
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
-
 }
 
-void GameWorld::Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist) //
+
+void GameWorld::loadEnemies(World &w)
+{
+    std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
+    std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
+    for(unsigned long i=0; i<enemiesList.size();i++){   
+        int index =getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos());
+        specialFiguresVector.push_back(std::move(enemiesList[i]));
+        nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+//        std::cout<<nodes[index]->getIndex()<<"|| "<<getIndexFromCoordinates(nodes[index]->getSpecialFigure_ptr()->getYPos(),nodes[index]->getSpecialFigure_ptr()->getXPos())<<std::endl;
+    }
+    for(unsigned long i=0; i<healthPacksList.size();i++){
+        int index = getIndexFromCoordinates(healthPacksList[i]->getYPos(),healthPacksList[i]->getXPos());
+        specialFiguresVector.push_back(std::move(healthPacksList[i]));
+        nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+    }
+}
+
+void GameWorld::createNodes(World &w)
+{
+    std::vector<std::unique_ptr<Tile>> tiles= w.getTiles();
+    nodes.reserve(tiles.size());
+    for(unsigned long i=0; i<tiles.size();i++){
+        nodes.emplace_back(std::make_unique<Node>(i,(1-tiles[i]->getValue()),totalRows,totalColumns));
+    }
+}
+
+Protagonist*GameWorld::getProtagonist() const
+{
+    return protagonist.get();
+}
+
+const std::vector<std::shared_ptr<Tile> > &GameWorld::getSpecialFiguresVector() const
+{
+    return specialFiguresVector;
+}
+
+const std::vector<std::unique_ptr<Node> > &GameWorld::getNodes() const
+{
+    return nodes;
+}
+
+
+
+
+
+void GameWorld::Create(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist) //
 {
     if(instance != 0)
         return;
@@ -54,7 +76,7 @@ void GameWorld::Destroy()
     instance = 0;
 }
 
-GameWorld *GameWorld::Instance(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist)
+GameWorld *GameWorld::Instance(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
 {
     GameWorld::Create(pathToMap,  nrEnemies,  nrHeatlhPacks,  startingEnergyProtagonist);
     return instance;
@@ -70,6 +92,8 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
     totalColumns=newColumns;
 }
 
+
+
 int GameWorld::getTotalRows() const
 {
     return totalRows;
@@ -80,59 +104,74 @@ int GameWorld::getTotalColumns() const
     return totalColumns;
 }
 
-
-
-const std::vector<std::unique_ptr<Tile> > &GameWorld::getTiles() const
+int GameWorld::moveProtagonist(NextDirection direction)
 {
-    return tiles;
+
+    int destinationIndex = getDestinationIndex(direction,protagonist->getYPos(),protagonist->getXPos());
+    if(destinationIndex>=0){//checks that character is not moving outside of the map.
+        std::cout<<"moving"<<std::endl;
+        protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
+        if(specialFiguresVector[destinationIndex]!=nullptr){
+            activateSpecialFigure(destinationIndex);
+        }
+        protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
+    }
+    std::cout<<"END Protagonist (health energy || row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<"||"<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? 0:1;
 }
 
+void GameWorld::activateSpecialFigure(int specialFigureIndex){
+    protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+    nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.0);
+    if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+       emit enemyReference->dead();
+    }
+    else {
+        emit healthPackedUsed(specialFigureIndex) ;
+    }
+}
+
+
+
+int GameWorld::getDestinationIndex(NextDirection direction, int row, int column){
+    int newRow =row,newCol=column;
+    switch(direction){
+        case UP:
+            --newRow;
+            break;
+        case DOWN:
+            ++newRow;
+            break;
+        case RIGHT:
+            ++newCol;
+            break;
+        case LEFT:
+            --newCol;
+            break;
+    }
+    //returns -1 if movement is outside the map.
+    return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
+}
+
+void GameWorld::testing()
+{
+    moveProtagonist(UP);
+}
 
 
 void GameWorld::initializeProtagonist(float startingEnergy)
 {
-    /*
     while(protagonist==nullptr){
-        int x = rand()%(totalRows);
-        int y = rand()%(totalRows);
-        std::cout<<"(X,Y): "<<x<<"x"<<y<<std::endl;
-        if(!specialFigures[getIndexFromCoordinates(x,y)].has_value()){
+        int index = rand()%(totalRows*totalColumns);
+        if(!(nodes[index]->getSpecialFigure_ptr()==nullptr)&& nodes[index]->getIncomingCost()<10){
             protagonist= std::make_unique<Protagonist>();
             protagonist->setEnergy(startingEnergy);
-            protagonist->setXPos(x);
-            protagonist->setYPos(y);
-            std::cout<<"Protagonist created"<<std::endl;
+            std::pair<int,int> coordinatesProtagonist= getCoordinatesFromIndex(index);
+            protagonist->setYPos(coordinatesProtagonist.first);
+            protagonist->setXPos(coordinatesProtagonist.second);
+            std::cout<<"Protagonist("<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")created at Index:"<<index<<std::endl;
         }
     }
-    */
-    bool free = true;
-    while(protagonist==nullptr){
-        free = true;
-        int x = rand()%(totalRows);
-        int y = rand()%(totalRows);
-        std::cout<<"(X,Y): "<<x<<"x"<<y<<std::endl;
-        for(std::unique_ptr<Enemy> &t:enemies){
-            if((t->getXPos()==x)&&(t->getYPos()==y)){
-                std::cout<<"same Pos"<<std::endl;
-                free = false;
-                break;
-            }
-        }
-        for(std::unique_ptr<Tile> &t:healthPacks){
-            if((t->getXPos()==x)&&(t->getYPos()==y)){
-                std::cout<<"same Pos"<<std::endl;
-                free = false;
-                break;
-            }
-        }
-        if(free){
-            protagonist= std::make_unique<Protagonist>();
-            protagonist->setEnergy(startingEnergy);
-            protagonist->setXPos(x);
-            protagonist->setYPos(y);
-            }
-        }
-
 }
 
 
@@ -141,38 +180,9 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 
 
-//********** TESTING**************//
-
-//void GameWorld::makeSubsetOfTiles(int rows, int columns)
-//{
-//    std::cout<<"----------- "<<std::endl;
-
-//    for(int i =0 ; i<rows;i++){
-//        for(int j =0 ; j<columns;j++){
-//            subSetOfTiles.push_back(std::move(tiles[getIndexFromCoordinates(i,j)]));
-//        }
-//    }
-//    setRowsAndColumns(rows,columns);
-//    std::cout<<"rows "<<rows<<" cols "<<columns<<std::endl;
-//}
-//void GameWorld::printTiles(int nrOfTiles)
-//{
-//   std::cout<<"(x,y)"<<std::endl;
-//    for(int i =0;i<nrOfTiles;i++){
-//       std::cout<<" ("<<tiles[i]->getYPos()<<","<<tiles[i]->getXPos()<<")"<<std::endl;
-//    }
-//}
 
 
-//void GameWorld::printSubSetOftiles()
-//{
-//    for (unsigned long  i=0; i <subSetOfTiles.size();i++) {
-//        int row_index,col_index;
-//        row_index =subSetOfTiles[i]->getYPos(); // modify later to tiles.
-//        col_index =subSetOfTiles[i]->getXPos();
-//        std::cout<<row_index<<" x "<<col_index<<"  index:  " <<getIndexFromCoordinates(row_index,col_index)<<std::endl;
-//    }
-//}
+
 
 
 
