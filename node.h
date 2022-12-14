@@ -39,19 +39,19 @@ signals:
     void iluminateNode();
 
 private:
-    inline std::vector<int> getNeighboursTileIndex(int index, int totalRows, int totalColumns);
-    int getIndexFromCoordinates(const int row_index, const int col_index, const int totalColumns ){return totalColumns*row_index +col_index;};
-    std::pair<int, int> getCoordinatesFromIndex(int index, int totalColumns){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
 
+    inline std::vector<int> getNeighboursTileIndex();
+    int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
+    std::pair<int, int> getCoordinatesFromIndex(){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
     std::shared_ptr<Node> prevNode{nullptr};
     int index;
     const int tileOffSets [MAX_NEIGHBORS][NODE_DIMENSION] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
     std::vector<int> neighborsIndexes;
     float costSoFar;
     float incomingCost;
     bool completed {false};
     std::shared_ptr<Tile> specialFigure_ptr {nullptr};
+    int totalRows, totalColumns;
 };
 
 std::ostream & operator<<(std::ostream & os, const Node & b);

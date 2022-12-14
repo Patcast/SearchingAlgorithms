@@ -6,18 +6,18 @@
 
 
 Node::Node(int newIndex, float newIncomingCost,int totalRows, int totalColumns):
-    index{newIndex},incomingCost{newIncomingCost}
+    index{newIndex},incomingCost{newIncomingCost},totalRows{totalRows},totalColumns{totalColumns}
 {
-   neighborsIndexes= getNeighboursTileIndex( newIndex, totalRows,totalColumns);
+   neighborsIndexes= getNeighboursTileIndex();
 }
 
-inline std::vector<int> Node::getNeighboursTileIndex( int index,int totalRows, int totalColumns)
+inline std::vector<int> Node::getNeighboursTileIndex()
 {
     std::vector<int> n;
     for(int i =0;i<MAX_NEIGHBORS;i++){
-        int nRow = getCoordinatesFromIndex(index,totalColumns).first+tileOffSets[i][0];
-        int nCol = getCoordinatesFromIndex(index,totalColumns).second+tileOffSets[i][1];
-        if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol,totalColumns));
+        int nRow = getCoordinatesFromIndex().first+tileOffSets[i][0];
+        int nCol = getCoordinatesFromIndex().second+tileOffSets[i][1];
+        if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
     }
     return n;
 }
