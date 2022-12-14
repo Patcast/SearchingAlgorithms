@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "mainwindow.h"
 #include <string>
+#include "game_config.h"
 
 
 
@@ -21,12 +22,13 @@ public:
 
 private slots:
   void handleCommand();
-  void move(int directionOfMovement);
+  void move(NextDirection directionOfMovement);
 
 protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
+    GameWorld* gameWord_ptr;
 };
 
 #endif // CONTROLLER_H

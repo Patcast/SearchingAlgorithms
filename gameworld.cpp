@@ -28,21 +28,19 @@ GameWorld::GameWorld(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float 
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
     setRowsAndColumns(w.getRows(),w.getCols());
     tiles= w.getTiles();
-    std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
-    std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
-    specialFigures.resize(tiles.size());
 
+    specialFigures.resize(tiles.size());
+    std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
     for(unsigned long i=0; i<enemiesList.size();i++){
         specialFigures[getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos())]= (std::move(enemiesList[i]));
     }
+    std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
     for(unsigned long i=0; i<healthPacksList.size();i++){
         specialFigures[getIndexFromCoordinates(healthPacksList[i]->getYPos(),healthPacksList[i]->getXPos())] = (std::move(healthPacksList[i]));
     }
 
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
-
 }
-
 
 void GameWorld::Create(QString pathToMap, int nrEnemies, int nrHeatlhPacks, float startingEnergyProtagonist) //
 {
@@ -88,20 +86,32 @@ int GameWorld::getTotalColumns() const
     return totalColumns;
 }
 
-int GameWorld::moveProtagonist(NextDirection direction) //if return value is 1 -> GameOver
+int GameWorld::moveProtagonist(NextDirection direction) //if return value is -1 -> GameOver, Otherwise, indexOfHealthpack or zero.
 {
+    int succesOperation =0;
     int destinationIndex = getDestinationIndex(direction,protagonist->getYPos(),protagonist->getXPos());
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
         std::cout<<"moving"<<std::endl;
-
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
         if(specialFigures[destinationIndex].has_value()){
-            protagonist->setHealth(protagonist->getHealth()-getSpecialFigures()[destinationIndex]->get()->getValue());
+            succesOperation=activateSpecialFigure(destinationIndex);
         }
         protagonist->setEnergy(protagonist->getEnergy()-getTiles()[destinationIndex]->getValue());
     }
-    std::cout<<"END Protagonist (health energy row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<","<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
-     return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)?1:0;
+    std::cout<<"END Protagonist (health energy || row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<"||"<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? succesOperation:-1;
+}
+
+int GameWorld::activateSpecialFigure(int specialFigureIndex){
+    protagonist->setHealth(protagonist->getHealth()-getSpecialFigures()[specialFigureIndex]->get()->getValue());
+    getSpecialFigures()[specialFigureIndex]->get()->setValue(0.0);
+    if(Enemy* enemyReference =dynamic_cast<Enemy*>(getSpecialFigures()[specialFigureIndex]->get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+       emit enemyReference->dead();
+        return 0;
+    }
+    else {
+       return specialFigureIndex;
+    }
 }
 
 int GameWorld::getDestinationIndex(NextDirection direction, int row, int column){

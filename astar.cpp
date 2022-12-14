@@ -99,7 +99,7 @@ void AStar::printPathFound(std::shared_ptr<Node> ptr_goal)
 {
     std::shared_ptr<Node> current =  ptr_goal;
     std::cout<<"Tiles opened:"<<nodes.size()<<std::endl;
-
+    // Goto
     do{
 
         std::cout << *current << std::endl;

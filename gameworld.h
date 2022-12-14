@@ -7,8 +7,8 @@
 
 #define MAX_NEIGHBORS 4
 #define NODE_DIMENSION 2
-class GameWorld
 
+class GameWorld
 {
 public:
     std::unique_ptr<Protagonist> protagonist {nullptr}; //Make private
@@ -29,11 +29,16 @@ public:
     int getTotalRows() const;
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
-    std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
+    std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};//returns <row,column>
     int moveProtagonist(NextDirection direction);
     int getDestinationIndex(NextDirection direction, int row, int column);
     // TESTING
     void testing();
+
+signals:
+
+    void healthPackedUsed();
+
 
 
 
@@ -42,6 +47,8 @@ private:
     static GameWorld* instance;
     void initializeProtagonist(float startingEnergy);
     void setRowsAndColumns(int newRows, int newColumns);
+    int activateSpecialFigure(int specialFigureIndex);
+
     std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures; //make private
 
 
@@ -50,7 +57,6 @@ private:
 //    std::vector<std::optional<std::unique_ptr<Tile>>> specialFigures;
     int totalRows,totalColumns;
     bool gameOver{false};
-
 
 
 
