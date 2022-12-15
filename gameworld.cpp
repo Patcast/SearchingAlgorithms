@@ -11,7 +11,7 @@ GameWorld::~GameWorld()
 GameWorld::GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
-    w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks);
+    w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks,0.5);
     setRowsAndColumns(w.getRows(),w.getCols());
     createNodes(w);
     loadEnemies(w);
@@ -23,16 +23,17 @@ void GameWorld::loadEnemies(World &w)
 {
     std::vector<std::unique_ptr<Enemy>> enemiesList = w.getEnemies();
     std::vector<std::unique_ptr<Tile>> healthPacksList = w.getHealthPacks();
-    for(unsigned long i=0; i<enemiesList.size();i++){   
+    for(unsigned long i=0; i<enemiesList.size();i++){
         int index =getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos());
         specialFiguresVector.push_back(std::move(enemiesList[i]));
         nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
-//        std::cout<<nodes[index]->getIndex()<<"|| "<<getIndexFromCoordinates(nodes[index]->getSpecialFigure_ptr()->getYPos(),nodes[index]->getSpecialFigure_ptr()->getXPos())<<std::endl;
+//        std::cout<<"Enemy: (value, x , y)"<<nodes[index]->getSpecialFigure_ptr()->getValue()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getXPos()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getYPos()<<std::endl;
     }
     for(unsigned long i=0; i<healthPacksList.size();i++){
         int index = getIndexFromCoordinates(healthPacksList[i]->getYPos(),healthPacksList[i]->getXPos());
         specialFiguresVector.push_back(std::move(healthPacksList[i]));
         nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+//        std::cout<<"HP: (value, x , y)"<<nodes[index]->getSpecialFigure_ptr()->getValue()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getXPos()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getYPos()<<std::endl;
     }
 }
 
@@ -159,7 +160,9 @@ int GameWorld::getDestinationIndex(NextDirection direction, int row, int column)
 
 void GameWorld::testing()
 {
-    moveProtagonist(UP);
+//        nodes[155]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
+//        nodes[185]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
+//        nodes[215]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
 }
 
 
