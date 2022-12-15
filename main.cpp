@@ -9,10 +9,9 @@ int main()
 {
 
 
-//    GameWorld * gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
 
     AStarController aStarController;
-    aStarController.runAStar(180,102,0.2);
+    aStarController.runAStar(0,5000001,0.2);
 
 
 
