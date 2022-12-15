@@ -22,7 +22,7 @@ public:
     const std::vector<int> &getNeighborsIndexes() const;
 
     int getIndex() const;
-
+    //adds 10 units to th cost if the tile has an special figure.
     void setCostSoFar(float costSoFarOfParent);
     void setCostSoFarToZero();
     float getCostSoFar() const;

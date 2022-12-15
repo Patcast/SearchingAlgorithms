@@ -101,6 +101,7 @@ void AStar::setGameWord_ptr(GameWorld *newGameWord_ptr)
 inline void AStar::updateNode(int goalIndex,int neighborIndex, int topIndex, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
 {
     gameWord_ptr->getNodes()[neighborIndex]->setCostSoFar(gameWord_ptr->getNodes()[topIndex]->getCostSoFar());
+
     gameWord_ptr->getNodes()[neighborIndex]->setPrevNodeIndex(topIndex);
     openQueueRef.push(std::make_pair((-1)*(gameWord_ptr->getNodes()[neighborIndex]->getCostSoFar()+heuristic(gameWord_ptr->getNodes()[neighborIndex]->getIndex(),goalIndex)),gameWord_ptr->getNodes()[neighborIndex]->getIndex()));
 }

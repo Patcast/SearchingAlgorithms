@@ -102,7 +102,8 @@ void Node::resetNodeForSearch()
 
 void Node::setCostSoFar(float costSoFarOfParent)
 {
-    costSoFar = costSoFarOfParent+incomingCost;
+    if(specialFigure_ptr==nullptr) costSoFar = costSoFarOfParent+incomingCost;
+    else costSoFar = costSoFarOfParent+incomingCost+10;
 }
 
 void Node::setCostSoFarToZero()

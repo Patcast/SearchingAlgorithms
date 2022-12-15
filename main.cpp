@@ -11,9 +11,6 @@ int main()
 
 
     AStarController aStarController;
-    aStarController.runAStar(0,5000001,0.2);
-
-
-
+    aStarController.runAStar(180,192,0.2);
     return 0;
 }
