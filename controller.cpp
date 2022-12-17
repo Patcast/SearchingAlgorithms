@@ -10,6 +10,9 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
+    window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
+    window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
+    window->connect(ui->pushButton_2, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton2));
 }
 
 
@@ -56,13 +59,27 @@ void Controller::handleCommand() {
     handleCommand(funct, &commands);
 }
 
+void Controller::updateHE(){
+    this->controllerWindow->ui->EnergyBar->setValue(gameWord_ptr->protagonist->getEnergy());
+    this->controllerWindow->ui->HealthBar->setValue(gameWord_ptr->protagonist->getHealth());
+}
+
 void Controller::move(NextDirection directionOfMovement)
 {
     gameWord_ptr->moveProtagonist(directionOfMovement);
+    updateHE();
     //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
 }
 
+void Controller::pushButton()
+{
+    this->sceneCollection.data()->get()->zoomIn();
+}
 
+void Controller::pushButton2()
+{
+    this->sceneCollection.data()->get()->zoomOut();
+}
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
     baseCommand result;

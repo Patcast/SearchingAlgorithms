@@ -27,10 +27,14 @@ signals:
     void playerMoveUp();
     void playerMoveDown();
     void playerMove(int x, int y);
+    void updateHE();
+
 
 private slots:
   void handleCommand();
   void move(NextDirection directionOfMovement);
+  void pushButton();
+  void pushButton2();
 
 protected:
     MainWindow *controllerWindow;

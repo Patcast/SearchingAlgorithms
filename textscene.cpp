@@ -35,3 +35,13 @@ void TextScene::drawHealthPack(){
 void TextScene::drawMovement(){
 
 }
+
+void TextScene::zoomIn()
+{
+
+}
+
+void TextScene::zoomOut()
+{
+
+}
