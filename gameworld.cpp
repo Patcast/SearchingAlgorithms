@@ -84,10 +84,6 @@ const std::vector<std::unique_ptr<Node> > &GameWorld::getNodes() const
 
 
 
-
-
-
-
 void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
     totalRows=newRows;
