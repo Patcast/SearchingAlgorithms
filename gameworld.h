@@ -42,6 +42,9 @@ public:
 
 signals:
     void healthPackedUsed(int specialFigureIndex);
+    void  poisonTileInScene(int index,int poisonValue);
+private slots:
+     void poisonousAttack(int poisonValue);
 private:
 
      static GameWorld * instance;
