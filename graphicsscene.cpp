@@ -1,5 +1,6 @@
 #include "graphicsscene.h"
 #include "enemyview.h"
+#include "healthpackview.h"
 #include "specialmap.h"
 #include <QRect>
 #include <QPainter>
@@ -15,6 +16,8 @@
 
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
+
+
     gameWord_ptr = GameWorld::Instance(":/images/maze2.png", 60, 20, 100.0);
     player_ptr = new ProtagonistView();
     columns = gameWord_ptr->getTotalColumns();
@@ -49,6 +52,7 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     highLightTiles(index);
     index = 5*columns + 8;
     highLightTiles(index);
+    highLightTiles(10*columns+6);
 
     showValue(8,5,45);
 //    // std::cout<<gameWord_ptr->protagonist->getXPos()<<gameWord_ptr->protagonist->getYPos() << std::endl;
@@ -90,19 +94,35 @@ GraphicsScene::GraphicsScene() : Scene("2d")
         }
     }
 */
+    drawEnemy();
+
 
     QGraphicsView *view = new QGraphicsView(graphScene);
     this->widget = view;
-
-
 }
 
 void GraphicsScene::drawEnemy(){
-//    for(std::unique_ptr<Enemy> &t:gameWord_ptr->enemies){
-//        enemyView * e = new enemyView();
-//        e->place(t->getXPos(),t->getYPos(),stepsize);;
-//        graphScene->addItem(e);
-//    }
+    int i = 0;
+    for(int x = 0; x<columns; x++){
+        for(int y = 0; y<rows; y++){
+            if(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get() != nullptr){
+                if(Enemy * enemyReference = dynamic_cast<Enemy*>(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get())){
+                    enemyView *e = new enemyView();
+                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
+                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
+                    graphScene->addItem(e);
+                    i++;
+                    }
+                else{
+                    healthPackView *e = new healthPackView();
+                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
+                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
+                    graphScene->addItem(e);
+                    }
+                }
+            }
+        }
+    std::cout<<i<< std::endl;
 }
 void GraphicsScene::drawDeathEnemy(Enemy en){
     enemyView * e = new enemyView();
