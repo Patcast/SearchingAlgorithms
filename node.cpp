@@ -9,6 +9,7 @@ Node::Node(int newIndex, float newIncomingCost,int totalRows, int totalColumns):
     index{newIndex},incomingCost{newIncomingCost},totalRows{totalRows},totalColumns{totalColumns}
 {
    neighborsIndexes= getNeighboursTileIndex();
+   if(newIncomingCost<0.001)incomingCost=0.01;
 }
 
 inline std::vector<int> Node::getNeighboursTileIndex()
