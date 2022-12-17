@@ -4,6 +4,7 @@
 #include "gameworld.h"
 #include "protagonistview.h"
 #include "scene.h"
+#include <QGraphicsScene>
 
 class GraphicsScene : public Scene
 {
@@ -11,7 +12,6 @@ public:
     GraphicsScene();
     QGraphicsScene *graphScene;
 //    std::vector<std::unique_ptr<Tile>> tiles;
-
 
     int xpos;
     int ypos;
@@ -36,7 +36,6 @@ public slots:
     void zoomOut();
 
 private:
-    QGraphicsScene *scene;
     ProtagonistView *player_ptr;
     GameWorld *gameWord_ptr;
 };

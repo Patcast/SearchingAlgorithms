@@ -10,11 +10,6 @@
 GameWorld * GameWorld::instance = 0;
 int main(int argc, char *argv[])
 {
-<<<<<<< Updated upstream
-    AStarController aStarController;
-    aStarController.runAStar(10,30,0.2);
-    return 0;
-=======
     QApplication a(argc, argv);
     MainWindow window;
 
@@ -34,6 +29,4 @@ int main(int argc, char *argv[])
 //    aStarController.executeBreadthFirstSearch(0, 62);
 
     return a.exec();
-
->>>>>>> Stashed changes
 }
