@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include "graphicsscene.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +17,7 @@ public:
     ~MainWindow();
     Ui::MainWindow *ui;
     int heuristics;
+    void setSignalsFromProtagnist();
 
 public slots:
   void ChangeHealth(int health);

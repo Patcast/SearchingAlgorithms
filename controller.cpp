@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <vector>
 #include <sstream>
+#include "gameworld.h"
 
 Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) : controllerWindow(window){
     // window.children()
@@ -59,15 +60,15 @@ void Controller::handleCommand() {
     handleCommand(funct, &commands);
 }
 
-void Controller::updateHE(){
-    this->controllerWindow->ui->EnergyBar->setValue(gameWord_ptr->protagonist->getEnergy());
-    this->controllerWindow->ui->HealthBar->setValue(gameWord_ptr->protagonist->getHealth());
-}
+//void Controller::updateHE(){
+//    this->controllerWindow->ui->EnergyBar->setValue(GameWorld::Instance()->protagonist->getEnergy());
+//    this->controllerWindow->ui->HealthBar->setValue(GameWorld::Instance()->protagonist->getHealth());
+//}
 
 void Controller::move(NextDirection directionOfMovement)
 {
-    gameWord_ptr->moveProtagonist(directionOfMovement);
-    updateHE();
+    GameWorld::Instance()->moveProtagonist(directionOfMovement);
+//    updateHE();
     //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
 }
 

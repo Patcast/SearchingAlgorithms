@@ -113,7 +113,7 @@ int GameWorld::moveProtagonist(NextDirection direction)
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
         std::cout<<"moving"<<std::endl;
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
-        if(specialFiguresVector[destinationIndex]!=nullptr){
+        if(nodes[destinationIndex]->getSpecialFigure_ptr()!=nullptr){
             activateSpecialFigure(destinationIndex);
         }
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
