@@ -59,7 +59,8 @@ float AStar::heuristic(int neighborIndex, int goalIndex){
 
     std::pair<int, int> neighborCoordinates = gameWord_ptr->getCoordinatesFromIndex(neighborIndex);
     std::pair<int, int> goalCoordinates = gameWord_ptr->getCoordinatesFromIndex(goalIndex);
-    return heuristicFactor*std::abs(neighborCoordinates.first-goalCoordinates.first+neighborCoordinates.second-goalCoordinates.second );
+    float heuristic =heuristicFactor*(std::abs(neighborCoordinates.first-goalCoordinates.first)+std::abs(neighborCoordinates.second-goalCoordinates.second));
+    return heuristic;
 }
 
 float AStar::getHeuristicFactor() const

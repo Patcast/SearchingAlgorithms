@@ -4,7 +4,7 @@
 
 AStarController::AStarController()
 {
-    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",10,10,100.0);
+    gameWord_ptr= GameWorld::Instance(":/images/maze3.png",10,10,100.0);
     aStar = std::make_unique <AStar>(gameWord_ptr->getTotalRows(),gameWord_ptr->getTotalColumns());
     aStar->setGameWord_ptr(gameWord_ptr);
     gameWord_ptr->testing();
@@ -24,6 +24,5 @@ void AStarController::runAStar(int start_index, int goal_index,float heuristic)
     }
 //    else  aStar->aStarSearch(start_index,goal_index,heuristic);
     else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
-
 
 }
