@@ -35,8 +35,11 @@ public:
     int moveProtagonist(NextDirection direction);
 
     void testing();
+    void attack();
 signals:
     void healthPackedUsed(int specialFigureIndex);
+private slots:
+    void poisonousEffect();
 private:
     GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;

@@ -1,7 +1,9 @@
 # include "gameworld.h"
 #include "game_config.h"
 #include "node.h"
+#include <QThread>
 #include <iostream>
+#include <unistd.h>
 
 
 GameWorld::~GameWorld()
@@ -160,9 +162,21 @@ int GameWorld::getDestinationIndex(NextDirection direction, int row, int column)
 
 void GameWorld::testing()
 {
-//        nodes[155]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[185]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[215]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
+
+    if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(specialFiguresVector[0].get())){
+
+        connect(enemyReference,SIGNAL(poisonLevelUpdated(int)),this, SLOT(poisonousEffect()));
+        enemyReference->poison();
+
+
+    }
+
+}
+
+
+void GameWorld::poisonousEffect()
+{
+    std::cout<<"PENEMY is diying"<<std::endl;
 }
 
 
@@ -176,7 +190,7 @@ void GameWorld::initializeProtagonist(float startingEnergy)
             std::pair<int,int> coordinatesProtagonist= getCoordinatesFromIndex(index);
             protagonist->setYPos(coordinatesProtagonist.first);
             protagonist->setXPos(coordinatesProtagonist.second);
-            std::cout<<"Protagonist("<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")created at Index:"<<index<<std::endl;
+//            std::cout<<"Protagonist("<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")created at Index:"<<index<<std::endl;
         }
     }
 }
