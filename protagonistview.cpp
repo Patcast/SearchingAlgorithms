@@ -16,6 +16,21 @@ void ProtagonistView::place(int x, int y, int size)
 
 void ProtagonistView::defeated()
 {
-    setPixmap(QPixmap(":/images/deadGoomba.png").scaled(StepSize,StepSize));
+    setPixmap(QPixmap(":/images/marioDead.jpg").scaled(StepSize,StepSize));
+    setPos(xPos,yPos);
+}
+
+void ProtagonistView::move(int x, int y)
+{
+    xPos = x * StepSize;
+    yPos = y * StepSize;
+    setPos(xPos,yPos);
+}
+
+void ProtagonistView::attack(int x, int y)
+{
+    xPos = x * StepSize;
+    yPos = y * StepSize;
+    setPixmap(QPixmap(":/images/marioDead.jpg").scaled(StepSize,StepSize));
     setPos(xPos,yPos);
 }

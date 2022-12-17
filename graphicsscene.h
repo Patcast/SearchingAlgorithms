@@ -4,6 +4,7 @@
 #include "gameworld.h"
 #include "protagonistview.h"
 #include "scene.h"
+#include <QGraphicsScene>
 
 class GraphicsScene : public Scene
 {
@@ -11,7 +12,6 @@ public:
     GraphicsScene();
     QGraphicsScene *graphScene;
 //    std::vector<std::unique_ptr<Tile>> tiles;
-
 
     int xpos;
     int ypos;
@@ -26,15 +26,16 @@ public:
     void drawHealthPack();
     void drawMovement();
     void drawDeathEnemy(Enemy en);
-    int stepsize = 25;
-
+    int stepsize = 50;
+    void BeenThereDoneThat();
+    void highLightTiles(int index);
+    void showValue(int x, int y,int value);
 
 public slots:
     void zoomIn();
     void zoomOut();
 
 private:
-    QGraphicsScene * scene;
     ProtagonistView *player_ptr;
     GameWorld *gameWord_ptr;
 };
