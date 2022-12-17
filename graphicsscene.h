@@ -9,7 +9,6 @@ class GraphicsScene : public Scene
 {
 public:
     GraphicsScene();
-    QGraphicsScene *graphScene;
 //    std::vector<std::unique_ptr<Tile>> tiles;
 
 
@@ -34,7 +33,6 @@ public slots:
     void zoomOut();
 
 private:
-    QGraphicsScene * scene;
     ProtagonistView *player_ptr;
     GameWorld *gameWord_ptr;
 };
