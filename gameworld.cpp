@@ -2,6 +2,7 @@
 #include "game_config.h"
 #include "node.h"
 #include <iostream>
+#include <unordered_set>
 
 
 GameWorld::~GameWorld()
@@ -11,7 +12,7 @@ GameWorld::~GameWorld()
 GameWorld::GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
-    w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks,0.5);
+    w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks,1.0);
     setRowsAndColumns(w.getRows(),w.getCols());
     createNodes(w);
     loadEnemies(w);
@@ -129,7 +130,10 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
     protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
     nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.0);
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-       emit enemyReference->dead();
+        if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(enemyReference)){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+          pEnemyReference->poison();
+        }
+        else emit enemyReference->dead();
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
@@ -160,9 +164,43 @@ int GameWorld::getDestinationIndex(NextDirection direction, int row, int column)
 
 void GameWorld::testing()
 {
-//        nodes[155]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[185]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[215]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
+     std::cout<<"Testing "<<std::endl;
+    if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(getSpecialFiguresVector()[1].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        std::cout<<"Testing enemy"<<std::endl;
+        connect(enemyReference,SIGNAL(poisonLevelUpdated(int)),this,SLOT(poisonousAttack(int)));
+        enemyReference->poison();
+    }
+}
+
+void GameWorld::poisonousAttack(int poisonValue)
+{
+    PEnemy* enemyReference =dynamic_cast<PEnemy*>(sender());
+    std::unordered_set<int> poisonindexes;
+    int originRow =enemyReference->getYPos(), originCol=enemyReference->getXPos();
+    int currentPoisonLevel = poisonLevel;
+    while(currentPoisonLevel>0){
+      std::vector<int> indexes;
+//      indexes.emplace_back(getDestinationIndex(UP,originRow,originCol));
+//      indexes.emplace_back(getDestinationIndex(DOWN,originRow,originCol));
+//      indexes.emplace_back(getDestinationIndex(LEFT,originRow,originCol));
+//      indexes.emplace_back(getDestinationIndex(RIGHT,originRow,originCol));
+//      for(auto i :indexes){
+
+//          poisonindexes.emplace(getDestinationIndex(UP,originRow,originCol));
+//          poisonindexes.emplace(getDestinationIndex(DOWN,originRow,originCol));
+//          poisonindexes.emplace(getDestinationIndex(LEFT,originRow,originCol));
+//          poisonindexes.emplace(getDestinationIndex(RIGHT,originRow,originCol));
+//      }
+//      poisonindexes.emplace(getDestinationIndex(UP,originRow+currentPoisonLevel,originCol+currentPoisonLevel));
+//      poisonindexes.emplace(getDestinationIndex(DOWN,originRow+currentPoisonLevel,originCol+currentPoisonLevel));
+//      poisonindexes.emplace(getDestinationIndex(LEFT,originRow+currentPoisonLevel,originCol+currentPoisonLevel));
+//      poisonindexes.emplace(getDestinationIndex(RIGHT,originRow+currentPoisonLevel,originCol+currentPoisonLevel));
+//      currentPoisonLevel--;
+//    }
+
+    poisonLevel++;
+
+    std::cout<<"PENEMY "<<enemyReference->getPoisonLevel()<<"----"<<poisonValue<<std::endl;
 }
 
 

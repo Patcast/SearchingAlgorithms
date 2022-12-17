@@ -29,8 +29,8 @@ public:
 
     Protagonist*getProtagonist() const;
     std::unique_ptr<Protagonist> protagonist {nullptr};
-    const std::vector<std::shared_ptr<Tile> > &getSpecialFiguresVector() const;
-    const std::vector<std::unique_ptr<Node> > &getNodes() const;
+    const std::vector<std::shared_ptr<Tile>> & getSpecialFiguresVector() const;
+    const std::vector<std::unique_ptr<Node>> &getNodes() const;
     std::vector<std::shared_ptr<Tile>> specialFiguresVector;
     int moveProtagonist(NextDirection direction);
     std::vector<std::unique_ptr<Node>> nodes;
@@ -38,6 +38,9 @@ public:
     int totalRows,totalColumns;
 signals:
     void healthPackedUsed(int specialFigureIndex);
+    void spreadPoison(int indexOfPEnemy,std::vector<int> poisonindexes,int poisonValue);
+private slots:
+    void poisonousAttack(int poisonValue);
 private:
     GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     static GameWorld* instance;
@@ -46,15 +49,7 @@ private:
     void loadEnemies(World &world);
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
-
-
-
-
-
-
-
-
-
+    int poisonLevel{0};
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);
 };

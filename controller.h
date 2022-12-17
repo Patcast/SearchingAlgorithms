@@ -19,7 +19,6 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
-
     Commands commandsProcessor = Commands();
 signals:
     void playerMoveLeft();

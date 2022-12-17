@@ -18,13 +18,13 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 {
 
 
-    gameWord_ptr = GameWorld::Instance(":/images/maze2.png", 60, 20, 100.0);
+    gameWord_ptr = GameWorld::Instance(":/images/worldmap.png", 30,0, 100.0);
     player_ptr = new ProtagonistView();
     columns = gameWord_ptr->getTotalColumns();
     rows = gameWord_ptr->getTotalRows();
     graphScene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-    world->setPixmap(QPixmap(":/images/maze2.png").scaledToHeight(stepsize*rows));
+    world->setPixmap(QPixmap(":/images/worldmap.png").scaledToHeight(stepsize*rows));
     //stepsize*rows
     world->setZValue(0.5);
     graphScene->addItem(world);

@@ -9,8 +9,9 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     this->addView(primaryScene);
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
-    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
+    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,0,100.0);
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
+    gameWord_ptr->testing();
 }
 
 

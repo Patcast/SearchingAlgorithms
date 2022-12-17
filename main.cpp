@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow window;
 
-    // GameWorld * gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
 
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
@@ -26,7 +25,6 @@ int main(int argc, char *argv[])
     window.show();
 
     AStarController aStarController;
-//    aStarController.executeBreadthFirstSearch(0, 62);
 
     return a.exec();
 }
