@@ -32,6 +32,8 @@ void MainWindow::setSignalsFromProtagnist()
 
 void MainWindow::ChangeHealth(int health)
 {
+
+
     std::cout<<"HEALTH CHENGE"<<health<<std::endl;
     ui->HealthBar->setRange(0,100);
     ui->HealthBar->setValue(health);
