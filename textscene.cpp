@@ -3,7 +3,7 @@
 TextScene::TextScene() : Scene("text")
 {
     // Setting string to game board
-    this->gameText = QString("+---+---+---+---+---+---+\n| p |   |   | x |   |   |\n+---+---+---+---+---+---+\n");
+    //this->gameText = getBoxRaster(13,9);
 
     // Adding object to window to display string
     QTextEdit *gameEdit = new QTextEdit;

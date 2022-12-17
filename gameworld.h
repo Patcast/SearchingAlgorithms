@@ -49,12 +49,6 @@ private:
 
 
 
-
-
-
-
-
-
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);
 };

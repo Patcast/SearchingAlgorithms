@@ -87,10 +87,6 @@ GameWorld *GameWorld::Instance(QString pathToMap, unsigned long nrEnemies, unsig
     return instance;
 }
 
-
-
-
-
 void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
     totalRows=newRows;

@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "commands.h"
+#include "gameworld.h"
 #include "scene.h"
 #include "mainwindow.h"
 #include <string>
@@ -30,7 +31,7 @@ signals:
 
 private slots:
   void handleCommand();
-  void move(NextDirection directionOfMovement);
+  void moveTo(NextDirection directionOfMovement);
 
 protected:
     MainWindow *controllerWindow;
