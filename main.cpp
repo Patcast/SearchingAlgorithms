@@ -4,6 +4,7 @@
 #include "graphicsscene.h"
 #include "mainwindow.h"
 #include "textscene.h"
+#include "graphicsscene.h"
 #include <iostream>
 #include <QApplication>
 #include <QtGui>

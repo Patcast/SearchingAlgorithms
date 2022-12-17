@@ -3,7 +3,8 @@
 TextScene::TextScene() : Scene("text")
 {
     // Setting string to game board
-    this->gameText = QString("+---+---+---+---+---+---+\n| p |   |   | x |   |   |\n+---+---+---+---+---+---+\n");
+    //this->gameText = getBoxRaster(13,9);
+    this->gameString = new GameString(30,30);
 
     // Adding object to window to display string
     QTextEdit *gameEdit = new QTextEdit;
@@ -15,12 +16,12 @@ TextScene::TextScene() : Scene("text")
     gameEdit->setGeometry(QRect(QPoint(0, 0), QSize(400, 100)));
 
     // Adding string to object
-    gameEdit->setText(gameText);
+    gameEdit->setText(this->gameString->getGameString());
 
     this->widget = gameEdit;
 }
 
-void TextScene::drawEnemy() {
+void TextScene::drawEnemy(){
 
 }
 void TextScene::drawProtagonist(){

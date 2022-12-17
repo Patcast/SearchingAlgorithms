@@ -16,10 +16,6 @@ enum moveDirection {
     left = 4,
 };
 
-struct regexCommand {
-
-};
-
 class Commands
 {
 public:
