@@ -106,7 +106,7 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             try {
                 xInt = std::stoi(xString);
                 yInt = std::stoi(yString);
-                ("move: Moving to " + xString + "," + yString);
+                ("pmove: Moving to " + xString + "," + yString);
             } catch (const std::exception &e) {
                 displayStatus ("move: A coordinate pair was expected but no correct one was given");
             }
