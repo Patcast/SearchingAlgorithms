@@ -40,11 +40,14 @@ public:
     int totalRows,totalColumns;
     const QString &getImagePath() const;
 
+
 signals:
     void healthPackedUsed(int specialFigureIndex);
     void  poisonTileInScene(int index,int poisonValue);
+    void  explosionTileInScene(int index,int explosionValue);
 private slots:
      void poisonousAttack(int poisonValue);
+     void explosiveAttack(int explosiveValue, int row, int col);
 private:
 
      static GameWorld * instance;
@@ -56,6 +59,7 @@ private:
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
     QString imagePath;
+    int poisonOfAttack{0};
 
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);

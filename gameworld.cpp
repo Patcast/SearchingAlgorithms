@@ -1,6 +1,7 @@
 # include "gameworld.h"
 #include "game_config.h"
 #include "node.h"
+#include "xenemy.h"
 #include <iostream>
 
 
@@ -123,7 +124,10 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
         if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
             pEnemyReference->poison();
         }
-        else emit enemyReference->dead();
+        else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+            xEnemyReference->generateExplosions();
+        }
+        else emit xEnemyReference->dead();
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
@@ -131,13 +135,24 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
 }
 void GameWorld::poisonousAttack(int poisonValue)
 {
+//    if(poisonOfAttack!=0){}
+//    int numOfAttack = poisonOfAttack%10-poisonValue%10;
     if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         std::vector<int> infectedTiles=getNeighboursTileIndex(pEnemyReference->getYPos(),pEnemyReference->getXPos());
+
         while(!infectedTiles.empty()){
             if((protagonist->getXPos()==pEnemyReference->getXPos())&&(protagonist->getYPos()==pEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
             emit poisonTileInScene(infectedTiles.back(),poisonValue);
             infectedTiles.pop_back();
         }
+    }
+}
+
+void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
+{
+    if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
+        emit explosionTileInScene(getIndexFromCoordinates(row,col),explosiveValue);
     }
 }
 

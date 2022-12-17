@@ -23,7 +23,8 @@ SOURCES += \
     node.cpp \
     protagonistview.cpp \
     specialmap.cpp \
-    textscene.cpp
+    textscene.cpp \
+    xenemy.cpp
 
 HEADERS += \
     astar.h \
@@ -41,7 +42,8 @@ HEADERS += \
     protagonistview.h \
     scene.h \
     specialmap.h \
-    textscene.h
+    textscene.h \
+    xenemy.h
 
 FORMS += \
     mainwindow.ui
