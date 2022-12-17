@@ -1,12 +1,12 @@
-#ifndef PROTAGONISTVIEW_H
-#define PROTAGONISTVIEW_H
+#ifndef HEALTHPACKVIEW_H
+#define HEALTHPACKVIEW_H
 
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QPainter>
 #include <QKeyEvent>
 
-class ProtagonistView: public QGraphicsPixmapItem
+class healthPackView:public QGraphicsPixmapItem
 {
 public:
 
@@ -15,8 +15,6 @@ public:
     int yPos;
     int StepSize = 5;
     void defeated();
-    void move(int x, int y);
-    void attack(int x, int y);
 };
 
-#endif // PROTAGONISTVIEW_H
+#endif // HEALTHPACKVIEW_H

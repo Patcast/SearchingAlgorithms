@@ -17,10 +17,14 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
+    int heuristics;
 
 public slots:
   void ZoomIn();
   void ZoomOut();
+  void ChangeHealth(int health);
+  void ChangeEnergy(int energy);
+  void heuristicsValue();
 };
 
 

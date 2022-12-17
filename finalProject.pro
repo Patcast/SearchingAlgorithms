@@ -13,9 +13,11 @@ SOURCES += \
     astarcontroller.cpp \
     commands.cpp \
     controller.cpp \
+    enemyview.cpp \
     gamestring.cpp \
     gameworld.cpp \
     graphicsscene.cpp \
+    healthpackview.cpp \
     main.cpp \
     mainwindow.cpp \
     node.cpp \
@@ -28,10 +30,12 @@ HEADERS += \
     astarcontroller.h \
     commands.h \
     controller.h \
+    enemyview.h \
     game_config.h \
     gamestring.h \
     gameworld.h \
     graphicsscene.h \
+    healthpackview.h \
     mainwindow.h \
     node.h \
     protagonistview.h \

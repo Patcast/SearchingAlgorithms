@@ -4,12 +4,20 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <iostream>
+#include <QProgressBar>
+#include <QSpinBox>
+#include <iostream>
+#include "graphicsscene.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //GraphicsScene * scene = new GraphicsScene();
     ui->setupUi(this);
+    //ui->graphicsView->setScene(scene);
+
+    ChangeHealth(50);
 }
 
 MainWindow::~MainWindow()
@@ -27,4 +35,24 @@ void MainWindow::ZoomOut()
   {
   //ui->graphicsView->scale(1.1, 1.1);
     std::cout<<"ZoomOut"<<std::endl;
-  }
+}
+
+void MainWindow::ChangeHealth(int health)
+{
+    ui->HealthBar->setRange(0,100);
+    ui->HealthBar->setValue(health);
+}
+
+void MainWindow::ChangeEnergy(int energy)
+{
+    ui->EnergyBar->setRange(0,100);
+    ui->EnergyBar->setValue(energy);
+}
+
+void MainWindow::heuristicsValue()
+{
+    heuristics = ui->HeuristicsInput->value();
+    //std::cout<<heuristics<< std::endl;
+}
+
+
