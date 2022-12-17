@@ -18,13 +18,13 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 {
 
 
-    gameWord_ptr = GameWorld::Instance(":/images/maze2.png", 60, 20, 100.0);
+
     player_ptr = new ProtagonistView();
-    columns = gameWord_ptr->getTotalColumns();
+    columns =  GameWorld::Instance()->getTotalColumns();
     rows = gameWord_ptr->getTotalRows();
     graphScene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-    world->setPixmap(QPixmap(":/images/maze2.png").scaledToHeight(stepsize*rows));
+    world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
     //stepsize*rows
     world->setZValue(0.5);
     graphScene->addItem(world);
@@ -103,25 +103,38 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 
 void GraphicsScene::drawEnemy(){
     int i = 0;
-    for(int x = 0; x<columns; x++){
-        for(int y = 0; y<rows; y++){
-            if(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get() != nullptr){
-                if(Enemy * enemyReference = dynamic_cast<Enemy*>(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get())){
-                    enemyView *e = new enemyView();
-                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
-                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    graphScene->addItem(e);
-                    i++;
-                    }
-                else{
-                    healthPackView *e = new healthPackView();
-                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
-                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    graphScene->addItem(e);
-                    }
-                }
+    for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
+        if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+            if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                  //Penemy
+            }
+            else{
+                //enemy
             }
         }
+        else {
+            //HealthPack
+        }
+    }
+//    for(int x = 0; x<columns; x++){
+//        for(int y = 0; y<rows; y++){
+//            if( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr().get() != nullptr){
+//                if(Enemy * enemyReference = dynamic_cast<Enemy*>( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr().get())){
+//                    enemyView *e = new enemyView();
+//                    e->place( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(), GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
+//                    showValue( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(), GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(), GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
+//                    graphScene->addItem(e);
+//                    i++;
+//                    }
+//                else{
+//                    healthPackView *e = new healthPackView();
+//                    e->place( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(), GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
+//                    showValue( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(), GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
+//                    graphScene->addItem(e);
+//                    }
+//                }
+//            }
+//        }
     std::cout<<i<< std::endl;
 }
 void GraphicsScene::drawDeathEnemy(Enemy en){
@@ -182,7 +195,7 @@ void GraphicsScene::drawHealthPack(){
 //    }
 }
 void GraphicsScene::drawMovement(){
-    player_ptr->move(gameWord_ptr->protagonist->getXPos(),gameWord_ptr->protagonist->getYPos());
+    player_ptr->move( GameWorld::Instance()->protagonist->getXPos(), GameWorld::Instance()->protagonist->getYPos());
 
 
 /*    // if right

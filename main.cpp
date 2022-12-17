@@ -7,13 +7,18 @@
 #include <QApplication>
 #include <QtGui>
 
-GameWorld * GameWorld::instance = 0;
+GameWorld* GameWorld::instance{nullptr};
+std::mutex GameWorld::mutex_;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
 
-    // GameWorld * gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
+
+
+    GameWorld * gameWord_ptr= GameWorld::Instance();
+    gameWord_ptr->setGameMap(":/images/worldmap.png",20,60,100.0);
+
 
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);

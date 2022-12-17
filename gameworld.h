@@ -4,23 +4,25 @@
 #include "node.h"
 #include "world.h"
 #include <QObject>
+#include <mutex>
 #include"game_config.h"
-
-
 
 
 class GameWorld : public QObject
 {
     Q_OBJECT
+
+
+
 public:
 
-    ~GameWorld();// Ue to free memory of all collections.
-    static void Create(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
-    static void Destroy();
-    static GameWorld * Instance(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
+
+    GameWorld(GameWorld &other) = delete;
+    void operator=(const GameWorld &) = delete;
+    static GameWorld *Instance();
 
 
-
+    void setGameMap(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
     int getTotalRows() const;
     int getTotalColumns() const;
     int getIndexFromCoordinates(const int row_index, const int col_index){return totalColumns*row_index +col_index;};
@@ -36,27 +38,28 @@ public:
     std::vector<std::unique_ptr<Node>> nodes;
     void testing();
     int totalRows,totalColumns;
+    const QString &getImagePath() const;
+
 signals:
     void healthPackedUsed(int specialFigureIndex);
 private:
-    GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist);
-    static GameWorld* instance;
+
+     static GameWorld * instance;
+     static std::mutex mutex_;
+
     void initializeProtagonist(float startingEnergy);
     void setRowsAndColumns(int newRows, int newColumns);
     void loadEnemies(World &world);
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
-
-
-
-
-
-
-
-
+    QString imagePath;
 
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);
+protected:
+    GameWorld(){}
+    ~GameWorld() {}
+
 };
 
 #endif // GAMEWORLD_H

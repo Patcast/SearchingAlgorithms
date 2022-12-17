@@ -4,10 +4,9 @@
 
 AStarController::AStarController()
 {
-    gameWord_ptr= GameWorld::Instance(":/images/maze3.png",10,10,100.0);
-    aStar = std::make_unique <AStar>(gameWord_ptr->getTotalRows(),gameWord_ptr->getTotalColumns());
-    aStar->setGameWord_ptr(gameWord_ptr);
-    gameWord_ptr->testing();
+
+    aStar = std::make_unique <AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->getTotalColumns());
+     GameWorld::Instance()->testing();
 
 }
 
@@ -19,7 +18,7 @@ void AStarController::runDijktra(int start_index, int goal_index)
 void AStarController::runAStar(int start_index, int goal_index,float heuristic)
 {
 
-    if(start_index<0||start_index>=gameWord_ptr->getTotalColumns()*gameWord_ptr->getTotalRows()||goal_index<0||goal_index>=gameWord_ptr->getTotalColumns()*gameWord_ptr->getTotalRows()){
+    if(start_index<0||start_index>= GameWorld::Instance()->getTotalColumns()* GameWorld::Instance()->getTotalRows()||goal_index<0||goal_index>= GameWorld::Instance()->getTotalColumns()* GameWorld::Instance()->getTotalRows()){
        std::cout<<"Searching algorithm: INDEX OUT OF BOUNDS"<<std::endl;
     }
 //    else  aStar->aStarSearch(start_index,goal_index,heuristic);
