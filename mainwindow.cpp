@@ -7,7 +7,7 @@
 #include <QProgressBar>
 #include <QSpinBox>
 #include <iostream>
-#include "graphicsscene.h"
+#include "gameworld.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //GraphicsScene * scene = new GraphicsScene();
     ui->setupUi(this);
     //ui->graphicsView->setScene(scene);
-
     ChangeHealth(50);
 }
 
@@ -25,26 +24,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::ZoomIn()
-  {
-  //ui->graphicsView->scale(1.1, 1.1);
-    std::cout<<"ZoomIn"<<std::endl;
-  }
-
-void MainWindow::ZoomOut()
-  {
-  //ui->graphicsView->scale(1.1, 1.1);
-    std::cout<<"ZoomOut"<<std::endl;
+void MainWindow::setSignalsFromProtagnist()
+{
+    connect(GameWorld::Instance()->getProtagonist(),SIGNAL(energyChanged(int)),this,SLOT(ChangeEnergy(int)));
+    connect(GameWorld::Instance()->getProtagonist(),SIGNAL(healthChanged(int)),this,SLOT(ChangeHealth(int)));
 }
 
 void MainWindow::ChangeHealth(int health)
 {
+
+
+    std::cout<<"HEALTH CHENGE"<<health<<std::endl;
     ui->HealthBar->setRange(0,100);
     ui->HealthBar->setValue(health);
 }
 
 void MainWindow::ChangeEnergy(int energy)
 {
+    std::cout<<"ENERGY CHENGE"<<energy<<std::endl;
     ui->EnergyBar->setRange(0,100);
     ui->EnergyBar->setValue(energy);
 }

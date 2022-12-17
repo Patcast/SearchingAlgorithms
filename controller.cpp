@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <vector>
 #include <sstream>
+#include "gameworld.h"
 
 Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) : controllerWindow(window){
     // window.children()
@@ -9,8 +10,10 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     this->addView(primaryScene);
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
-    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
+    window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
+    window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
+    window->connect(ui->pushButton_2, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton2));
 }
 
 
@@ -57,13 +60,27 @@ void Controller::handleCommand() {
     handleCommand(funct, &commands);
 }
 
-void Controller::moveTo(NextDirection directionOfMovement)
+//void Controller::updateHE(){
+//    this->controllerWindow->ui->EnergyBar->setValue(GameWorld::Instance()->protagonist->getEnergy());
+//    this->controllerWindow->ui->HealthBar->setValue(GameWorld::Instance()->protagonist->getHealth());
+//}
+
+void Controller::move(NextDirection directionOfMovement)
 {
-    gameWord_ptr->moveProtagonist(directionOfMovement);
+    GameWorld::Instance()->moveProtagonist(directionOfMovement);
+//    updateHE();
     //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
 }
 
+void Controller::pushButton()
+{
+    this->sceneCollection.data()->get()->zoomIn();
+}
 
+void Controller::pushButton2()
+{
+    this->sceneCollection.data()->get()->zoomOut();
+}
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
     enum baseCommand result;

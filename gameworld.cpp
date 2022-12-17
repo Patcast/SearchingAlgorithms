@@ -4,11 +4,18 @@
 #include <iostream>
 
 
-GameWorld::~GameWorld()
+GameWorld *GameWorld::Instance()
 {
-    //Should clean up memory.
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (instance == nullptr)
+    {
+        instance = new GameWorld();
+    }
+    return instance;
 }
-GameWorld::GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
+
+
+void GameWorld::setGameMap(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
 {
     World w= {};
     w.createWorld(pathToMap,nrEnemies,nrHeatlhPacks,0.5);
@@ -16,6 +23,7 @@ GameWorld::GameWorld(QString pathToMap, unsigned long nrEnemies, unsigned long n
     createNodes(w);
     loadEnemies(w);
     initializeProtagonist(startingEnergyProtagonist); // must be called at the end.
+    imagePath=pathToMap;
 }
 
 
@@ -46,6 +54,11 @@ void GameWorld::createNodes(World &w)
     }
 }
 
+const QString &GameWorld::getImagePath() const
+{
+    return imagePath;
+}
+
 
 
 
@@ -68,24 +81,8 @@ const std::vector<std::unique_ptr<Node> > &GameWorld::getNodes() const
 
 
 
-void GameWorld::Create(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist) //
-{
-    if(instance != 0)
-        return;
-    instance = new GameWorld( pathToMap,  nrEnemies,  nrHeatlhPacks,  startingEnergyProtagonist);
-}
 
-void GameWorld::Destroy()
-{
-    delete instance;
-    instance = 0;
-}
 
-GameWorld *GameWorld::Instance(QString pathToMap, unsigned long nrEnemies, unsigned long nrHeatlhPacks, float startingEnergyProtagonist)
-{
-    GameWorld::Create(pathToMap,  nrEnemies,  nrHeatlhPacks,  startingEnergyProtagonist);
-    return instance;
-}
 
 void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
@@ -112,7 +109,7 @@ int GameWorld::moveProtagonist(NextDirection direction)
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
         std::cout<<"moving"<<std::endl;
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
-        if(specialFiguresVector[destinationIndex]!=nullptr){
+        if(nodes[destinationIndex]->getSpecialFigure_ptr()!=nullptr){
             activateSpecialFigure(destinationIndex);
         }
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());

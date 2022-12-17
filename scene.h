@@ -13,6 +13,9 @@ public:
     virtual void drawTile() = 0;
     virtual void drawHealthPack() = 0;
     virtual void drawMovement() = 0;
+
+    virtual void zoomIn() = 0;
+    virtual void zoomOut() = 0;
     std::string getDescription() { return desc; };
     QWidget *getQView() { return widget; };
     bool operator == (const std::string s) const {return s == desc; }

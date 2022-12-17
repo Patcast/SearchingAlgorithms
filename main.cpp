@@ -1,6 +1,7 @@
 #include "astarcontroller.h"
 #include "controller.h"
 #include "gameworld.h"
+#include "graphicsscene.h"
 #include "mainwindow.h"
 #include "textscene.h"
 #include "graphicsscene.h"
@@ -8,12 +9,19 @@
 #include <QApplication>
 #include <QtGui>
 
-GameWorld * GameWorld::instance = 0;
+GameWorld* GameWorld::instance{nullptr};
+std::mutex GameWorld::mutex_;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow window;
-    // GameWorld * gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,60,100.0);
+
+
+
+    GameWorld * gameWord_ptr= GameWorld::Instance();
+    gameWord_ptr->setGameMap(":/images/worldmap.png",20,60,100.0);
+
+
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
 
@@ -23,7 +31,9 @@ int main(int argc, char *argv[])
     Controller controller = Controller(&window,sharedGraphScene);
     controller.addView(sharedTextScene);
     window.show();
-
+    window.setSignalsFromProtagnist();
+    controller.move(UP);
+    controller.move(UP);
     AStarController aStarController;
 //    aStarController.executeBreadthFirstSearch(0, 62);
 

@@ -18,6 +18,8 @@ public:
     void drawTile();
     void drawHealthPack();
     void drawMovement();
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // TEXTSCENE_H

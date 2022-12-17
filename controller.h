@@ -22,22 +22,26 @@ public:
     void displayStatus(std::string error);
 
     Commands commandsProcessor = Commands();
+    void move(NextDirection directionOfMovement);
 signals:
     void playerMoveLeft();
     void playerMoveRight();
     void playerMoveUp();
     void playerMoveDown();
     void playerMove(int x, int y);
+    void updateHE();
+
 
 private slots:
   void handleCommand();
-  void moveTo(NextDirection directionOfMovement);
+
+  void pushButton();
+  void pushButton2();
 
 protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
-    GameWorld* gameWord_ptr;
 };
 
 #endif // CONTROLLER_H
