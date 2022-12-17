@@ -163,13 +163,11 @@ int GameWorld::getDestinationIndex(NextDirection direction, int row, int column)
 void GameWorld::testing()
 {
 
-    if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(specialFiguresVector[0].get())){
+//    if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(specialFiguresVector[0].get())){
 
-        connect(enemyReference,SIGNAL(poisonLevelUpdated(int)),this, SLOT(poisonousEffect()));
-        enemyReference->poison();
-
-
-    }
+//        connect(enemyReference,SIGNAL(poisonLevelUpdated(int)),this, SLOT(poisonousEffect()));
+//        enemyReference->poison();
+//    }
 
 }
 

@@ -8,6 +8,6 @@ GameWorld * GameWorld::instance = 0;
 int main()
 {
     AStarController aStarController;
-//    aStarController.runAStar(10,30,0.2);
+    aStarController.runAStar(90,432,0);
     return 0;
 }

@@ -4,7 +4,7 @@
 
 AStarController::AStarController()
 {
-    gameWord_ptr= GameWorld::Instance(":/images/maze3.png",10,0,100.0);
+    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",10,0,100.0);
     aStar = std::make_unique <AStar>(gameWord_ptr->getTotalRows(),gameWord_ptr->getTotalColumns());
     aStar->setGameWord_ptr(gameWord_ptr);
     gameWord_ptr->testing();
