@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
+    <width>1277</width>
     <height>677</height>
    </rect>
   </property>
@@ -28,8 +28,8 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
-      <width>500</width>
+      <y>70</y>
+      <width>1171</width>
       <height>500</height>
      </rect>
     </property>
@@ -55,8 +55,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>40</y>
+      <x>1180</x>
+      <y>70</y>
       <width>75</width>
       <height>24</height>
      </rect>
@@ -68,8 +68,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>80</y>
+      <x>1180</x>
+      <y>100</y>
       <width>75</width>
       <height>24</height>
      </rect>
@@ -78,13 +78,49 @@
      <string>ZoomOut</string>
     </property>
    </widget>
+   <widget class="QProgressBar" name="EnergyBar">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>20</y>
+      <width>601</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="HealthBar">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>621</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="HeuristicsInput">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>140</y>
+      <width>42</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>694</width>
+     <width>1277</width>
      <height>26</height>
     </rect>
    </property>
@@ -101,7 +137,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>599</x>
-     <y>81</y>
+     <y>119</y>
     </hint>
     <hint type="destinationlabel">
      <x>588</x>
@@ -117,7 +153,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>610</x>
-     <y>114</y>
+     <y>159</y>
     </hint>
     <hint type="destinationlabel">
      <x>607</x>
@@ -125,9 +161,60 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>EnergyBar</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ChangeEnergy(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>459</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>603</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HealthBar</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ChangeHealth(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>615</x>
+     <y>339</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HeuristicsInput</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>heuristicsValue()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>599</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ZoomIn()</slot>
   <slot>ZoomOut()</slot>
+  <slot>ChangeEnergy(int)</slot>
+  <slot>ChangeHealth(int)</slot>
+  <slot>heuristicsValue()</slot>
  </slots>
 </ui>

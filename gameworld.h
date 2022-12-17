@@ -28,13 +28,14 @@ public:
     std::pair<int, int> getCoordinatesFromIndex(int index){return (std::make_pair<int,int>( index/totalColumns,index%totalColumns));};
 
     Protagonist*getProtagonist() const;
-
+    std::unique_ptr<Protagonist> protagonist {nullptr};
     const std::vector<std::shared_ptr<Tile> > &getSpecialFiguresVector() const;
     const std::vector<std::unique_ptr<Node> > &getNodes() const;
-
+    std::vector<std::shared_ptr<Tile>> specialFiguresVector;
     int moveProtagonist(NextDirection direction);
-
+    std::vector<std::unique_ptr<Node>> nodes;
     void testing();
+    int totalRows,totalColumns;
 signals:
     void healthPackedUsed(int specialFigureIndex);
 private:
@@ -45,12 +46,12 @@ private:
     void loadEnemies(World &world);
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
-    std::unique_ptr<Protagonist> protagonist {nullptr};
-    std::vector<std::shared_ptr<Tile>> specialFiguresVector;
-    std::vector<std::unique_ptr<Node>> nodes;
 
 
-    int totalRows,totalColumns;
+
+
+
+
 
 
 
