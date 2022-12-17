@@ -6,7 +6,7 @@
 
 enum baseCommand {
     vswitch = 1,
-    move = 2,
+    pmove = 2,
 };
 
 enum moveDirection {
