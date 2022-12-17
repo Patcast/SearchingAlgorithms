@@ -43,8 +43,8 @@ public:
 
 signals:
     void healthPackedUsed(int specialFigureIndex);
-    void  poisonTileInScene(int index,int poisonValue);
-    void  explosionTileInScene(int index,int explosionValue);
+    void  poisonTileInScene(int index,int poisonValue);//index where the protagonist is poisoned
+    void  explosionTileInScene(int index,int explosionValue);//index where the protagonist is burned
 private slots:
      void poisonousAttack(int poisonValue);
      void explosiveAttack(int explosiveValue, int row, int col);
@@ -63,6 +63,7 @@ private:
 
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(NextDirection direction, int row, int column);
+    std::vector<int> getNeighboursTileToPoisonIndex(int index);
 protected:
     GameWorld(){}
     ~GameWorld() {}
