@@ -90,38 +90,37 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
         displayStatus("Unknown command");
     }
 
-//    switch(result){
-//    case vswitch: {
-//        std::string arg = commands->at(0);
-//        view_switch(arg);
-//        break;
-//    }
-//    case move: {
-//        if (commands->size() == 2) {
-//            std::string xString = commands->at(1);
-//            std::string yString = commands->at(0);
-//            int xInt;
-//            int yInt;
-//            try {
-//                xInt = std::stoi(xString);
-//                yInt = std::stoi(yString);
-//                ("move: Moving to " + xString + "," + yString);
-//            } catch (const std::exception &e) {
-//                displayStatus ("move: A coordinate pair was expected but no correct one was given");
-//            }
-//        } else if (commands->size() == 1) {
-//            moveDirection direction;
-//            try {
-//                direction = this->commandsProcessor.resolve(commands->at(0), this->commandsProcessor.directionMap);
-//                ("move: Moving " + commands->at(0));
-//            } catch(std::string query) {
-//                displayStatus("move: A direction was expected but no correct one was given");
-//            }
-//        } else {
-//            displayStatus ("move: Incorrect amount of arguments specified");
-//        }
-//    }
-//    }
+    switch(result){
+    case vswitch: {
+        std::string arg = commands->at(0);
+        view_switch(arg);
+        break;
+    }
+    case pmove: {
+        if (commands->size() == 2) {
+            std::string xString = commands->at(1);
+            std::string yString = commands->at(0);
+            int xInt;
+            int yInt;
+            try {
+                xInt = std::stoi(xString);
+                yInt = std::stoi(yString);
+                ("pmove: Moving to " + xString + "," + yString);
+            } catch (const std::exception &e) {
+                displayStatus ("move: A coordinate pair was expected but no correct one was given");
+            }
+        } else if (commands->size() == 1) {
+            try {
+                direction = this->commandsProcessor.resolve(commands->at(0), this->commandsProcessor.directionMap);
+                ("move: Moving " + commands->at(0));
+            } catch(std::string query) {
+                displayStatus("move: A direction was expected but no correct one was given");
+            }
+        } else {
+            displayStatus ("move: Incorrect amount of arguments specified");
+        }
+    }
+    }
 }
 
 std::vector<std::string> Controller::splitString(std::string fullString, std::string delimiter) {

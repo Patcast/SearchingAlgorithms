@@ -21,7 +21,7 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 
     player_ptr = new ProtagonistView();
     columns =  GameWorld::Instance()->getTotalColumns();
-    rows = gameWord_ptr->getTotalRows();
+    rows = GameWorld::Instance()->getTotalRows();
     graphScene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
     world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
