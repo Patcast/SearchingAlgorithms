@@ -4,13 +4,14 @@
 #include <QString>
 #include <QTextEdit>
 
+#include "gamestring.h"
 #include "scene.h"
 
 class TextScene : public Scene
 {
 public:
     TextScene();
-    QString gameText;
+    GameString *gameString;
 
     void drawEnemy();
     void drawProtagonist();

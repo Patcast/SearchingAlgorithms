@@ -9,6 +9,7 @@ public:
     Scene(std::string description) : desc(description){};
     virtual void drawEnemy() = 0;
     virtual void drawProtagonist() = 0;
+    // virtual void drawSpecialFigures() = 0;
     virtual void drawTile() = 0;
     virtual void drawHealthPack() = 0;
     virtual void drawMovement() = 0;

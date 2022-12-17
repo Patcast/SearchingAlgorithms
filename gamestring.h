@@ -9,6 +9,7 @@ public:
     GameString(int sizeH, int sizeV, int windowSizeH = 15, int windowSizeV = 15, int windowOffsetH = 0, int windowOffsetV = 0);
     QString move(int deltaWindowOffsetH, int deltaWindowOffsetV);
     QString resize(int windowSizeH, int windowSizeV);
+    QString getGameString() {return _gameString;};
 private:
     int TILE_WIDTH = 3;
     int TILE_HEIGHT = 1;
@@ -23,6 +24,12 @@ private:
     QString _generate();
     void _prepareGameString();
     void _generateBorders();
+    std::pair<int, int> _getBoardCoord(std::pair<int,int> gameCoord);
+    int _getLineLength();
+    int _getStartOfLine(int lineNumber);
+    void _setElement(std::pair<int,int> gameCoord, QChar element);
+    int _getBoxCenterInLine(int xCoord);
+    int _getStringIndex(int xCoord, int yCoord);
 
     static QString _getBoxSegment(bool starter, int line);
     static QString _getBoxLine(bool starter, int line, int amount);
