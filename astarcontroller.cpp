@@ -8,7 +8,6 @@ AStarController::AStarController()
     aStar = std::make_unique <AStar>(gameWord_ptr->getTotalRows(),gameWord_ptr->getTotalColumns());
     aStar->setGameWord_ptr(gameWord_ptr);
     gameWord_ptr->testing();
-
 }
 
 void AStarController::runDijktra(int start_index, int goal_index)

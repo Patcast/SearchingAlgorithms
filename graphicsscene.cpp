@@ -16,18 +16,17 @@
 
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
-
-
     gameWord_ptr = GameWorld::Instance(":/images/maze2.png", 60, 20, 100.0);
     player_ptr = new ProtagonistView();
     columns = gameWord_ptr->getTotalColumns();
     rows = gameWord_ptr->getTotalRows();
-    graphScene = new QGraphicsScene();
+    scene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
     world->setPixmap(QPixmap(":/images/maze2.png").scaledToHeight(stepsize*rows));
     //stepsize*rows
     world->setZValue(0.5);
-    graphScene->addItem(world);
+    scene->addItem(world);
+    //scene->addItem(world);
 
 /*  test showValue
  *  QGraphicsTextItem * text = new QGraphicsTextItem();
@@ -45,7 +44,8 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     //player_ptr->place(gameWord_ptr->protagonist->getXPos(), gameWord_ptr->protagonist->getYPos(),stepsize);
     player_ptr->place(6,10,stepsize);
     player_ptr->setZValue(1);
-    graphScene->addItem(player_ptr);
+    scene->addItem(player_ptr);
+    //scene->addItem(player_ptr);
     BeenThereDoneThat();
 
     int index = 6*columns+8;
@@ -95,9 +95,10 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     }
 */
     drawEnemy();
+    //QGraphicsView *view = new QGraphicsView(scene);
 
 
-    QGraphicsView *view = new QGraphicsView(graphScene);
+    QGraphicsView *view = new QGraphicsView(scene);
     this->widget = view;
 }
 
@@ -110,14 +111,16 @@ void GraphicsScene::drawEnemy(){
                     enemyView *e = new enemyView();
                     e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
                     showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    graphScene->addItem(e);
+                    scene->addItem(e);
+                    //scene->addItem(e);
                     i++;
                     }
                 else{
                     healthPackView *e = new healthPackView();
                     e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
                     showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    graphScene->addItem(e);
+                    scene->addItem(e);
+                    //scene->addItem(e);
                     }
                 }
             }
@@ -127,7 +130,8 @@ void GraphicsScene::drawEnemy(){
 void GraphicsScene::drawDeathEnemy(Enemy en){
     enemyView * e = new enemyView();
     e->defeated(en.getXPos(),en.getYPos());
-    graphScene->addItem(e);
+    scene->addItem(e);
+    //scene->addItem(e);
 }
 
 void GraphicsScene::BeenThereDoneThat()
@@ -136,7 +140,8 @@ void GraphicsScene::BeenThereDoneThat()
     tile->setRect(player_ptr->xPos,player_ptr->yPos,stepsize,stepsize);
     tile->setBrush(QBrush(QColor(50, 124,252,100)));
     tile->setZValue(0.7);
-    graphScene->addItem(tile);
+    scene->addItem(tile);
+    //scene->addItem(tile);
 }
 
 void GraphicsScene::highLightTiles(int index)
@@ -145,7 +150,8 @@ void GraphicsScene::highLightTiles(int index)
     tile->setRect(stepsize* index%columns,stepsize* index/columns,stepsize,stepsize);
     tile->setBrush(QBrush(QColor(50, 250,128,100)));
     tile->setZValue(0.7);
-    graphScene->addItem(tile);
+    scene->addItem(tile);
+    //scene->addItem(tile);
 }
 
 void GraphicsScene::showValue(int x, int y, int value)
@@ -157,14 +163,16 @@ void GraphicsScene::showValue(int x, int y, int value)
     text->setZValue(1.2);
     QColor color(255, 0, 0); // red
     text->setDefaultTextColor(color);
-    graphScene->addItem(text);
+    scene->addItem(text);
+    //scene->addItem(tile);
 }
 
 
 void GraphicsScene::drawProtagonist(){
     player_ptr = new ProtagonistView();
 //    player_ptr->place(gameWord_ptr->getProtagonist()->getXPos(), gameWord_ptr->getProtagonist()->getYPos(),stepsize);
-    graphScene->addItem(player_ptr);
+    scene->addItem(player_ptr);
+    //scene->addItem(tile);
 }
 void GraphicsScene::drawTile(){
 //    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
@@ -183,7 +191,6 @@ void GraphicsScene::drawHealthPack(){
 }
 void GraphicsScene::drawMovement(){
     player_ptr->move(gameWord_ptr->protagonist->getXPos(),gameWord_ptr->protagonist->getYPos());
-
 
 /*    // if right
     for(int y = ypos-rangeAroundPro; y<ypos+rangeAroundPro;y++ ){
@@ -215,6 +222,7 @@ void GraphicsScene::drawMovement(){
         }
     }
 */
+
 }
 void GraphicsScene::zoomIn(){
     QGraphicsView* viewWidget = static_cast<QGraphicsView*>(this->widget);
@@ -224,5 +232,3 @@ void GraphicsScene::zoomOut(){
     QGraphicsView* viewWidget = static_cast<QGraphicsView*>(this->widget);
     viewWidget->scale(0.8, 0.8);
 }
-
-

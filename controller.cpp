@@ -1,7 +1,9 @@
 #include "controller.h"
 #include "ui_mainwindow.h"
+#include "scene.h"
 #include <vector>
 #include <sstream>
+#include "graphicsscene.h"
 
 Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) : controllerWindow(window){
     // window.children()
@@ -9,10 +11,15 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     this->addView(primaryScene);
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
-    gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
-    window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
-}
+    //gameWord_ptr= GameWorld::Instance(":/images/worldmap.png",20,30,100.0);
 
+    window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
+
+
+    window->connect(ui->pushButton, &QPushButton::pressed,this,qOverload<>(&Controller::pushButton));
+    window->connect(ui->pushButton_2, &QPushButton::pressed,this,qOverload<>(&Controller::pushButton1));
+
+}
 
 void Controller::view_switch(std::string newState) {
     try {
@@ -24,8 +31,6 @@ void Controller::view_switch(std::string newState) {
     catch (std::string errorScene) {
         displayStatus("switch: scene '" + errorScene + "' not found");
     }
-
-
 }
 
 void Controller::addView(std::shared_ptr<Scene> scene) {
@@ -57,9 +62,28 @@ void Controller::handleCommand() {
     handleCommand(funct, &commands);
 }
 
+
+void Controller::updateHE(){
+    this->controllerWindow->ChangeEnergy(gameWord_ptr->protagonist->getEnergy());
+    this->controllerWindow->ChangeHealth(gameWord_ptr->protagonist->getHealth());
+}
+
+void Controller::pushButton(){
+    //this->controllerWindow->ui->
+}
+
+void Controller::pushButton1()
+{
+    this->controllerWindow->ZoomOut();
+}
+
+
+
+
 void Controller::move(NextDirection directionOfMovement)
 {
     gameWord_ptr->moveProtagonist(directionOfMovement);
+    updateHE();
     //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
 }
 

@@ -10,7 +10,7 @@ class GraphicsScene : public Scene
 {
 public:
     GraphicsScene();
-    QGraphicsScene *graphScene;
+    QGraphicsScene *scene;
 //    std::vector<std::unique_ptr<Tile>> tiles;
 
     int xpos;
@@ -30,12 +30,12 @@ public:
     void BeenThereDoneThat();
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
-
 public slots:
-    void zoomIn();
-    void zoomOut();
+    virtual void zoomIn();
+    virtual void zoomOut();
 
 private:
+    //QGraphicsScene * scene;
     ProtagonistView *player_ptr;
     GameWorld *gameWord_ptr;
 };
