@@ -1,6 +1,7 @@
 #include "astar.h"
 #include <iostream>
 #include <iomanip>
+#include "gameworld.h"
 
 
 
@@ -11,14 +12,12 @@ AStar::AStar(int totalRows, int totalColumns) : totalRows(totalRows),
 }
 
 
-
-
-int AStar::aStarSearch(int start_index, int goalIndex, float heuristic)
+int AStar::aStarSearch(int start_index, int goalIndex)
 {
 
     std::priority_queue<queuePair, std::vector<queuePair>> openQueue;
     int topIndex;
-    setHeuristicFactor(heuristic);
+
 
     std::for_each( GameWorld::Instance()->getNodes().begin(),  GameWorld::Instance()->getNodes().end(), [](const std::unique_ptr<Node>& node_ptr) {
         node_ptr->resetNodeForSearch();
@@ -39,7 +38,6 @@ int AStar::aStarSearch(int start_index, int goalIndex, float heuristic)
         }
         if( ! GameWorld::Instance()->getNodes()[topIndex]->getCompleted()){ // implies that a node with an index in the queue, must exists in nodes[].
             for (int neighborIndex :  GameWorld::Instance()->getNodes()[topIndex]->getNeighborsIndexes()) {
-
                 if(( GameWorld::Instance()->getNodes()[topIndex]-> getCostSoFar() + GameWorld::Instance()->getNodes()[neighborIndex]->getIncomingCost() <=  GameWorld::Instance()->getNodes()[neighborIndex]->getCostSoFar()))
                 {
                     updateNode(goalIndex,neighborIndex,topIndex,openQueue);
@@ -52,7 +50,7 @@ int AStar::aStarSearch(int start_index, int goalIndex, float heuristic)
 }
 
 
-float AStar::heuristic(int neighborIndex, int goalIndex){
+inline float AStar::heuristic(int neighborIndex, int goalIndex){
 
     std::pair<int, int> neighborCoordinates =  GameWorld::Instance()->getCoordinatesFromIndex(neighborIndex);
     std::pair<int, int> goalCoordinates =  GameWorld::Instance()->getCoordinatesFromIndex(goalIndex);
@@ -63,6 +61,19 @@ float AStar::heuristic(int neighborIndex, int goalIndex){
 float AStar::getHeuristicFactor() const
 {
     return heuristicFactor;
+}
+
+std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
+{
+    std::vector<int> searchOutput;
+    int nextNode = aStarSearch(start_index,goal_index);
+    do{
+        //delete print out for big map
+        std::cout << * GameWorld::Instance()->getNodes()[nextNode] << std::endl;
+        searchOutput.push_back(GameWorld::Instance()->getNodes()[nextNode]->getIndex());
+        nextNode = GameWorld::Instance()->getNodes()[nextNode]->getPrevNodeIndex();
+    }while(nextNode!=-1);
+    return searchOutput;
 }
 
 void AStar::setHeuristicFactor(float newHeuristicFactor)
@@ -85,20 +96,12 @@ void AStar::printPathFound(int goalIndex)
 }
 
 
-
-
-
-
-
-
-
-
 inline void AStar::updateNode(int goalIndex,int neighborIndex, int topIndex, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef)
 {
      GameWorld::Instance()->getNodes()[neighborIndex]->setCostSoFar( GameWorld::Instance()->getNodes()[topIndex]->getCostSoFar());
 
      GameWorld::Instance()->getNodes()[neighborIndex]->setPrevNodeIndex(topIndex);
-    openQueueRef.push(std::make_pair((-1)*( GameWorld::Instance()->getNodes()[neighborIndex]->getCostSoFar()+heuristic( GameWorld::Instance()->getNodes()[neighborIndex]->getIndex(),goalIndex)),gameWord_ptr->getNodes()[neighborIndex]->getIndex()));
+     openQueueRef.push(std::make_pair((-1)*( GameWorld::Instance()->getNodes()[neighborIndex]->getCostSoFar()+heuristic( GameWorld::Instance()->getNodes()[neighborIndex]->getIndex(),goalIndex)),GameWorld::Instance()->getNodes()[neighborIndex]->getIndex()));
 }
 
 

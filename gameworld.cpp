@@ -194,7 +194,7 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 {
     while(protagonist==nullptr){
         int index = rand()%(totalRows*totalColumns);
-        if(!(nodes[index]->getSpecialFigure_ptr()==nullptr)&& nodes[index]->getIncomingCost()<10){
+        if((nodes[index]->getSpecialFigure_ptr()==nullptr)&& nodes[index]->getIncomingCost()<10){
             protagonist= std::make_unique<Protagonist>();
             protagonist->setEnergy(startingEnergy);
             std::pair<int,int> coordinatesProtagonist= getCoordinatesFromIndex(index);

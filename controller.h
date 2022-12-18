@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "astarcontroller.h"
+#include "astar.h"
 #include "commands.h"
 #include "scene.h"
 #include "mainwindow.h"
@@ -24,7 +24,7 @@ public:
     std::vector<std::pair<int,int>> poisonousTiles;
 
     Commands commandsProcessor = Commands();
-    void move(int x, int y);
+    void move(int row, int col);
     void moveAutomatically();
 
 signals:
@@ -39,8 +39,12 @@ signals:
 
 public slots:
     void move(moveDirection directionOfMovement);
+
+    void autoplay();
+
     void highlightPath(std::vector<std::pair<int,int>> coords);
     void removeHighlightPath();
+
 
 private slots:
     void handleCommand();
@@ -55,10 +59,14 @@ protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
-    std::unique_ptr<AStarController> aStarController;
+
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
+    unsigned long currentNodeIndex{0};
+    std::unique_ptr<AStar> aStarPtr;
+
     int timerSpeed = 500;
+
 };
 
 #endif // CONTROLLER_H
