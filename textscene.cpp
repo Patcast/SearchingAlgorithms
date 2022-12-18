@@ -1,10 +1,23 @@
 #include "textscene.h"
+#include "gameworld.h"
 
 TextScene::TextScene() : Scene("text")
 {
+    GameWorld *gameWorld = GameWorld::Instance();
+
+    Protagonist *protagonist = gameWorld->getProtagonist();
+
     // Setting string to game board
-    //this->gameText = getBoxRaster(13,9);
-    this->gameString = new GameString(30,30);
+
+    int hSize = gameWorld->getTotalColumns();
+    int vSize = gameWorld->getTotalRows();
+
+    int DEFAULT_HSIZE = 15;
+    int DEFAULT_VSIZE = 15;
+
+    this->_generate(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,
+                    gameWorld->getSpecialFiguresVector(),
+                    std::make_pair(protagonist->getXPos(), protagonist->getYPos()));
 
     // Adding object to window to display string
     QTextEdit *gameEdit = new QTextEdit;
@@ -21,20 +34,73 @@ TextScene::TextScene() : Scene("text")
     this->widget = gameEdit;
 }
 
-void TextScene::drawEnemy(){
-
+void TextScene::drawEnemy(int xPos, int yPos){
+    this->drawEnemy(std::make_pair(xPos,yPos));
 }
-void TextScene::drawProtagonist(){
+void TextScene::drawEnemy(std::pair<int,int> pos){
+    this->gameString->setElement(pos, QChar('E'));
+}
 
+void TextScene::drawPEnemy(int xPos, int yPos){
+    this->drawPEnemy(std::make_pair(xPos,yPos));
+}
+void TextScene::drawPEnemy(std::pair<int,int> pos){
+    this->gameString->setElement(pos, QChar('F'));
+}
+void TextScene::drawProtagonist(int xPos, int yPos){
+    this->drawProtagonist(std::make_pair(xPos,yPos));
+}
+void TextScene::drawProtagonist(std::pair<int,int> pos) {
+    this->gameString->setElement(pos, QChar('P'));
 }
 void TextScene::drawTile(){
 
 }
-void TextScene::drawHealthPack(){
-
+void TextScene::drawHealthPack(int xPos, int yPos){
+    this->drawHealthPack(std::make_pair(xPos,yPos));
 }
-void TextScene::drawMovement(){
+void TextScene::drawHealthPack(std::pair<int,int> pos){
+    this->gameString->setElement(pos, QChar('H'));
+}
+void TextScene::drawMovement(int xPos, int yPos){
+    GameWorld *gameWorld = GameWorld::Instance();
+    Protagonist *protagonist = gameWorld->getProtagonist();
 
+    int hSize = gameWorld->getTotalColumns();
+    int vSize = gameWorld->getTotalRows();
+
+    int DEFAULT_HSIZE = 15;
+    int DEFAULT_VSIZE = 15;
+
+    this->_generate(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,
+                    gameWorld->getSpecialFiguresVector(),
+                    std::make_pair(protagonist->getXPos(), protagonist->getYPos()));
+}
+
+void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements) {
+    for (auto &element : elements) {
+        if (std::dynamic_pointer_cast<PEnemy>(element)) {
+            this->drawPEnemy(element->getXPos(),element->getYPos());
+        } else if (std::dynamic_pointer_cast<Enemy>(element) != nullptr) {
+            this->drawEnemy(element->getXPos(),element->getYPos());
+        } else if (std::dynamic_pointer_cast<Protagonist>(element) != nullptr) {
+
+        } else {
+            this->drawHealthPack(element->getXPos(),element->getYPos());
+        }
+    }
+}
+
+void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,
+                          const std::vector<std::shared_ptr<Tile>> &elements,
+                          std::pair<int,int> protPos) {
+    int offsetX = protPos.first - (floor((float) DEFAULT_HSIZE / (float) 2));
+    int offsetY = protPos.second - (floor((float) DEFAULT_VSIZE / (float) 2));
+
+    gameString = std::make_shared<GameString>(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,offsetX,offsetY);
+
+    this->drawElements(elements);
+    this->drawProtagonist(protPos);
 }
 
 void TextScene::zoomIn()

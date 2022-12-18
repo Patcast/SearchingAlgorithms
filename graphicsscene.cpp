@@ -94,14 +94,14 @@ GraphicsScene::GraphicsScene() : Scene("2d")
         }
     }
 */
-    drawEnemy();
+    drawEnemy(0,0);
 
 
     QGraphicsView *view = new QGraphicsView(graphScene);
     this->widget = view;
 }
 
-void GraphicsScene::drawEnemy(){
+void GraphicsScene::drawEnemy(int xPos, int yPos){
     int i = 0;
     for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
         if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
@@ -174,7 +174,7 @@ void GraphicsScene::showValue(int x, int y, int value)
 }
 
 
-void GraphicsScene::drawProtagonist(){
+void GraphicsScene::drawProtagonist(int xPos, int yPos){
     player_ptr = new ProtagonistView();
 //    player_ptr->place(gameWord_ptr->getProtagonist()->getXPos(), gameWord_ptr->getProtagonist()->getYPos(),stepsize);
     graphScene->addItem(player_ptr);
@@ -186,7 +186,7 @@ void GraphicsScene::drawTile(){
 //    }
 
 }
-void GraphicsScene::drawHealthPack(){
+void GraphicsScene::drawHealthPack(int xPos, int yPos){
 //    for(std::unique_ptr<Tile> &t:gameWord_ptr->healthPacks){
 //        healthPackView * e = new healthPackView();
 //        e.place(e.getYPos(),e.getyPos(),stepsize);
@@ -194,7 +194,7 @@ void GraphicsScene::drawHealthPack(){
 //        std::cout<<t->getXPos()<< std::endl;
 //    }
 }
-void GraphicsScene::drawMovement(){
+void GraphicsScene::drawMovement(int xPos, int yPos){
     player_ptr->move( GameWorld::Instance()->protagonist->getXPos(), GameWorld::Instance()->protagonist->getYPos());
 
 
