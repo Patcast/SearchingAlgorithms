@@ -10,6 +10,9 @@ public:
     QString move(int deltaWindowOffsetH, int deltaWindowOffsetV);
     QString resize(int windowSizeH, int windowSizeV);
     QString getGameString() {return _gameString;};
+    void setElement(std::pair<int,int> gameCoord, QChar element);
+    void removeElement(QChar element);
+    bool isVisible(std::pair<int,int> gameCoord);
 private:
     int TILE_WIDTH = 3;
     int TILE_HEIGHT = 1;
@@ -21,15 +24,15 @@ private:
     int _windowOffsetV;
     QString _gameString;
     // std::vector<GroupTile*> _board;
-    QString _generate();
-    void _prepareGameString();
-    void _generateBorders();
     std::pair<int, int> _getBoardCoord(std::pair<int,int> gameCoord);
     int _getLineLength();
     int _getStartOfLine(int lineNumber);
-    void _setElement(std::pair<int,int> gameCoord, QChar element);
     int _getBoxCenterInLine(int xCoord);
     int _getStringIndex(int xCoord, int yCoord);
+    int _cleanOffsetH(int potOffset);
+    int _cleanOffsetV(int potOffset);
+    int _cleanOffset(int boardSize, int viewSize, int potOffset);
+    bool _isVisible(int offset, int coord, int viewSize);
 
     static QString _getBoxSegment(bool starter, int line);
     static QString _getBoxLine(bool starter, int line, int amount);

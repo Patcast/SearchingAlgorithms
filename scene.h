@@ -7,11 +7,11 @@ class Scene
 {
 public:
     Scene(std::string description) : desc(description){};
-    virtual void drawEnemy() = 0;
-    virtual void drawProtagonist() = 0;
+    virtual void drawEnemy(int xPos, int yPos) = 0;
+    virtual void drawProtagonist(int xPos, int yPos) = 0;
     virtual void drawTile() = 0;
-    virtual void drawHealthPack() = 0;
-    virtual void drawMovement() = 0;
+    virtual void drawHealthPack(int xPos, int yPos) = 0;
+    virtual void drawMovement(int xPos, int yPos) = 0;
 
     virtual void zoomIn() = 0;
     virtual void zoomOut() = 0;

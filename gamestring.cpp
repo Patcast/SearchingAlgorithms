@@ -8,8 +8,40 @@ GameString::GameString(int sizeH, int sizeV, int windowSizeH, int windowSizeV, i
     this->_sizeV = sizeV;
     this->_windowSizeH = windowSizeH;
     this->_windowSizeV = windowSizeV;
-    this->_windowOffsetH = windowOffsetH;
-    this->_windowOffsetV = windowOffsetV;
+    this->_windowOffsetH = _cleanOffsetH(windowOffsetH);
+    this->_windowOffsetV = _cleanOffsetV(windowOffsetV);
+}
+
+bool GameString::isVisible(std::pair<int,int> gameCoord) {
+    return (_isVisible(this->_windowOffsetH, gameCoord.first, this->_windowSizeH) &&
+            _isVisible(this->_windowOffsetV, gameCoord.second, this->_windowSizeV));
+}
+
+bool GameString::_isVisible(int offset, int coord, int viewSize) {
+    return (coord >= offset) && (coord < (offset + viewSize));
+}
+
+void GameString::removeElement(QChar element) {
+    this->_gameString.replace(element, QChar(' '));
+}
+
+int GameString::_cleanOffsetH(int potOffset) {
+    return _cleanOffset(this->_sizeH, this->_windowSizeH, potOffset);
+}
+
+int GameString::_cleanOffsetV(int potOffset) {
+    return _cleanOffset(this->_sizeV, this->_windowSizeV, potOffset);
+}
+
+int GameString::_cleanOffset(int boardSize, int viewSize, int potOffset) {
+    int max = boardSize - viewSize;
+    if (potOffset < 0) {
+        return 0;
+    } else if (potOffset > max) {
+        return max;
+    } else {
+        return potOffset;
+    }
 }
 
 int GameString::_getLineLength() {
@@ -22,8 +54,8 @@ int GameString::_getStartOfLine(int yCoord) {
 }
 
 std::pair<int, int> GameString::_getBoardCoord(std::pair<int,int> gameCoord) {
-    int intBoardX = gameCoord.first + this->_windowOffsetH;
-    int intBoardY = gameCoord.second + this->_windowOffsetV;
+    int intBoardX = gameCoord.first - this->_windowOffsetH;
+    int intBoardY = gameCoord.second - this->_windowOffsetV;
 
     return std::make_pair(intBoardX, intBoardY);
 }
@@ -42,10 +74,12 @@ int GameString::_getBoxCenterInLine(int xCoord) {
     return result;
 }
 
-void GameString::_setElement(std::pair<int,int> gameCoord, QChar element) {
-    std::pair<int, int> boardCoord = this->_getBoardCoord(gameCoord);
-    int index = this->_getStringIndex(boardCoord.first, boardCoord.second);
-    _gameString[index] = element;
+void GameString::setElement(std::pair<int,int> gameCoord, QChar element) {
+    if (this->isVisible(gameCoord)) {
+        std::pair<int, int> boardCoord = this->_getBoardCoord(gameCoord);
+        int index = this->_getStringIndex(boardCoord.first, boardCoord.second);
+        _gameString[index] = element;
+    }
 }
 
 QString GameString::_getBoxSegment(bool starter, int line) {

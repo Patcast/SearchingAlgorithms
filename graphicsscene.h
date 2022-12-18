@@ -20,11 +20,11 @@ public:
     int rows;
     int columns;
 
-    void drawEnemy();
-    void drawProtagonist();
+    void drawEnemy(int xPos, int yPos);
+    void drawProtagonist(int xPos, int yPos);
     void drawTile();
-    void drawHealthPack();
-    void drawMovement();
+    void drawHealthPack(int xPos, int yPos);
+    void drawMovement(int xPos, int yPos);
     void drawDeathEnemy(Enemy en);
     int stepsize = 50;
     void BeenThereDoneThat();
