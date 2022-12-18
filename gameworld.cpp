@@ -230,7 +230,7 @@ inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
         }
         levelOfPoisonousAttack++;
     }
-    else if(levelOfPoisonousAttack==1){
+    else if(levelOfPoisonousAttack==2){
         for(int i =0;i<25;i++){
             int nRow = getCoordinatesFromIndex(index).first+tileOffSets2[i][0];
             int nCol = getCoordinatesFromIndex(index).second+tileOffSets2[i][1];
