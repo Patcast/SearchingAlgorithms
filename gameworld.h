@@ -49,6 +49,7 @@ signals:
 private slots:
      void poisonousAttack(int poisonValue);
      void explosiveAttack(int explosiveValue, int row, int col);
+     void oneEnemyDied();
 private:
 
     static GameWorld * instance;

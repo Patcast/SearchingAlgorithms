@@ -36,6 +36,9 @@ void GameWorld::loadEnemies(World &w)
         int index =getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos());
         specialFiguresVector.push_back(std::move(enemiesList[i]));
         nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+        if(Enemy* EnemyReference =dynamic_cast<Enemy*>(nodes[index]->getSpecialFigure_ptr().get())){
+            connect(EnemyReference,SIGNAL(dead()),this,SLOT(oneEnemyDied()));
+        }
         if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[index]->getSpecialFigure_ptr().get())){
             connect(pEnemyReference,SIGNAL(poisonLevelUpdated(int)),this,SLOT(poisonousAttack(int)));
         }
@@ -131,17 +134,6 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
                 enemyReference->setDefeated(true);
             }
         }
-        if(enemyReference->getDefeated()==true){
-            if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-                emit enemyDied(1);
-        }
-            if(Enemy* pEnemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-                emit enemyDied(0);
-            }
-            if(XEnemy* pEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-                emit enemyDied(2);
-            }
-        }
     }
     else{
         emit healthPackedUsed(specialFigureIndex);
@@ -174,6 +166,26 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
         if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
         emit explosionTileInScene(getIndexFromCoordinates(row,col),explosiveValue);
     }
+}
+
+void GameWorld::oneEnemyDied()
+{
+    if(Enemy* EnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        //emit enemyDied();
+    }
+//    if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+//        levelOfPoisonousAttack=0;
+//        pEnemyReference->poison();
+//    }
+//    else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+//        xEnemyReference->generateExplosions();
+//    }
+//    else {
+//        protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+//        enemyReference->setDefeated(true);
+//    }
+
+
 }
 
 int GameWorld::getDestinationIndex(moveDirection direction, int row, int column){
