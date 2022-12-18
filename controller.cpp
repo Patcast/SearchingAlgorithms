@@ -92,14 +92,29 @@ void Controller::autoplay()
 void Controller::move(int row, int col)
 {
     std::cout<<row<<"//"<<col<<std::endl;
-    listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
-    for (auto ind: listOfIndexes){
-        auto coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
-        this->highlightPath(coords);
+
+    std::cout<<GameWorld::Instance()->getIndexFromCoordinates(row,col)<<std::endl;
+    if(GameWorld::Instance()->getIndexFromCoordinates(row,col)<GameWorld::Instance()->totalColumns*GameWorld::Instance()->totalRows&&GameWorld::Instance()->getIndexFromCoordinates(row,col)>=0){
+        if(GameWorld::Instance()->getNodes()[GameWorld::Instance()->getIndexFromCoordinates(row,col)]->getIncomingCost()<10000){
+            listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
+            // the tiles are highlighted
+            for (auto ind: listOfIndexes){
+                auto coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
+                this->highlightPath(coords);
+            }
+            currentNodeIndex=listOfIndexes.size()-2;
+            this->moveAutomatically();
+            movementTimer->start(1000);
+
+        }
+        else  std::cout<<"index of a wall"<<std::endl;
+
     }
-    currentNodeIndex=listOfIndexes.size()-2;
-    this->moveAutomatically();
-    movementTimer->start(timerSpeed);
+    else std::cout<<"index out of bounds "<<std::endl;
+
+
+
+
 }
 
 void Controller::moveAutomatically() {
@@ -217,12 +232,8 @@ void Controller::displayStatus(std::string error) {
 }
 
 void Controller::setHeuristic(int heuristic) {
-    if (heuristic < 0) {
-        heuristic = 0;
-    } else if (heuristic > 100) {
-        heuristic = 100;
-    }
-    float inputHeuristic= heuristic/100;
+
+    float inputHeuristic= (float)heuristic/60;
     aStarPtr->setHeuristicFactor(inputHeuristic);
 
     this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);

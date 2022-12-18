@@ -31,62 +31,14 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 
     drawProtagonist(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
 
-/*  test showValue
- *  QGraphicsTextItem * text = new QGraphicsTextItem();
-    int value = 15;
-    text->setPlainText(QVariant(value).toString());
-    text->setX(8*50);
-    text->setY(5*50-25);
-    text->setZValue(1.2);
-    QColor color(255, 0, 0); // red
-    text->setDefaultTextColor(color);
-    graphScene->addItem(text);
-*/
+
 
 
     //player_ptr->place(gameWord_ptr->protagonist->getXPos(), gameWord_ptr->protagonist->getYPos(),stepsize);
     player_ptr->place(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos(),stepsize);
     player_ptr->setZValue(1);
     scene->addItem(player_ptr);
-//    // std::cout<<gameWord_ptr->protagonist->getXPos()<<gameWord_ptr->protagonist->getYPos() << std::endl;
 
-//    for(std::unique_ptr<Enemy> &t:gameWord_ptr->enemies){
-//        QGraphicsPixmapItem * e = new QGraphicsPixmapItem;
-//        e->setPixmap(QPixmap(":/images/Goomba.png").scaled(50,50));
-//        e->setPos(t->getXPos()*50,t->getYPos()*50);
-//        e->setZValue(0.8);
-//        graphScene->addItem(e);
-//    }
-
-//    for(std::unique_ptr<Tile> &t:gameWord_ptr->healthPacks){
-//        QGraphicsPixmapItem * e = new QGraphicsPixmapItem;
-//        e->setPixmap(QPixmap(":/images/HealthPack.jpg").scaled(50,50));
-//        e->setPos(t->getXPos()*50,t->getYPos()*50);
-//        e->setZValue(0.8);
-//        graphScene->addItem(e);
-//        std::cout<<t->getXPos()<< std::endl;
-//    }
-
-/*    for(std::optional<std::unique_ptr<Tile>> &t:gameWord_ptr->specialFigures){
-        if(t.has_value()){
-            if(dynamic_cast<Enemy>(*t.value()) == ){
-                QGraphicsPixmapItem * e = new QGraphicsPixmapItem;
-                e->setPixmap(QPixmap(":/images/HealthPack.jpg").scaled(50,50));
-                e->setPos(t.value()->getXPos()*50,t.value()->getYPos()*50);
-                e->setZValue(0.8);
-                graphScene->addItem(e);
-
-            }
-            else{
-                QGraphicsPixmapItem * e = new QGraphicsPixmapItem;
-                e->setPixmap(QPixmap(":/images/Goomba.png").scaled(50,50));
-                e->setPos(t.value()->getXPos()*50,t.value()->getYPos()*50);
-                e->setZValue(0.8);
-                graphScene->addItem(e);
-            }
-        }
-    }
-*/
     drawAll();
     drawDeathEnemy(1, 1);
     drawEmptyHealtPack(0, 1);

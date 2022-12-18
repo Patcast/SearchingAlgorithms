@@ -15,38 +15,41 @@ AStar::AStar(int totalRows, int totalColumns) : totalRows(totalRows),
 int AStar::aStarSearch(int start_index, int goalIndex)
 {
 
-    std::priority_queue<queuePair, std::vector<queuePair>> openQueue;
-    int topIndex;
+        std::priority_queue<queuePair, std::vector<queuePair>> openQueue;
+        int topIndex;
+        std::for_each( GameWorld::Instance()->getNodes().begin(),  GameWorld::Instance()->getNodes().end(), [](const std::unique_ptr<Node>& node_ptr) {
+            node_ptr->resetNodeForSearch();
+        });
+         GameWorld::Instance()->getNodes()[start_index]->setCostSoFarToZero();
 
+        openQueue.push(std::make_pair(0,start_index));
+        std::cout << "aStar search: Start-> "<<start_index<<", Goal-> " <<goalIndex<< std::endl;
 
-    std::for_each( GameWorld::Instance()->getNodes().begin(),  GameWorld::Instance()->getNodes().end(), [](const std::unique_ptr<Node>& node_ptr) {
-        node_ptr->resetNodeForSearch();
-    });
-     GameWorld::Instance()->getNodes()[start_index]->setCostSoFarToZero();
+        while (!openQueue.empty()) {
 
-    openQueue.push(std::make_pair(0,start_index));
-    std::cout << "aStar search: Start-> "<<start_index<<", Goal-> " <<goalIndex<< std::endl;
+            topIndex = openQueue.top().second;
+            openQueue.pop();
 
-    while (!openQueue.empty()) {
+            if (topIndex == goalIndex) {
+                  std::cout << "Goal Found"<< std::endl;
 
-        topIndex = openQueue.top().second;
-        openQueue.pop();
-
-        if (topIndex == goalIndex) {
-              std::cout << "Goal Found"<< std::endl;
-              break;
-        }
-        if( ! GameWorld::Instance()->getNodes()[topIndex]->getCompleted()){ // implies that a node with an index in the queue, must exists in nodes[].
-            for (int neighborIndex :  GameWorld::Instance()->getNodes()[topIndex]->getNeighborsIndexes()) {
-                if(( GameWorld::Instance()->getNodes()[topIndex]-> getCostSoFar() + GameWorld::Instance()->getNodes()[neighborIndex]->getIncomingCost() <=  GameWorld::Instance()->getNodes()[neighborIndex]->getCostSoFar()))
-                {
-                    updateNode(goalIndex,neighborIndex,topIndex,openQueue);
-                }
+                  std::cout << "Cost of path"<<GameWorld::Instance()->getNodes()[topIndex]->getCostSoFar()<< std::endl;
+                  break;
             }
-             GameWorld::Instance()->getNodes()[topIndex]->setCompleted(true);
+            if( ! GameWorld::Instance()->getNodes()[topIndex]->getCompleted()){ // implies that a node with an index in the queue, must exists in nodes[].
+                for (int neighborIndex :  GameWorld::Instance()->getNodes()[topIndex]->getNeighborsIndexes()) {
+                    if(( GameWorld::Instance()->getNodes()[topIndex]-> getCostSoFar() + GameWorld::Instance()->getNodes()[neighborIndex]->getIncomingCost() <=  GameWorld::Instance()->getNodes()[neighborIndex]->getCostSoFar()))
+                    {
+                        updateNode(goalIndex,neighborIndex,topIndex,openQueue);
+                    }
+                }
+                 GameWorld::Instance()->getNodes()[topIndex]->setCompleted(true);
+            }
         }
-    }
-    return topIndex;
+        return topIndex;
+
+
+
 }
 
 
@@ -60,6 +63,7 @@ inline float AStar::heuristic(int neighborIndex, int goalIndex){
 
 float AStar::getHeuristicFactor() const
 {
+
     return heuristicFactor;
 }
 
@@ -68,8 +72,7 @@ std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
     std::vector<int> searchOutput;
     int nextNode = aStarSearch(start_index,goal_index);
     do{
-        //delete print out for big map
-        std::cout << * GameWorld::Instance()->getNodes()[nextNode] << std::endl;
+
         searchOutput.push_back(GameWorld::Instance()->getNodes()[nextNode]->getIndex());
         nextNode = GameWorld::Instance()->getNodes()[nextNode]->getPrevNodeIndex();
     }while(nextNode!=-1);
@@ -79,6 +82,7 @@ std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
 void AStar::setHeuristicFactor(float newHeuristicFactor)
 {
     heuristicFactor = newHeuristicFactor;
+    std::cout<<heuristicFactor<<std::endl;
 }
 
 

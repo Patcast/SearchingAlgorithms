@@ -87,6 +87,7 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
     totalRows=newRows;
     totalColumns=newColumns;
+    std::cout<<totalRows<<"x"<<totalColumns<<std::endl;
 }
 
 
