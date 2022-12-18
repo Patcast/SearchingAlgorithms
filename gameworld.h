@@ -46,6 +46,7 @@ signals:
     void healthPackedUsed(int specialFigureIndex);
     void  poisonTileInScene(int index,int poisonValue);//index where the protagonist is poisoned
     void  explosionTileInScene(int index,int explosionValue);//index where the protagonist is burned
+    void highlightPath(std::vector<std::pair<int,int>> coords);
 private slots:
      void poisonousAttack(int poisonValue);
      void explosiveAttack(int explosiveValue, int row, int col);

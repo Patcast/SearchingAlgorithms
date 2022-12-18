@@ -32,6 +32,8 @@ public:
     void BeenThereDoneThat();
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
+    void drawHighlight(int xPos, int yPos);
+    void removeHighlight();
 
 public slots:
     void zoomIn();

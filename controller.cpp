@@ -171,3 +171,19 @@ std::vector<std::string> Controller::splitString(std::string fullString, std::st
 void Controller::displayStatus(std::string error) {
     this->controllerWindow->ui->label->setText(QString::fromStdString(error));
 }
+
+void Controller::highlightPath(std::vector<std::pair<int,int>> coords) {
+    for (auto &coord : coords) {
+        for (auto &scene : this->sceneCollection) {
+            scene->drawHighlight(coord.first, coord.second);
+        }
+    }
+
+    QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
+}
+
+void Controller::removeHighlightPath() {
+    for (auto &scene : this->sceneCollection) {
+        scene->removeHighlight();
+    }
+}

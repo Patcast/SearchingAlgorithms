@@ -124,3 +124,10 @@ void TextScene::zoomOut()
 {
 
 }
+
+void TextScene::drawHighlight(int xPos, int yPos) {
+
+}
+void TextScene::removeHighlight() {
+
+}
