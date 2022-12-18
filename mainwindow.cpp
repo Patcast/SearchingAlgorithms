@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qevent.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //ui->graphicsView->setScene(scene);
     ChangeHealth(50);
+    ui->lineEdit->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +52,39 @@ void MainWindow::heuristicsValue()
 {
     heuristics = ui->HeuristicsInput->value();
     //std::cout<<heuristics<< std::endl;
+}
+
+bool MainWindow::eventFilter(QObject* obj, QEvent *event)
+{
+    if (obj == ui->lineEdit)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if (keyEvent->key() == Qt::Key_Up)
+            {
+                 emit arrowPress(up);
+                 return true;
+            }
+            else if(keyEvent->key() == Qt::Key_Down)
+            {
+                emit arrowPress(down);
+                return true;
+            }
+            else if(keyEvent->key() == Qt::Key_Left)
+            {
+                emit arrowPress(left);
+                return true;
+            }
+            else if(keyEvent->key() == Qt::Key_Right)
+            {
+                emit arrowPress(right);
+                return true;
+            }
+        }
+        return false;
+    }
+    return QMainWindow::eventFilter(obj, event);
 }
 
 

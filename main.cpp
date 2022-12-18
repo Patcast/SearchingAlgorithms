@@ -32,8 +32,6 @@ int main(int argc, char *argv[])
     controller.addView(sharedTextScene);
     window.show();
     window.setSignalsFromProtagnist();
-    controller.move(UP);
-    controller.move(UP);
     AStarController aStarController;
 //    aStarController.executeBreadthFirstSearch(0, 62);
 

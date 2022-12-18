@@ -1,5 +1,5 @@
 # include "gameworld.h"
-#include "game_config.h"
+#include "commands.h"
 #include "node.h"
 #include "xenemy.h"
 #include <iostream>
@@ -101,10 +101,13 @@ int GameWorld::getTotalColumns() const
     return totalColumns;
 }
 
-int GameWorld::moveProtagonist(NextDirection direction)
+int GameWorld::moveProtagonist(moveDirection direction)
 {
-
     int destinationIndex = getDestinationIndex(direction,protagonist->getYPos(),protagonist->getXPos());
+    return moveAdjacent(destinationIndex);
+}
+
+int GameWorld::moveAdjacent(int destinationIndex) {
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
         std::cout<<"moving"<<std::endl;
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
@@ -155,19 +158,19 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
     }
 }
 
-int GameWorld::getDestinationIndex(NextDirection direction, int row, int column){
+int GameWorld::getDestinationIndex(moveDirection direction, int row, int column){
     int newRow =row,newCol=column;
     switch(direction){
-        case UP:
+        case up:
             --newRow;
             break;
-        case DOWN:
+        case down:
             ++newRow;
             break;
-        case RIGHT:
+        case right:
             ++newCol;
             break;
-        case LEFT:
+        case left:
             --newCol;
             break;
     }

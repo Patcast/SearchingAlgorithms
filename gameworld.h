@@ -1,11 +1,11 @@
 #ifndef GAMEWORLD_H
 #define GAMEWORLD_H
 
+#include "commands.h"
 #include "node.h"
 #include "world.h"
 #include <QObject>
 #include <mutex>
-#include"game_config.h"
 
 
 class GameWorld : public QObject
@@ -34,7 +34,8 @@ public:
     const std::vector<std::shared_ptr<Tile> > &getSpecialFiguresVector() const;
     const std::vector<std::unique_ptr<Node> > &getNodes() const;
     std::vector<std::shared_ptr<Tile>> specialFiguresVector;
-    int moveProtagonist(NextDirection direction);
+    int moveProtagonist(moveDirection direction);
+    int moveAdjacent(int destinationIndex);
     std::vector<std::unique_ptr<Node>> nodes;
     void testing();
     int totalRows,totalColumns;
@@ -62,7 +63,7 @@ private:
     int poisonOfAttack{0};
 
     void activateSpecialFigure(int specialFigureIndex);
-    int getDestinationIndex(NextDirection direction, int row, int column);
+    int getDestinationIndex(moveDirection direction, int row, int column);
     std::vector<int> getNeighboursTileToPoisonIndex(int index);
 protected:
     GameWorld(){}

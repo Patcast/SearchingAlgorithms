@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "commands.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
 
@@ -18,6 +19,10 @@ public:
     Ui::MainWindow *ui;
     int heuristics;
     void setSignalsFromProtagnist();
+    bool eventFilter(QObject* obj, QEvent *event);
+
+signals:
+    void arrowPress(moveDirection direction);
 
 public slots:
   void ChangeHealth(int health);
