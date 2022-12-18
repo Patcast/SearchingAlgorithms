@@ -4,7 +4,6 @@
 
 AStarController::AStarController()
 {
-
     aStar = std::make_unique <AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->getTotalColumns());
 
 }
@@ -14,7 +13,7 @@ void AStarController::runDijktra(int start_index, int goal_index)
 //    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,0.0));
 }
 
-void AStarController::runAStar(int start_index, int goal_index,float heuristic)
+void AStarController::runAStar(int start_index, int goal_index)
 {
 
     if(start_index<0||start_index>= GameWorld::Instance()->getTotalColumns()* GameWorld::Instance()->getTotalRows()||goal_index<0||goal_index>= GameWorld::Instance()->getTotalColumns()* GameWorld::Instance()->getTotalRows()){
@@ -23,4 +22,6 @@ void AStarController::runAStar(int start_index, int goal_index,float heuristic)
 //    else  aStar->aStarSearch(start_index,goal_index,heuristic);
 //    else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
 
+void highlightPath(std::vector<std::pair<int,int>> coords) {
+    emit GameWorld::Instance()->highlightPath(coords);
 }

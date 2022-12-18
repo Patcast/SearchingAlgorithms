@@ -19,6 +19,9 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
+    void setHeuristic(int heuristic);
+    void setAnimationSpeed(int speed);
+    std::vector<std::pair<int,int>> poisonousTiles;
 
     Commands commandsProcessor = Commands();
     void move(int row, int col);
@@ -36,22 +39,33 @@ signals:
 
 public slots:
     void move(moveDirection directionOfMovement);
+
     void autoplay();
+
+    void highlightPath(std::vector<std::pair<int,int>> coords);
+    void removeHighlightPath();
+
 
 private slots:
     void handleCommand();
     void posChanged(int x, int y);
     void pushButton();
     void pushButton2();
+    void poisonousTile(std::pair<int,int> coord, int poisonValue);
+    void explosiveTile(std::pair<int,int> coord, int explosiveValue);
+    void removePoisonTile();
 
 protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
+
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
     unsigned long currentNodeIndex{0};
     std::unique_ptr<AStar> aStarPtr;
+
+    int timerSpeed = 500;
 
 };
 

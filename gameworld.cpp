@@ -68,8 +68,6 @@ const QString &GameWorld::getImagePath() const
 
 
 
-
-
 Protagonist*GameWorld::getProtagonist() const
 {
     return protagonist.get();
@@ -154,7 +152,7 @@ void GameWorld::poisonousAttack(int poisonValue)
                 protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getPoisonLevel());
                 std::cout<<"PROTAGONIST POISON ("<<pEnemyReference->getPoisonLevel()<<" )index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
             }
-            emit poisonTileInScene(infectedTiles.back(),poisonValue);
+            emit poisonTileInScene(getCoordinatesFromIndex(infectedTiles.back()),poisonValue);
             infectedTiles.pop_back();
         }
     }
@@ -165,7 +163,7 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
 {
     if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
-        emit explosionTileInScene(getIndexFromCoordinates(row,col),explosiveValue);
+        emit explosionTileInScene(std::make_pair(col,row),explosiveValue);
     }
 }
 

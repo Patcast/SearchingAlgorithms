@@ -29,6 +29,11 @@ public:
     void zoomIn();
     void zoomOut();
     void drawElements(const std::vector<std::shared_ptr<Tile>> &elements);
+    void drawHighlight(int xPos, int yPos);
+    void removeHighlight();
+    void drawPoisonous(int xPos, int yPos);
+    void drawExplosive(int xPos, int yPos);
+    void removePoisonous(int xPos, int yPos);
 
 private:
     void _generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,
