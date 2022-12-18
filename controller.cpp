@@ -98,8 +98,8 @@ void Controller::move(int row, int col)
         if(GameWorld::Instance()->getNodes()[GameWorld::Instance()->getIndexFromCoordinates(row,col)]->getIncomingCost()<10000){
             listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
             // the tiles are highlighted
-            for (auto ind: listOfIndexes){
-                auto coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
+            for (int ind: listOfIndexes){
+                std::pair<int,int> coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
                 this->highlightPath(coords);
             }
             currentNodeIndex=listOfIndexes.size()-2;
