@@ -18,7 +18,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
-    int heuristics;
     void setSignalsFromProtagnist();
     bool eventFilter(QObject* obj, QEvent *event);
 
@@ -28,7 +27,6 @@ signals:
 public slots:
   void ChangeHealth(int health);
   void ChangeEnergy(int energy);
-  void heuristicsValue();
 };
 
 

@@ -107,11 +107,59 @@
    <widget class="QSpinBox" name="HeuristicsInput">
     <property name="geometry">
      <rect>
-      <x>1220</x>
-      <y>140</y>
-      <width>42</width>
+      <x>1181</x>
+      <y>180</y>
+      <width>71</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>50</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>160</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Heuristics</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>1179</x>
+      <y>220</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Animation speed</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="SpeedInput">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>240</y>
+      <width>71</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>50</number>
     </property>
    </widget>
   </widget>
@@ -121,7 +169,7 @@
      <x>0</x>
      <y>0</y>
      <width>1277</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -158,22 +206,6 @@
     <hint type="destinationlabel">
      <x>615</x>
      <y>339</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>HeuristicsInput</sender>
-   <signal>editingFinished()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>heuristicsValue()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>601</x>
-     <y>197</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>599</x>
-     <y>281</y>
     </hint>
    </hints>
   </connection>
