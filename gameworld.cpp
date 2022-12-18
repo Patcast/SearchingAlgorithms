@@ -121,12 +121,11 @@ int GameWorld::moveAdjacent(int destinationIndex) {
 }
 
 void GameWorld::activateSpecialFigure(int specialFigureIndex){
-    if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+    if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
         if(enemyReference->getDefeated()==false){
             if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
                 levelOfPoisonousAttack=0;
                 pEnemyReference->poison();
-
             }
             else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
                 xEnemyReference->generateExplosions();
@@ -138,7 +137,7 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
         }
     }
     else {
-        emit healthPackedUsed(specialFigureIndex) ;
+        emit healthPackedUsed(specialFigureIndex);
         protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
         nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0);
     }
