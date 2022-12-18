@@ -18,7 +18,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
-    int heuristics;
     void setSignalsFromProtagnist();
     bool eventFilter(QObject* obj, QEvent *event);
 

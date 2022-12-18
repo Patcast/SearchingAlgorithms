@@ -7,6 +7,8 @@
 enum baseCommand {
     vswitch = 1,
     pmove = 2,
+    heuristic = 3,
+    speed = 4,
 };
 
 enum moveDirection {

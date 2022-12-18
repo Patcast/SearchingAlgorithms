@@ -52,6 +52,7 @@ void GameWorld::loadEnemies(World &w)
     }
 }
 
+
 void GameWorld::createNodes(World &w)
 {
     std::vector<std::unique_ptr<Tile>> tiles= w.getTiles();
@@ -60,6 +61,7 @@ void GameWorld::createNodes(World &w)
         nodes.emplace_back(std::make_unique<Node>(i,(1-tiles[i]->getValue()),totalRows,totalColumns));
     }
 }
+
 
 const QString &GameWorld::getImagePath() const
 {
@@ -86,6 +88,7 @@ void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
     totalRows=newRows;
     totalColumns=newColumns;
+    std::cout<<totalRows<<"x"<<totalColumns<<std::endl;
 }
 
 
@@ -156,7 +159,7 @@ void GameWorld::poisonousAttack(int poisonValue)
                 protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getPoisonLevel());
                 std::cout<<"PROTAGONIST POISON ("<<pEnemyReference->getPoisonLevel()<<" )index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
             }
-            emit poisonTileInScene(infectedTiles.back(),poisonValue);
+            emit poisonTileInScene(getCoordinatesFromIndex(infectedTiles.back()),poisonValue);
             infectedTiles.pop_back();
         }
     }
@@ -167,7 +170,7 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
 {
     if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
-        emit explosionTileInScene(getIndexFromCoordinates(row,col),explosiveValue);
+        emit explosionTileInScene(std::make_pair(col,row),explosiveValue);
     }
 }
 
@@ -218,7 +221,7 @@ int GameWorld::getDestinationIndex(moveDirection direction, int row, int column)
             break;
     }
     //returns -1 if movement is outside the map.
-    return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
+    return (newRow<totalRows&&newCol<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
 }
 
 
@@ -228,7 +231,7 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 {
     while(protagonist==nullptr){
         int index = rand()%(totalRows*totalColumns);
-        if(!(nodes[index]->getSpecialFigure_ptr()==nullptr)&& nodes[index]->getIncomingCost()<10){
+        if((nodes[index]->getSpecialFigure_ptr()==nullptr)&& nodes[index]->getIncomingCost()<10){
             protagonist= std::make_unique<Protagonist>();
             protagonist->setEnergy(startingEnergy);
             std::pair<int,int> coordinatesProtagonist= getCoordinatesFromIndex(index);
@@ -264,7 +267,7 @@ inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
         }
         levelOfPoisonousAttack++;
     }
-    else if(levelOfPoisonousAttack==1){
+    else if(levelOfPoisonousAttack==2){
         for(int i =0;i<25;i++){
             int nRow = getCoordinatesFromIndex(index).first+tileOffSets2[i][0];
             int nCol = getCoordinatesFromIndex(index).second+tileOffSets2[i][1];

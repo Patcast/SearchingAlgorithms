@@ -92,15 +92,24 @@ void TextScene::drawMovement(int xPos, int yPos){
 
 void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements) {
     for (auto &element : elements) {
-        if (std::dynamic_pointer_cast<PEnemy>(element)) {
-            this->drawPEnemy(element->getXPos(),element->getYPos());
-        } else if (std::dynamic_pointer_cast<Enemy>(element) != nullptr) {
-            this->drawEnemy(element->getXPos(),element->getYPos());
-        } else if (std::dynamic_pointer_cast<XEnemy>(element) != nullptr) {
-            this->drawXEnemy(element->getXPos(),element->getYPos());
+        std::shared_ptr<PEnemy> penemy = std::dynamic_pointer_cast<PEnemy>(element);
+        std::shared_ptr<XEnemy> xenemy = std::dynamic_pointer_cast<XEnemy>(element);
+        std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(element);
+        if (penemy != nullptr) {
+            if (!penemy->getDefeated()) {
+                this->drawPEnemy(element->getXPos(),element->getYPos());
+            }
+        } else if (xenemy != nullptr) {
+            if (!xenemy->getDefeated()) {
+                this->drawXEnemy(element->getXPos(),element->getYPos());
+            }
+        } else if (enemy != nullptr) {
+            if (!enemy->getDefeated()) {
+                this->drawEnemy(element->getXPos(),element->getYPos());
+            }
         } else if (std::dynamic_pointer_cast<Protagonist>(element) != nullptr) {
 
-        } else {
+        } else if (element->getValue() > 0){
             this->drawHealthPack(element->getXPos(),element->getYPos());
         }
     }
@@ -120,9 +129,18 @@ void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_V
     gameString = std::make_shared<GameString>(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,offsetX,offsetY);
 
     this->drawElements(elements);
+    this->drawExtra();
     this->drawProtagonist(protPos);
 
 
+}
+
+void TextScene::drawExtra() {
+    for (auto elem: this->extraElements){
+        auto coords = elem.first;
+        QChar cchar = elem.second;
+        this->gameString->setElement(coords, cchar);
+    }
 }
 
 void TextScene::zoomIn()
@@ -133,4 +151,37 @@ void TextScene::zoomIn()
 void TextScene::zoomOut()
 {
 
+}
+
+void TextScene::drawHighlight(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('*'));
+    this->extraElements.push_back(elem);
+}
+
+void TextScene::removeHighlight(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('*'));
+    this->removeExtra(elem);
+}
+
+void TextScene::drawPoisonous(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('#'));
+    this->extraElements.push_back(elem);
+}
+
+void TextScene::drawExplosive(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('!'));
+    this->extraElements.push_back(elem);
+}
+
+void TextScene::removePoisonous(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('#'));
+    this->removeExtra(elem);
+}
+
+void TextScene::removeExtra(std::pair<std::pair<int,int>,QChar> query) {
+    std::vector<std::pair<std::pair<int,int>,QChar>>::iterator itr = std::find(this->extraElements.begin(), this->extraElements.end(), query);
+
+        if (itr != this->extraElements.cend()) {
+            this->extraElements.erase(itr);
+        }
 }

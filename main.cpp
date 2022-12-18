@@ -1,4 +1,3 @@
-#include "astarcontroller.h"
 #include "controller.h"
 #include "gameworld.h"
 #include "graphicsscene.h"
@@ -14,7 +13,7 @@ std::mutex GameWorld::mutex_;
 int main(int argc, char *argv[])
 {
     GameWorld * gameWord_ptr= GameWorld::Instance();
-    gameWord_ptr->setGameMap(":/images/worldmap.png",20,60,100.0);
+    gameWord_ptr->setGameMap(":/images/maze3.png",20,60,100.0);
 
     QApplication a(argc, argv);
     MainWindow window;
@@ -29,8 +28,7 @@ int main(int argc, char *argv[])
     controller.addView(sharedTextScene);
     window.show();
     window.setSignalsFromProtagnist();
-    AStarController aStarController;
-//    aStarController.executeBreadthFirstSearch(0, 62);
+
 
     return a.exec();
 }

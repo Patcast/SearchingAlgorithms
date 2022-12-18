@@ -1,6 +1,7 @@
 #include "controller.h"
 #include "qtimer.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include "gameworld.h"
@@ -12,16 +13,23 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     movementTimer = new QTimer();
-    GameWorld *gameWorld = GameWorld::Instance();
+
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton_2, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton2));
-    window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
+    window->connect( GameWorld::Instance()->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
     window->connect(gameWorld,&GameWorld::healthPackedUsed,this,qOverload<> (&::Controller::healthPack));
     window->connect(gameWorld,&::GameWorld::enemyDied,this,&::Controller::deadEnemy);
+  
+    window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
+    window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
+    window->connect(GameWorld::Instance(), &GameWorld::poisonTileInScene, this, &Controller::poisonousTile);
+    window->connect(GameWorld::Instance(), &GameWorld::explosionTileInScene, this, &Controller::explosiveTile);
+    aStarPtr=std::make_unique<AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->totalColumns);
+
 }
 
 
@@ -77,26 +85,45 @@ void Controller::move(moveDirection directionOfMovement)
     GameWorld::Instance()->moveProtagonist(directionOfMovement);
 }
 
-void Controller::move(int x, int y)
+void Controller::autoplay()
 {
-    GameWorld *gameWorld = GameWorld::Instance();
 
-    int start = gameWorld->getIndexFromCoordinates(gameWorld->getProtagonist()->getYPos(),gameWorld->getProtagonist()->getXPos());
-    int goal = gameWorld->getIndexFromCoordinates(y,x);
+}
 
-    // aStarController.runAStar(start, goal, ###)
-    // this vector should contain all indexes that lead to the goal
-    // starting at the goal, and moving to the start
-    //this->listOfIndexes.push_back()
-    this->moveAutomatically();
+void Controller::move(int row, int col)
+{
+    std::cout<<row<<"//"<<col<<std::endl;
+
+    std::cout<<GameWorld::Instance()->getIndexFromCoordinates(row,col)<<std::endl;
+    if(GameWorld::Instance()->getIndexFromCoordinates(row,col)<GameWorld::Instance()->totalColumns*GameWorld::Instance()->totalRows&&GameWorld::Instance()->getIndexFromCoordinates(row,col)>=0){
+        if(GameWorld::Instance()->getNodes()[GameWorld::Instance()->getIndexFromCoordinates(row,col)]->getIncomingCost()<10000){
+            listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
+            // the tiles are highlighted
+            for (int ind: listOfIndexes){
+                std::pair<int,int> coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
+                this->highlightPath(coords);
+            }
+            currentNodeIndex=listOfIndexes.size()-2;
+            this->moveAutomatically();
+            movementTimer->start(1000);
+
+        }
+        else  std::cout<<"index of a wall"<<std::endl;
+
+    }
+    else std::cout<<"index out of bounds "<<std::endl;
+
+
+
+
 }
 
 void Controller::moveAutomatically() {
-    int destination = listOfIndexes.at(0);
-    GameWorld::Instance()->moveAdjacent(destination);
-
-    listOfIndexes.pop_back();
-    movementTimer->start(1000);
+    GameWorld::Instance()->moveAdjacent(listOfIndexes[currentNodeIndex]);
+    currentNodeIndex--;
+    if(currentNodeIndex >=listOfIndexes.size()){
+        movementTimer->stop();
+    }
 }
 
 void Controller::pushButton()
@@ -160,7 +187,40 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             }
         } else {
             displayStatus ("move: Incorrect amount of arguments specified");
-        }
+        }        
+        break;
+    }
+    case heuristic: {
+        if (commands->size() == 1) {
+            std::string heuristicAmountString = commands->at(0);
+            int heuristicAmount;
+            try {
+                heuristicAmount = std::stoi(heuristicAmountString);
+                ("Setting heuristic to " + heuristicAmountString);
+                this->setHeuristic(heuristicAmount);
+            } catch(std::string query) {
+                displayStatus("heuristic: An amount was expected, but none given");
+            }
+        } else {
+            displayStatus("heuristic: An amount was expected, but none given");
+        }        
+        break;
+    }
+    case speed: {
+        if (commands->size() == 1) {
+            std::string speedAmountString = commands->at(0);
+            int speedAmount;
+            try {
+                speedAmount = std::stoi(speedAmountString);
+                ("Setting animation speed to " + speedAmountString);
+                this->setHeuristic(speedAmount);
+            } catch(std::string query) {
+                displayStatus("speed: An amount was expected, but none given");
+            }
+        } else {
+            displayStatus("speed: An amount was expected, but none given");
+        }        
+        break;
     }
     }
 }
@@ -180,4 +240,63 @@ std::vector<std::string> Controller::splitString(std::string fullString, std::st
 
 void Controller::displayStatus(std::string error) {
     this->controllerWindow->ui->label->setText(QString::fromStdString(error));
+}
+
+void Controller::setHeuristic(int heuristic) {
+
+    float inputHeuristic= (float)heuristic/60;
+    aStarPtr->setHeuristicFactor(inputHeuristic);
+
+    this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);
+}
+
+void Controller::setAnimationSpeed(int speed) {
+    if (speed < 0) {
+        speed = 0;
+    } else if (speed > 100) {
+        speed = 100;
+    }
+    timerSpeed = 1000-(speed*10);
+    this->controllerWindow->ui->SpeedInput->setValue(speed);
+}
+
+void Controller::highlightPath(std::pair<int,int> coord) {
+    for (auto &scene : this->sceneCollection) {
+        scene->drawHighlight(coord.first, coord.second);
+    }
+    highlightTiles.push_back(coord);
+
+    QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
+}
+
+void Controller::removeHighlightPath() {
+    std::pair<int,int> coord = highlightTiles.at(highlightTiles.size() - 1);
+    highlightTiles.pop_back();
+
+    for (auto &scene : this->sceneCollection) {
+        scene->removeHighlight(coord.first, coord.second);
+    }
+}
+
+void Controller::poisonousTile(std::pair<int,int> coord, int poisonValue){
+    for (auto &scene : this->sceneCollection) {
+        scene->drawPoisonous(coord.first, coord.second);
+    }
+    poisonousTiles.push_back(coord);
+    QTimer::singleShot(2000,this,&Controller::removePoisonTile);
+}
+
+void Controller::explosiveTile(std::pair<int,int> coord, int explosiveValue){
+    for (auto &scene : this->sceneCollection) {
+        scene->drawExplosive(coord.first, coord.second);
+    }
+}
+
+void Controller::removePoisonTile(){
+    std::pair<int,int> coord = poisonousTiles.at(poisonousTiles.size() - 1);
+    poisonousTiles.pop_back();
+
+    for (auto &scene : this->sceneCollection) {
+        scene->removePoisonous(coord.first, coord.second);
+    }
 }

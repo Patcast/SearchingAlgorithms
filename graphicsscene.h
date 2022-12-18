@@ -37,8 +37,16 @@ public:
     void BeenThereDoneThat();
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
+    void drawHighlight(int xPos, int yPos);
+    void removeHighlight(int xPos, int yPos);
     void drawAll();
+
     void drawDeadEnemy(int type,int x,int y);
+
+    void drawPoisonous(int xPos, int yPos);
+    void drawExplosive(int xPos, int yPos);
+    void removePoisonous(int xPos, int yPos);
+
 
 public slots:
     void zoomIn();

@@ -42,14 +42,18 @@ public:
 
 
 signals:
+    
     void  enemyDied(int type, int x,int y);
-    void  healthPackedUsed(int specialFigureIndex);
-    void  poisonTileInScene(int index,int poisonValue);//index where the protagonist is poisoned
-    void  explosionTileInScene(int index,int explosionValue);//index where the protagonist is burned
+    void healthPackedUsed(int specialFigureIndex);
+    void highlightPath(std::vector<std::pair<int,int>> coords);
+    void poisonTileInScene(std::pair<int,int> coord,int poisonValue);//index where the protagonist is poisoned
+    void explosionTileInScene(std::pair<int,int> coord,int explosionValue);//index where the protagonist is burned
 private slots:
-     void poisonousAttack(int poisonValue);
-     void explosiveAttack(int explosiveValue, int row, int col);
-     void oneEnemyDied();
+    void poisonousAttack(int poisonValue);
+    void explosiveAttack(int explosiveValue, int row, int col);
+    void oneEnemyDied();
+    
+
 private:
 
     static GameWorld * instance;
@@ -59,12 +63,14 @@ private:
     void loadEnemies(World &world);
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
+    int checkForIndexisOutOfBounds(int row, int col);
     QString imagePath;
     int levelOfPoisonousAttack{0};
-
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(moveDirection direction, int row, int column);
     std::vector<int> getNeighboursTileToPoisonIndex(int index);
+
+
 protected:
     GameWorld(){}
     ~GameWorld() {}

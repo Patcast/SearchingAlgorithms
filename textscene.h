@@ -30,6 +30,15 @@ public:
     void zoomOut();
     void drawElements(const std::vector<std::shared_ptr<Tile>> &elements);
     void drawDeadEnemy(int type,int x, int y);
+    void drawHighlight(int xPos, int yPos);
+    void removeHighlight(int xPos, int yPos);
+    void drawPoisonous(int xPos, int yPos);
+    void drawExplosive(int xPos, int yPos);
+    void removePoisonous(int xPos, int yPos);
+    void drawExtra();
+    void removeExtra(std::pair<std::pair<int,int>,QChar> query);
+
+    std::vector<std::pair<std::pair<int,int>,QChar>> extraElements;
 
 private:
     void _generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,
