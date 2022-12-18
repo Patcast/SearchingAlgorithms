@@ -271,7 +271,7 @@ void GraphicsScene::drawHighlight(int xPos, int yPos) {
 
 }
 
-void GraphicsScene::removeHighlight() {
+void GraphicsScene::removeHighlight(int xPos, int yPos) {
 
 }
 
