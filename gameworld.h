@@ -42,7 +42,7 @@ public:
 
 
 signals:
-    void healthPackedUsed(int specialFigureIndex);
+    void  healthPackedUsed(int specialFigureIndex);
     void  poisonTileInScene(int index,int poisonValue);//index where the protagonist is poisoned
     void  explosionTileInScene(int index,int explosionValue);//index where the protagonist is burned
 private slots:
@@ -50,9 +50,8 @@ private slots:
      void explosiveAttack(int explosiveValue, int row, int col);
 private:
 
-     static GameWorld * instance;
-     static std::mutex mutex_;
-
+    static GameWorld * instance;
+    static std::mutex mutex_;
     void initializeProtagonist(float startingEnergy);
     void setRowsAndColumns(int newRows, int newColumns);
     void loadEnemies(World &world);
