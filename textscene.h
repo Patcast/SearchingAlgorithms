@@ -29,7 +29,7 @@ public:
     void zoomIn();
     void zoomOut();
     void drawElements(const std::vector<std::shared_ptr<Tile>> &elements);
-    void drawDeadEnemy(int type);
+    void drawDeadEnemy(int type,int x, int y);
 
 private:
     void _generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,

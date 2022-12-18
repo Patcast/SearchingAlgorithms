@@ -15,7 +15,7 @@ public:
     virtual void drawHealthPack(int xPos, int yPos) = 0;
     virtual void drawMovement(int xPos, int yPos) = 0;
     virtual void drawEmptyHealtPack(int x, int y) = 0;
-    virtual void drawDeadEnemy(int type) = 0; // 0 is normal 1 PE 2 XE
+    virtual void drawDeadEnemy(int type,int x, int y) = 0; // 0 is normal 1 PE 2 XE
 
     virtual void zoomIn() = 0;
     virtual void zoomOut() = 0;

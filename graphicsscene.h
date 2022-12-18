@@ -38,7 +38,7 @@ public:
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
     void drawAll();
-    void drawDeadEnemy(int type);
+    void drawDeadEnemy(int type,int x,int y);
 
 public slots:
     void zoomIn();

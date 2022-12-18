@@ -106,7 +106,7 @@ void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements)
     }
 }
 
-void TextScene::drawDeadEnemy(int type)
+void TextScene::drawDeadEnemy(int type, int x, int y)
 {
     //no need
 }

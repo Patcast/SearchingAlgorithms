@@ -90,7 +90,7 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     drawAll();
 //    drawDeathEnemy(1, 1);
 //    drawEmptyHealtPack(0, 1);
-//    drawDeathPEnemy(4,4);
+    drawDeathPEnemy(4,4);
     view = new QGraphicsView(scene);
     this->widget = view;
     view->centerOn(player_ptr);
@@ -248,21 +248,19 @@ void GraphicsScene::drawAll()
     }
 }
 
-void GraphicsScene::drawDeadEnemy(int type)
+void GraphicsScene::drawDeadEnemy(int type, int x, int y)
 {
  if(type == 0){
-   drawDeathEnemy(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
+   drawDeathEnemy(x,y);
  }
  if(type == 1){
-   drawDeathPEnemy(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
+   drawDeathPEnemy(x,y);
  }
 
  else{
      std::cout<<"XEnemy"<< std::endl;
  }
 }
-
-
 void GraphicsScene::drawProtagonist(int xPos, int yPos){
     player_ptr->place(xPos,yPos,stepsize);
     player_ptr->setZValue(1);

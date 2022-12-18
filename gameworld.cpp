@@ -170,9 +170,19 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
 
 void GameWorld::oneEnemyDied()
 {
-    if(Enemy* EnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-        //emit enemyDied();
+    if(XEnemy* EnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(2,EnemyReference->getXPos(),EnemyReference->getYPos());
     }
+
+    if(PEnemy* EnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(1,EnemyReference->getXPos(),EnemyReference->getYPos());
+    }
+
+    if(Enemy* EnemyReference =dynamic_cast<Enemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(0,EnemyReference->getXPos(),EnemyReference->getYPos());
+    }
+
+
 //    if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
 //        levelOfPoisonousAttack=0;
 //        pEnemyReference->poison();

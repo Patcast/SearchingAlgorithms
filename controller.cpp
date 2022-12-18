@@ -114,9 +114,9 @@ void Controller::healthPack()
     this->sceneCollection.data()->get()->drawEmptyHealtPack(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
 }
 
-void Controller::deadEnemy(int i)
+void Controller::deadEnemy(int type, int x, int y)
 {
-    this->sceneCollection.data()->get()->drawDeadEnemy(i);
+    this->sceneCollection.data()->get()->drawDeadEnemy(type,x,y);
 }
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
