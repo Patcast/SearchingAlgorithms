@@ -1,6 +1,7 @@
 # include "gameworld.h"
 #include "game_config.h"
 #include "node.h"
+#include "xenemy.h"
 #include <iostream>
 
 
@@ -35,6 +36,9 @@ void GameWorld::loadEnemies(World &w)
         int index =getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos());
         specialFiguresVector.push_back(std::move(enemiesList[i]));
         nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+        if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[index]->getSpecialFigure_ptr().get())){
+            connect(pEnemyReference,SIGNAL(poisonLevelUpdated(int)),this,SLOT(poisonousAttack(int)));
+        }
 //        std::cout<<"Enemy: (value, x , y)"<<nodes[index]->getSpecialFigure_ptr()->getValue()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getXPos()<<" , "<<nodes[index]->getSpecialFigure_ptr()->getYPos()<<std::endl;
     }
     for(unsigned long i=0; i<healthPacksList.size();i++){
@@ -62,6 +66,8 @@ const QString &GameWorld::getImagePath() const
 
 
 
+
+
 Protagonist*GameWorld::getProtagonist() const
 {
     return protagonist.get();
@@ -76,13 +82,6 @@ const std::vector<std::unique_ptr<Node> > &GameWorld::getNodes() const
 {
     return nodes;
 }
-
-
-
-
-
-
-
 
 void GameWorld::setRowsAndColumns(int newRows, int newColumns)
 {
@@ -122,14 +121,39 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
     protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
     nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.0);
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-       emit enemyReference->dead();
+        if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+            pEnemyReference->poison();
+        }
+        else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+            xEnemyReference->generateExplosions();
+        }
+        else emit xEnemyReference->dead();
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
     }
 }
+void GameWorld::poisonousAttack(int poisonValue)
+{
+//    if(poisonOfAttack!=0){}
+//    int numOfAttack = poisonOfAttack%10-poisonValue%10;
+    if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        std::vector<int> infectedTiles=getNeighboursTileToPoisonIndex(getIndexFromCoordinates(pEnemyReference->getYPos(),pEnemyReference->getXPos()));
+        while(!infectedTiles.empty()){
+            if((protagonist->getXPos()==pEnemyReference->getXPos())&&(protagonist->getYPos()==pEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
+            emit poisonTileInScene(infectedTiles.back(),poisonValue);
+            infectedTiles.pop_back();
+        }
+    }
+}
 
-
+void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
+{
+    if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
+        emit explosionTileInScene(getIndexFromCoordinates(row,col),explosiveValue);
+    }
+}
 
 int GameWorld::getDestinationIndex(NextDirection direction, int row, int column){
     int newRow =row,newCol=column;
@@ -176,8 +200,18 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 
 
+inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
+{
+    const int tileOffSets [8][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1}};
 
-
+    std::vector<int> n;
+    for(int i =0;i<8;i++){
+        int nRow = getCoordinatesFromIndex(index).first+tileOffSets[i][0];
+        int nCol = getCoordinatesFromIndex(index).second+tileOffSets[i][1];
+        if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+    }
+    return n;
+}
 
 
 

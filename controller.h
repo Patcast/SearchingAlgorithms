@@ -29,6 +29,8 @@ signals:
     void playerMoveDown();
     void playerMove(int x, int y);
     void updateHE();
+    void algorithNodeturnOn(int specialFigureIndex);//this signa will be sent for every node that is part of the path.
+    void algorithNodeturnOFF(int specialFigureIndex);
 
 
 private slots:
