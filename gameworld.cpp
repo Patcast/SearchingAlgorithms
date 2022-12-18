@@ -36,6 +36,9 @@ void GameWorld::loadEnemies(World &w)
         int index =getIndexFromCoordinates(enemiesList[i]->getYPos(),enemiesList[i]->getXPos());
         specialFiguresVector.push_back(std::move(enemiesList[i]));
         nodes[index]->setSpecialFigure_ptr(specialFiguresVector.back());
+        if(Enemy* EnemyReference =dynamic_cast<Enemy*>(nodes[index]->getSpecialFigure_ptr().get())){
+            connect(EnemyReference,SIGNAL(dead()),this,SLOT(oneEnemyDied()));
+        }
         if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[index]->getSpecialFigure_ptr().get())){
             connect(pEnemyReference,SIGNAL(poisonLevelUpdated(int)),this,SLOT(poisonousAttack(int)));
         }
@@ -64,8 +67,6 @@ const QString &GameWorld::getImagePath() const
 {
     return imagePath;
 }
-
-
 
 
 Protagonist*GameWorld::getProtagonist() const
@@ -118,7 +119,10 @@ int GameWorld::moveAdjacent(int destinationIndex) {
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
     }
     std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<" index="<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
-    return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? 0:1;
+    if((protagonist->getHealth()<0)||(protagonist->getEnergy()<0)){
+       std::cout<<"die"<<std::endl;
+    }
+    return 0;
 }
 
 void GameWorld::activateSpecialFigure(int specialFigureIndex){
@@ -137,12 +141,14 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
             }
         }
     }
-    else {
+    else{
         emit healthPackedUsed(specialFigureIndex);
         protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
         nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0);
-    }
+        }
+
 }
+
 void GameWorld::poisonousAttack(int poisonValue)
 {
 
@@ -166,6 +172,36 @@ void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
         if((protagonist->getXPos()==xEnemyReference->getXPos())&&(protagonist->getYPos()==xEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-xEnemyReference->getValue());
         emit explosionTileInScene(std::make_pair(col,row),explosiveValue);
     }
+}
+
+void GameWorld::oneEnemyDied()
+{
+    if(XEnemy* EnemyReference =dynamic_cast<XEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(2,EnemyReference->getXPos(),EnemyReference->getYPos());
+    }
+
+    if(PEnemy* EnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(1,EnemyReference->getXPos(),EnemyReference->getYPos());
+    }
+
+    if(Enemy* EnemyReference =dynamic_cast<Enemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+        emit enemyDied(0,EnemyReference->getXPos(),EnemyReference->getYPos());
+    }
+
+
+//    if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+//        levelOfPoisonousAttack=0;
+//        pEnemyReference->poison();
+//    }
+//    else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+//        xEnemyReference->generateExplosions();
+//    }
+//    else {
+//        protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+//        enemyReference->setDefeated(true);
+//    }
+
+
 }
 
 int GameWorld::getDestinationIndex(moveDirection direction, int row, int column){

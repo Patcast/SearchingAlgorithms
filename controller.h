@@ -51,9 +51,14 @@ private slots:
     void posChanged(int x, int y);
     void pushButton();
     void pushButton2();
+
+    void healthPack();
+    void deadEnemy(int i, int x, int y);
+
     void poisonousTile(std::pair<int,int> coord, int poisonValue);
     void explosiveTile(std::pair<int,int> coord, int explosiveValue);
     void removePoisonTile();
+
 
 protected:
     MainWindow *controllerWindow;

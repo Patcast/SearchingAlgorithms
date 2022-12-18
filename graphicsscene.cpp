@@ -15,19 +15,29 @@
 #include <QGraphicsTextItem>
 #include <QTimer>
 
-
-
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
     player_ptr = new ProtagonistView();
     columns =  GameWorld::Instance()->getTotalColumns();
     rows = GameWorld::Instance()->getTotalRows();
     scene = new QGraphicsScene();
-    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-    world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
-    //stepsize*rows
-    world->setZValue(0.5);
-    scene->addItem(world);
+
+    player_ptr = new ProtagonistView();
+        columns =  GameWorld::Instance()->getTotalColumns();
+        rows = GameWorld::Instance()->getTotalRows();
+        scene = new QGraphicsScene();
+        QGraphicsPixmapItem * world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
+        //stepsize*rows
+        world->setZValue(0.5);
+        scene->addItem(world);
+
+//    stepsize = 1;
+//    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+//    world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+//    //world->setScale(stepsize);
+//    world->setZValue(0.5);
+//    scene->addItem(world);
 
     drawProtagonist(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
 
@@ -40,9 +50,9 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     scene->addItem(player_ptr);
 
     drawAll();
-    drawDeathEnemy(1, 1);
-    drawEmptyHealtPack(0, 1);
-    drawDeathPEnemy(4,4);
+//    drawDeathEnemy(1, 1);
+//    drawEmptyHealtPack(0, 1);
+//    drawDeathPEnemy(4,4);
     view = new QGraphicsView(scene);
     this->widget = view;
     view->centerOn(player_ptr);
@@ -119,6 +129,7 @@ void GraphicsScene::drawDeathEnemy(int x, int y){
     enemyView * e = new enemyView();
     e->defeated(x,y,stepsize);
     scene->addItem(e);
+    player_ptr->attack();
 }
 
 void GraphicsScene::drawDeathPEnemy(int x, int y){
@@ -138,6 +149,7 @@ void GraphicsScene::drawEmptyHealtPack(int x, int y)
     healthPackView * e = new healthPackView();
     e->defeated(x,y,stepsize);
     scene->addItem(e);
+    player_ptr->heal();
 }
 
 void GraphicsScene::BeenThereDoneThat()
@@ -197,10 +209,22 @@ void GraphicsScene::drawAll()
                 showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
                 scene->addItem(p);
             }
-        }
+    }
 }
 
+void GraphicsScene::drawDeadEnemy(int type, int x, int y){
+    if(type == 0){
+        drawDeathEnemy(x,y);
+    }
+    if(type == 1){
 
+        drawDeathPEnemy(x,y);
+    }
+    else{
+        std::cout<<"XEnemy"<< std::endl;
+    }
+
+}
 void GraphicsScene::drawProtagonist(int xPos, int yPos){
     player_ptr->place(xPos,yPos,stepsize);
     player_ptr->setZValue(1);
@@ -208,11 +232,26 @@ void GraphicsScene::drawProtagonist(int xPos, int yPos){
     BeenThereDoneThat();
 }
 void GraphicsScene::drawTile(){
-//    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
-//        specialMap * e = new specialMap(t->getXPos()*50,t->getYPos()*50,t->getValue());
-//        graphScene->addItem(e);
-//    }
+    QString s =GameWorld::Instance()->getImagePath();
+    QString q = ":/images/maze3.png";
+    int x = QString::compare(s, q, Qt::CaseInsensitive);
+    if(x==0){
+        stepsize = 1;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        //world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
+    }
+    else{
+        stepsize = 50;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
 
+    }
 }
 void GraphicsScene::drawHealthPack(int xPos, int yPos){
 //    for(std::unique_ptr<Tile> &t:gameWord_ptr->healthPacks){

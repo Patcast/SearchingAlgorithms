@@ -42,6 +42,8 @@ public:
 
 
 signals:
+    
+    void  enemyDied(int type, int x,int y);
     void healthPackedUsed(int specialFigureIndex);
     void highlightPath(std::vector<std::pair<int,int>> coords);
     void poisonTileInScene(std::pair<int,int> coord,int poisonValue);//index where the protagonist is poisoned
@@ -49,6 +51,9 @@ signals:
 private slots:
     void poisonousAttack(int poisonValue);
     void explosiveAttack(int explosiveValue, int row, int col);
+    void oneEnemyDied();
+    
+
 private:
 
     static GameWorld * instance;

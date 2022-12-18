@@ -14,5 +14,5 @@ void PEnemyView::defeated(int x, int y, int size)
 {
     setPixmap(QPixmap(":/images/toadDead.png").scaled(size,size));
     setPos(x*size,y*size);
-    setZValue(0.9);
+    setZValue(0.95);
 }

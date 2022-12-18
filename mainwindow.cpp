@@ -8,8 +8,9 @@
 #include <QProgressBar>
 #include <QSpinBox>
 #include <iostream>
+#include <QLCDNumber>
 #include "gameworld.h"
-
+#include <QTextBrowser>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,9 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //GraphicsScene * scene = new GraphicsScene();
     ui->setupUi(this);
     //ui->graphicsView->setScene(scene);
+    ui->lineEdit->installEventFilter(this);
     ChangeHealth(GameWorld::Instance()->protagonist->getHealth());
     ChangeEnergy(GameWorld::Instance()->protagonist->getEnergy());
-    ui->lineEdit->installEventFilter(this);
+    ui->lcdNumber->display(GameWorld::Instance()->protagonist->getHealth());
+    ui->textBrowser->setGeometry(QRect(0, 0, 1, 1));
+    //showWin();
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +36,7 @@ void MainWindow::setSignalsFromProtagnist()
 {
     connect(GameWorld::Instance()->getProtagonist(),SIGNAL(energyChanged(int)),this,SLOT(ChangeEnergy(int)));
     connect(GameWorld::Instance()->getProtagonist(),SIGNAL(healthChanged(int)),this,SLOT(ChangeHealth(int)));
+    connect(GameWorld::Instance()->getProtagonist(),SIGNAL(healthChanged(int)),this,SLOT(ChangeHealthNumber(int)));
 }
 
 void MainWindow::ChangeHealth(int health)
@@ -49,6 +54,33 @@ void MainWindow::ChangeEnergy(int energy)
     ui->EnergyBar->setRange(0,100);
     ui->EnergyBar->setValue(energy);
 }
+
+void MainWindow::heuristicsValue()
+{
+    heuristics = ui->HeuristicsInput->value();
+    //std::cout<<heuristics<< std::endl;
+}
+
+void MainWindow::ChangeHealthNumber(int x)
+{
+    ui->lcdNumber->display(x);
+}
+
+void MainWindow::showWin()
+{
+    ui->textBrowser->setText("You win");
+    ui->textBrowser->setGeometry(QRect(400, 150, 500, 500));
+    ui->textBrowser->setStyleSheet("font-size: 100pt;");
+}
+
+void MainWindow::showLoss()
+{
+    ui->textBrowser->setText("You lose");
+    ui->textBrowser->setGeometry(QRect(400, 150, 500, 500));
+    ui->textBrowser->setStyleSheet("font-size: 100pt;");
+}
+
+
 
 bool MainWindow::eventFilter(QObject* obj, QEvent *event)
 {

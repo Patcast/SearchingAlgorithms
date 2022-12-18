@@ -35,6 +35,11 @@ TextScene::TextScene() : Scene("text")
     this->widget = gameEdit;
 }
 
+void TextScene::drawEmptyHealtPack(int x, int y)
+{
+    //no need
+}
+
 void TextScene::drawEnemy(int xPos, int yPos){
     this->drawEnemy(std::make_pair(xPos,yPos));
 }
@@ -108,6 +113,11 @@ void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements)
             this->drawHealthPack(element->getXPos(),element->getYPos());
         }
     }
+}
+
+void TextScene::drawDeadEnemy(int type, int x, int y)
+{
+    //no need
 }
 
 void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,
