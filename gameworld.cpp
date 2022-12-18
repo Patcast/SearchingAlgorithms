@@ -64,10 +64,6 @@ const QString &GameWorld::getImagePath() const
 }
 
 
-
-
-
-
 Protagonist*GameWorld::getProtagonist() const
 {
     return protagonist.get();
@@ -135,13 +131,26 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
                 enemyReference->setDefeated(true);
             }
         }
+        if(enemyReference->getDefeated()==true){
+            if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                emit enemyDied(1);
+        }
+            if(Enemy* pEnemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                emit enemyDied(0);
+            }
+            if(XEnemy* pEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                emit enemyDied(2);
+            }
+        }
     }
-    else {
+    else{
         emit healthPackedUsed(specialFigureIndex);
         protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
         nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0);
-    }
+        }
+
 }
+
 void GameWorld::poisonousAttack(int poisonValue)
 {
 

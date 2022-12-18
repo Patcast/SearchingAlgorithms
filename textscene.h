@@ -13,7 +13,7 @@ class TextScene : public Scene
 public:
     TextScene();
     std::shared_ptr<GameString> gameString;
-
+    void drawEmptyHealtPack(int x, int y);
     void drawEnemy(int xPos, int yPos);
     void drawEnemy(std::pair<int,int> pos);
     void drawPEnemy(int xPos, int yPos);
@@ -29,6 +29,7 @@ public:
     void zoomIn();
     void zoomOut();
     void drawElements(const std::vector<std::shared_ptr<Tile>> &elements);
+    void drawDeadEnemy(int type);
 
 private:
     void _generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,

@@ -42,6 +42,8 @@ private slots:
     void posChanged(int x, int y);
     void pushButton();
     void pushButton2();
+    void healthPack();
+    void deadEnemy(int i);
 
 protected:
     MainWindow *controllerWindow;

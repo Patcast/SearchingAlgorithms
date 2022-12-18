@@ -42,6 +42,7 @@ public:
 
 
 signals:
+    void  enemyDied(int specialFigureIndex);
     void  healthPackedUsed(int specialFigureIndex);
     void  poisonTileInScene(int index,int poisonValue);//index where the protagonist is poisoned
     void  explosionTileInScene(int index,int explosionValue);//index where the protagonist is burned

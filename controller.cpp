@@ -20,6 +20,8 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
+    window->connect(gameWorld,&GameWorld::healthPackedUsed,this,qOverload<> (&::Controller::healthPack));
+    window->connect(gameWorld,&::GameWorld::enemyDied,this,&::Controller::deadEnemy);
 }
 
 
@@ -105,6 +107,16 @@ void Controller::pushButton()
 void Controller::pushButton2()
 {
     this->sceneCollection.data()->get()->zoomOut();
+}
+
+void Controller::healthPack()
+{
+    this->sceneCollection.data()->get()->drawEmptyHealtPack(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
+}
+
+void Controller::deadEnemy(int i)
+{
+    this->sceneCollection.data()->get()->drawDeadEnemy(i);
 }
 
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
