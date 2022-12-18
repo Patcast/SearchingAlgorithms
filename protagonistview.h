@@ -16,7 +16,8 @@ public:
     int StepSize = 5;
     void defeated();
     void move(int x, int y);
-    void attack(int x, int y);
+    void attack();
+    void heal();
 };
 
 #endif // PROTAGONISTVIEW_H

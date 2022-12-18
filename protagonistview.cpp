@@ -24,13 +24,20 @@ void ProtagonistView::move(int x, int y)
 {
     xPos = x * StepSize;
     yPos = y * StepSize;
+    setPixmap(QPixmap(":/images/mario03.png").scaled(StepSize,StepSize));
     setPos(xPos,yPos);
 }
 
-void ProtagonistView::attack(int x, int y)
+void ProtagonistView::attack()
 {
-    xPos = x * StepSize;
-    yPos = y * StepSize;
-    setPixmap(QPixmap(":/images/marioDead.jpg").scaled(StepSize,StepSize));
+    setPixmap(QPixmap(":/images/marioAttack.png").scaled(StepSize,StepSize));
     setPos(xPos,yPos);
 }
+
+void ProtagonistView::heal()
+{
+    setPixmap(QPixmap(":/images/marioHeal.jpeg").scaled(StepSize,StepSize));
+    setPos(xPos,yPos);
+}
+
+

@@ -90,7 +90,7 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     drawAll();
 //    drawDeathEnemy(1, 1);
 //    drawEmptyHealtPack(0, 1);
-    drawDeathPEnemy(4,4);
+//    drawDeathPEnemy(4,4);
     view = new QGraphicsView(scene);
     this->widget = view;
     view->centerOn(player_ptr);
@@ -167,6 +167,7 @@ void GraphicsScene::drawDeathEnemy(int x, int y){
     enemyView * e = new enemyView();
     e->defeated(x,y,stepsize);
     scene->addItem(e);
+    player_ptr->attack();
 }
 
 void GraphicsScene::drawDeathPEnemy(int x, int y){
@@ -186,6 +187,7 @@ void GraphicsScene::drawEmptyHealtPack(int x, int y)
     healthPackView * e = new healthPackView();
     e->defeated(x,y,stepsize);
     scene->addItem(e);
+    player_ptr->heal();
 }
 
 void GraphicsScene::BeenThereDoneThat()
@@ -248,18 +250,18 @@ void GraphicsScene::drawAll()
     }
 }
 
-void GraphicsScene::drawDeadEnemy(int type, int x, int y)
-{
- if(type == 0){
-   drawDeathEnemy(x,y);
- }
- if(type == 1){
-   drawDeathPEnemy(x,y);
- }
+void GraphicsScene::drawDeadEnemy(int type, int x, int y){
+    if(type == 0){
+        drawDeathEnemy(x,y);
+    }
+    if(type == 1){
 
- else{
-     std::cout<<"XEnemy"<< std::endl;
- }
+        drawDeathPEnemy(x,y);
+    }
+    else{
+        std::cout<<"XEnemy"<< std::endl;
+    }
+
 }
 void GraphicsScene::drawProtagonist(int xPos, int yPos){
     player_ptr->place(xPos,yPos,stepsize);
