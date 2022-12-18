@@ -131,7 +131,7 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
             }
             else {
                 protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
-                emit enemyReference->setDefeated(true);
+                enemyReference->setDefeated(true);
             }
         }
     }
@@ -148,8 +148,8 @@ void GameWorld::poisonousAttack(int poisonValue)
         std::vector<int> infectedTiles=getNeighboursTileToPoisonIndex(getIndexFromCoordinates(pEnemyReference->getYPos(),pEnemyReference->getXPos()));
         while(!infectedTiles.empty()){
             if(getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())==infectedTiles.back()){
-                protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
-                std::cout<<"PROTAGONIST POISON index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
+                protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getPoisonLevel());
+                std::cout<<"PROTAGONIST POISON ("<<pEnemyReference->getPoisonLevel()<<" )index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
             }
             emit poisonTileInScene(infectedTiles.back(),poisonValue);
             infectedTiles.pop_back();
@@ -185,12 +185,7 @@ int GameWorld::getDestinationIndex(moveDirection direction, int row, int column)
     return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
 }
 
-void GameWorld::testing()
-{
-//        nodes[155]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[185]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[215]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-}
+
 
 
 void GameWorld::initializeProtagonist(float startingEnergy)

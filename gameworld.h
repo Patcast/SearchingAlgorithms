@@ -37,7 +37,6 @@ public:
     int moveProtagonist(moveDirection direction);
     int moveAdjacent(int destinationIndex);
     std::vector<std::unique_ptr<Node>> nodes;
-    void testing();
     int totalRows,totalColumns;
     const QString &getImagePath() const;
 
