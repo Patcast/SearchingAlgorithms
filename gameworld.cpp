@@ -116,7 +116,7 @@ int GameWorld::moveAdjacent(int destinationIndex) {
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
     }
     std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<" index="<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
-    if((protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)){
+    if((protagonist->getHealth()<0)||(protagonist->getEnergy()<0)){
        std::cout<<"die"<<std::endl;
     }
     return 0;

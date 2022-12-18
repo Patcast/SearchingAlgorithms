@@ -22,25 +22,15 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     rows = GameWorld::Instance()->getTotalRows();
     scene = new QGraphicsScene();
 
-    QString s =GameWorld::Instance()->getImagePath();
-    QString q = ":/images/maze3.png";
-    int x = QString::compare(s, q, Qt::CaseInsensitive);
-    if(x==0){
-        stepsize = 1;
-        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
-        //world->setScale(stepsize);
+    player_ptr = new ProtagonistView();
+        columns =  GameWorld::Instance()->getTotalColumns();
+        rows = GameWorld::Instance()->getTotalRows();
+        scene = new QGraphicsScene();
+        QGraphicsPixmapItem * world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
+        //stepsize*rows
         world->setZValue(0.5);
         scene->addItem(world);
-    }
-    else{
-        stepsize = 50;
-        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
-        world->setScale(stepsize);
-        world->setZValue(0.5);
-        scene->addItem(world);
-    }
 
 //    stepsize = 1;
 //    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
