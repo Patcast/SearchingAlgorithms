@@ -38,7 +38,7 @@ public:
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
     void drawHighlight(int xPos, int yPos);
-    void removeHighlight();
+    void removeHighlight(int xPos, int yPos);
     void drawAll();
     void drawPoisonous(int xPos, int yPos);
     void drawExplosive(int xPos, int yPos);

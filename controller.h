@@ -21,7 +21,9 @@ public:
     void displayStatus(std::string error);
     void setHeuristic(int heuristic);
     void setAnimationSpeed(int speed);
-    std::vector<std::pair<int,int>> poisonousTiles;
+    std::vector<std::pair<int,int>> highlightTiles;
+    std::vector<std::pair<int,int>> poisonousTiles;    
+    void highlightPath(std::pair<int,int> coord);
 
     Commands commandsProcessor = Commands();
     void move(int row, int col);
@@ -34,14 +36,13 @@ signals:
     void playerMoveDown();
     void playerMove(int x, int y);
     void updateHE();
-    void algorithNodeturnOn(int specialFigureIndex);//this signa will be sent for every node that is part of the path.
+    void algorithNodeturnOn(int specialFigureIndex);//this signal will be sent for every node that is part of the path.
     void algorithNodeturnOFF(int specialFigureIndex);
 
 public slots:
     void move(moveDirection directionOfMovement);
 
     void autoplay();
-    void highlightPath(std::vector<std::pair<int,int>> coords);
     void removeHighlightPath();
 
 

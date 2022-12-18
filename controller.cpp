@@ -24,7 +24,7 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
 
   
     window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
-    //window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
+    window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
     window->connect(GameWorld::Instance(), &GameWorld::poisonTileInScene, this, &Controller::poisonousTile);
     window->connect(GameWorld::Instance(), &GameWorld::explosionTileInScene, this, &Controller::explosiveTile);
     aStarPtr=std::make_unique<AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->totalColumns);
@@ -95,13 +95,11 @@ void Controller::move(int row, int col)
     listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
     for (auto ind: listOfIndexes){
         auto coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
-        for (auto &scene : this->sceneCollection) {
-            scene->drawHighlight(coords.first, coords.second);
-        }
+        this->highlightPath(coords);
     }
     currentNodeIndex=listOfIndexes.size()-2;
     this->moveAutomatically();
-    movementTimer->start(1000);
+    movementTimer->start(timerSpeed);
 }
 
 void Controller::moveAutomatically() {
@@ -236,23 +234,25 @@ void Controller::setAnimationSpeed(int speed) {
     } else if (speed > 100) {
         speed = 100;
     }
-    timerSpeed = speed*10;
+    timerSpeed = 1000-(speed*10);
     this->controllerWindow->ui->SpeedInput->setValue(speed);
 }
 
-void Controller::highlightPath(std::vector<std::pair<int,int>> coords) {
-    for (auto &coord : coords) {
-        for (auto &scene : this->sceneCollection) {
-            scene->drawHighlight(coord.first, coord.second);
-        }
+void Controller::highlightPath(std::pair<int,int> coord) {
+    for (auto &scene : this->sceneCollection) {
+        scene->drawHighlight(coord.first, coord.second);
     }
+    highlightTiles.push_back(coord);
 
     QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
 }
 
 void Controller::removeHighlightPath() {
+    std::pair<int,int> coord = highlightTiles.at(highlightTiles.size() - 1);
+    highlightTiles.pop_back();
+
     for (auto &scene : this->sceneCollection) {
-        scene->removeHighlight();
+        scene->removeHighlight(coord.first, coord.second);
     }
 }
 
