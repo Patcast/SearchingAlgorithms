@@ -119,9 +119,18 @@ void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_V
     gameString = std::make_shared<GameString>(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,offsetX,offsetY);
 
     this->drawElements(elements);
+    this->drawExtra();
     this->drawProtagonist(protPos);
 
 
+}
+
+void TextScene::drawExtra() {
+    for (auto elem: this->extraElements){
+        auto coords = elem.first;
+        QChar cchar = elem.second;
+        this->gameString->setElement(coords, cchar);
+    }
 }
 
 void TextScene::zoomIn()
@@ -135,20 +144,34 @@ void TextScene::zoomOut()
 }
 
 void TextScene::drawHighlight(int xPos, int yPos) {
-
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('*'));
+    this->extraElements.push_back(elem);
 }
-void TextScene::removeHighlight() {
 
+void TextScene::removeHighlight(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('*'));
+    this->removeExtra(elem);
 }
 
 void TextScene::drawPoisonous(int xPos, int yPos) {
-
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('#'));
+    this->extraElements.push_back(elem);
 }
 
 void TextScene::drawExplosive(int xPos, int yPos) {
-
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('!'));
+    this->extraElements.push_back(elem);
 }
 
 void TextScene::removePoisonous(int xPos, int yPos) {
+    auto elem = std::make_pair(std::make_pair(xPos, yPos),QChar('#'));
+    this->removeExtra(elem);
+}
 
+void TextScene::removeExtra(std::pair<std::pair<int,int>,QChar> query) {
+    std::vector<std::pair<std::pair<int,int>,QChar>>::iterator itr = std::find(this->extraElements.begin(), this->extraElements.end(), query);
+
+        if (itr != this->extraElements.cend()) {
+            this->extraElements.erase(itr);
+        }
 }
