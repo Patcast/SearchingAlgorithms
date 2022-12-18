@@ -92,6 +92,7 @@ void Controller::autoplay()
 void Controller::move(int row, int col)
 {
     std::cout<<row<<"//"<<col<<std::endl;
+    std::cout<<GameWorld::Instance()->getIndexFromCoordinates(row,col)<<std::endl;
     listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
     // the tiles are highlighted
     currentNodeIndex=listOfIndexes.size()-2;
@@ -215,7 +216,7 @@ void Controller::displayStatus(std::string error) {
 
 void Controller::setHeuristic(int heuristic) {
 
-    float inputHeuristic= (float)heuristic/20;
+    float inputHeuristic= (float)heuristic/60;
     aStarPtr->setHeuristicFactor(inputHeuristic);
 
     this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);

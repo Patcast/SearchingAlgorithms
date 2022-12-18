@@ -60,6 +60,7 @@ inline float AStar::heuristic(int neighborIndex, int goalIndex){
 
 float AStar::getHeuristicFactor() const
 {
+
     return heuristicFactor;
 }
 
@@ -68,8 +69,7 @@ std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
     std::vector<int> searchOutput;
     int nextNode = aStarSearch(start_index,goal_index);
     do{
-        //delete print out for big map
-        std::cout << * GameWorld::Instance()->getNodes()[nextNode] << std::endl;
+
         searchOutput.push_back(GameWorld::Instance()->getNodes()[nextNode]->getIndex());
         nextNode = GameWorld::Instance()->getNodes()[nextNode]->getPrevNodeIndex();
     }while(nextNode!=-1);
@@ -79,7 +79,7 @@ std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
 void AStar::setHeuristicFactor(float newHeuristicFactor)
 {
     heuristicFactor = newHeuristicFactor;
-
+    std::cout<<heuristicFactor<<std::endl;
 }
 
 
