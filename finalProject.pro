@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     node.cpp \
+    penemyview.cpp \
     protagonistview.cpp \
     specialmap.cpp \
     textscene.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     healthpackview.h \
     mainwindow.h \
     node.h \
+    penemyview.h \
     protagonistview.h \
     scene.h \
     specialmap.h \

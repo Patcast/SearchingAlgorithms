@@ -13,14 +13,12 @@ GameWorld* GameWorld::instance{nullptr};
 std::mutex GameWorld::mutex_;
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow window;
-
-
-
     GameWorld * gameWord_ptr= GameWorld::Instance();
     gameWord_ptr->setGameMap(":/images/worldmap.png",20,60,100.0);
 
+
+    QApplication a(argc, argv);
+    MainWindow window;
 
     TextScene textscene = TextScene();
     std::shared_ptr<TextScene> sharedTextScene = std::make_shared<TextScene>(textscene);
