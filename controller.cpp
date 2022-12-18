@@ -20,6 +20,8 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
+    window->connect(gameWorld, &GameWorld::poisonTileInScene, this, &Controller::poisonousTile);
+    window->connect(gameWorld, &GameWorld::explosionTileInScene, this, &Controller::explosiveTile);
 }
 
 
@@ -168,4 +170,25 @@ std::vector<std::string> Controller::splitString(std::string fullString, std::st
 
 void Controller::displayStatus(std::string error) {
     this->controllerWindow->ui->label->setText(QString::fromStdString(error));
+}
+
+void Controller::poisonousTile(std::pair<int,int> coord, int poisonValue){
+    for (auto &scene : this->sceneCollection) {
+        scene->drawPoisonous(coord.first, coord.second);
+    }
+    poisonousTiles.push_back(coord);
+    QTimer::singleShot(2000,this,&Controller::removePoisonTile);
+}
+void Controller::explosiveTile(std::pair<int,int> coord, int explosiveValue){
+    for (auto &scene : this->sceneCollection) {
+        scene->drawExplosive(coord.first, coord.second);
+    }
+}
+void Controller::removePoisonTile(){
+    std::pair<int,int> coord = poisonousTiles.at(poisonousTiles.size() - 1);
+    poisonousTiles.pop_back();
+
+    for (auto &scene : this->sceneCollection) {
+        scene->removePoisonous(coord.first, coord.second);
+    }
 }

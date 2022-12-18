@@ -315,4 +315,15 @@ void GraphicsScene::zoomOut(){
     viewWidget->scale(0.8, 0.8);
 }
 
+void GraphicsScene::drawPoisonous(int xPos, int yPos) {
+
+}
+
+void GraphicsScene::drawExplosive(int xPos, int yPos) {
+
+}
+
+void GraphicsScene::removePoisonous(int xPos, int yPos) {
+
+}
 
