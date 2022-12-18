@@ -12,8 +12,6 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     movementTimer = new QTimer();
-
-
     GameWorld *gameWorld = GameWorld::Instance();
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));

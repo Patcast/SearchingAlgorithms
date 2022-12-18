@@ -109,45 +109,55 @@ int GameWorld::moveProtagonist(moveDirection direction)
 
 int GameWorld::moveAdjacent(int destinationIndex) {
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
-        std::cout<<"moving"<<std::endl;
+
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
         if(nodes[destinationIndex]->getSpecialFigure_ptr()!=nullptr){
             activateSpecialFigure(destinationIndex);
         }
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
     }
-    std::cout<<"END Protagonist (health energy || row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<"||"<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<" index="<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
     return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? 0:1;
 }
 
 void GameWorld::activateSpecialFigure(int specialFigureIndex){
-    protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
-    nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.0);
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-        if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-            pEnemyReference->poison();
+        if(enemyReference->getDefeated()==false){
+            if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                levelOfPoisonousAttack=0;
+                pEnemyReference->poison();
+
+            }
+            else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+                xEnemyReference->generateExplosions();
+            }
+            else {
+                protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+                enemyReference->setDefeated(true);
+            }
         }
-        else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
-            xEnemyReference->generateExplosions();
-        }
-        else emit xEnemyReference->dead();
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
+        protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+        nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0);
     }
 }
 void GameWorld::poisonousAttack(int poisonValue)
 {
-//    if(poisonOfAttack!=0){}
-//    int numOfAttack = poisonOfAttack%10-poisonValue%10;
+
     if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         std::vector<int> infectedTiles=getNeighboursTileToPoisonIndex(getIndexFromCoordinates(pEnemyReference->getYPos(),pEnemyReference->getXPos()));
         while(!infectedTiles.empty()){
-            if((protagonist->getXPos()==pEnemyReference->getXPos())&&(protagonist->getYPos()==pEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
+            if(getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())==infectedTiles.back()){
+                protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getPoisonLevel());
+                std::cout<<"PROTAGONIST POISON ("<<pEnemyReference->getPoisonLevel()<<" )index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
+            }
             emit poisonTileInScene(infectedTiles.back(),poisonValue);
             infectedTiles.pop_back();
         }
     }
+
 }
 
 void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
@@ -178,12 +188,7 @@ int GameWorld::getDestinationIndex(moveDirection direction, int row, int column)
     return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
 }
 
-void GameWorld::testing()
-{
-//        nodes[155]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[185]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-//        nodes[215]->setSpecialFigure_ptr(std::make_shared<Tile>(1,2,0.2));
-}
+
 
 
 void GameWorld::initializeProtagonist(float startingEnergy)
@@ -205,14 +210,46 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
 {
-    const int tileOffSets [8][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1}};
+    const int tileOffSets1 [9][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1},{0,0}};
+    const int tileOffSets2 [25][2] = {{-2,-2},{-2,-1},{-2,0},{-2,1},{-2,2},{-1,-2},{-1,-1},{-1,0},{-1,1},{-1,2},{0,-2},{0,-1},{0,0},{0,1},{0,2},{1,-2},{1,-1},{1,0},{1,1},{1,2},{2,-2},{2,-1},{2,0},{2,1},{2,2}};
+    const int tileOffSets3 [49][2] = {{-3,-3},{-3,-2},{-3,-1},{-3,0},{-3,1},{-3,2},{-3,3},{-2,-3},{-2,-2},{-2,-1},{-2,0},{-2,1},{-2,2},{-2,3},{-1,-3},{-1,-2},{-1,-1},{-1,0},{-1,1},{-1,2},{-1,3},{0,-3},{0,-2},{0,-1},{0,0},{0,1},{0,2},{0,3},{1,-3},{1,-2},{1,-1},{1,0},{1,1},{1,2},{1,3},{2,-3},{2,-2},{2,-1},{2,0},{2,1},{2,2},{2,3},{3,-3},{3,-2},{3,-1},{3,0},{3,1},{3,2},{3,3}};
 
+    std::cout<<"index= "<<index<<std::endl;
+    std::cout<<"infected tiles: ";
     std::vector<int> n;
-    for(int i =0;i<8;i++){
-        int nRow = getCoordinatesFromIndex(index).first+tileOffSets[i][0];
-        int nCol = getCoordinatesFromIndex(index).second+tileOffSets[i][1];
-        if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+    if(levelOfPoisonousAttack==0){
+        n.push_back(index);
+        std::cout<<" "<<index;
+        levelOfPoisonousAttack++;
     }
+    else if(levelOfPoisonousAttack==1){
+        for(int i =0;i<9;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets1[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets1[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack++;
+    }
+    else if(levelOfPoisonousAttack==1){
+        for(int i =0;i<25;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets2[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets2[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack++;
+    }
+    else {
+        for(int i =0;i<49;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets3[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets3[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack=0;
+    }
+     std::cout<<" "<<std::endl;
     return n;
 }
 

@@ -6,7 +6,6 @@ AStarController::AStarController()
 {
 
     aStar = std::make_unique <AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->getTotalColumns());
-     GameWorld::Instance()->testing();
 
 }
 

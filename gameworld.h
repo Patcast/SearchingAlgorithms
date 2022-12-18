@@ -37,7 +37,6 @@ public:
     int moveProtagonist(moveDirection direction);
     int moveAdjacent(int destinationIndex);
     std::vector<std::unique_ptr<Node>> nodes;
-    void testing();
     int totalRows,totalColumns;
     const QString &getImagePath() const;
 
@@ -60,7 +59,7 @@ private:
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
     QString imagePath;
-    int poisonOfAttack{0};
+    int levelOfPoisonousAttack{0};
 
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(moveDirection direction, int row, int column);
