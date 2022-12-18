@@ -50,6 +50,7 @@ protected:
     AStarController aStarController;
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
+
 };
 
 #endif // CONTROLLER_H

@@ -77,24 +77,24 @@ void Controller::move(moveDirection directionOfMovement)
 
 void Controller::move(int x, int y)
 {
-    GameWorld *gameWorld = GameWorld::Instance();
 
-    int start = gameWorld->getIndexFromCoordinates(gameWorld->getProtagonist()->getYPos(),gameWorld->getProtagonist()->getXPos());
-    int goal = gameWorld->getIndexFromCoordinates(y,x);
-
-    // aStarController.runAStar(start, goal, ###)
-    // this vector should contain all indexes that lead to the goal
-    // starting at the goal, and moving to the start
-    //this->listOfIndexes.push_back()
+//    int start = gameWorld->getIndexFromCoordinates(gameWorld->getProtagonist()->getYPos(),gameWorld->getProtagonist()->getXPos());
+//    int goal = gameWorld->getIndexFromCoordinates(y,x);
+//    int goal
+//    // aStarController.runAStar(start, goal, ###)
+//    // this vector should contain all indexes that lead to the goal
+//    // starting at the goal, and moving to the start
+//    //this->listOfIndexes.push_back()
     this->moveAutomatically();
 }
 
 void Controller::moveAutomatically() {
-    int destination = listOfIndexes.at(0);
+
+//    int destination = listOfIndexes.at(0);
     GameWorld::Instance()->moveAdjacent(destination);
 
     listOfIndexes.pop_back();
-    movementTimer->start(1000);
+//    movementTimer->start(1000);
 }
 
 void Controller::pushButton()
