@@ -12,8 +12,9 @@ void healthPackView::place(int x, int y, int size)
     setZValue(0.85);
 }
 
-void healthPackView::defeated()
+void healthPackView::defeated(int x, int y, int size)
 {
-    setPixmap(QPixmap(":/images/HealthPackEmpty.jpg").scaled(StepSize,StepSize));
-    setPos(xPos,yPos);
+    setPixmap(QPixmap(":/images/emptyHealthPack.jpg").scaled(size,size));
+    setPos(x*size,y*size);
+    setZValue(0.90);
 }

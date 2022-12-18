@@ -10,7 +10,7 @@ void enemyView::place(int x, int y, int size)
     setZValue(0.85);
 }
 
-void enemyView::defeated(int x, int y)
+void enemyView::defeated(int x, int y,int StepSize)
 {
     setPixmap(QPixmap(":/images/deadGoomba.png").scaled(StepSize,StepSize));
     setPos(x*StepSize,y*StepSize);

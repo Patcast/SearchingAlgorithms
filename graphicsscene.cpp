@@ -1,6 +1,8 @@
 #include "graphicsscene.h"
 #include "enemyview.h"
+#include "penemyview.h"
 #include "healthpackview.h"
+#include "qtimer.h"
 #include "specialmap.h"
 #include <QRect>
 #include <QPainter>
@@ -11,23 +13,23 @@
 #include <iostream>
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
+#include <QTimer>
 
 
 
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
-
-
-
     player_ptr = new ProtagonistView();
     columns =  GameWorld::Instance()->getTotalColumns();
     rows = GameWorld::Instance()->getTotalRows();
-    graphScene = new QGraphicsScene();
+    scene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
     world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
     //stepsize*rows
     world->setZValue(0.5);
-    graphScene->addItem(world);
+    scene->addItem(world);
+
+    drawProtagonist(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
 
 /*  test showValue
  *  QGraphicsTextItem * text = new QGraphicsTextItem();
@@ -43,18 +45,9 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 
 
     //player_ptr->place(gameWord_ptr->protagonist->getXPos(), gameWord_ptr->protagonist->getYPos(),stepsize);
-    player_ptr->place(6,10,stepsize);
+    player_ptr->place(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos(),stepsize);
     player_ptr->setZValue(1);
-    graphScene->addItem(player_ptr);
-    BeenThereDoneThat();
-
-    int index = 6*columns+8;
-    highLightTiles(index);
-    index = 5*columns + 8;
-    highLightTiles(index);
-    highLightTiles(10*columns+6);
-
-    showValue(8,5,45);
+    scene->addItem(player_ptr);
 //    // std::cout<<gameWord_ptr->protagonist->getXPos()<<gameWord_ptr->protagonist->getYPos() << std::endl;
 
 //    for(std::unique_ptr<Enemy> &t:gameWord_ptr->enemies){
@@ -94,11 +87,28 @@ GraphicsScene::GraphicsScene() : Scene("2d")
         }
     }
 */
-    drawEnemy(0,0);
-
-
-    QGraphicsView *view = new QGraphicsView(graphScene);
+    drawAll();
+    drawDeathEnemy(1, 1);
+    drawEmptyHealtPack(0, 1);
+    drawDeathPEnemy(4,4);
+    view = new QGraphicsView(scene);
     this->widget = view;
+    view->centerOn(player_ptr);
+}
+
+void GraphicsScene::mousePressEvent(QMouseEvent *event)
+{
+    auto place = view->mapToScene(event->pos());
+    std::cout<<place.rx()<<  place.ry()<< std::endl;
+}
+
+void GraphicsScene::spreadPoison(int x, int y)
+{
+    QGraphicsRectItem * tile = new QGraphicsRectItem();
+    tile->setRect(x*stepsize,y*stepsize,stepsize,stepsize);
+    tile->setBrush(QBrush(QColor(0,255,127,50)));
+    tile->setZValue(0.6);
+    scene->addItem(tile);
 }
 
 void GraphicsScene::drawPEnemy(int xPos, int yPos){
@@ -110,20 +120,27 @@ void GraphicsScene::drawXEnemy(int xPos, int yPos){
 }
 
 void GraphicsScene::drawEnemy(int xPos, int yPos){
-    int i = 0;
-    for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
-        if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-            if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-                  //Penemy
-            }
-            else{
-                //enemy
-            }
-        }
-        else {
-            //HealthPack
-        }
-    }
+//    for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
+//        if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+//            if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+
+//            }
+//            else{
+//                enemyView *e = new enemyView();
+//                e->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
+//                showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
+//                scene->addItem(e);
+//            }
+//        }
+//        else
+//        {
+//            healthPackView * p = new healthPackView();
+//            p->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
+//            showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
+//            scene->addItem(p);
+//        }
+//    }
+
 //    for(int x = 0; x<columns; x++){
 //        for(int y = 0; y<rows; y++){
 //            if( GameWorld::Instance()->nodes[x+y*columns]->getSpecialFigure_ptr().get() != nullptr){
@@ -143,21 +160,41 @@ void GraphicsScene::drawEnemy(int xPos, int yPos){
 //                }
 //            }
 //        }
-    std::cout<<i<< std::endl;
 }
-void GraphicsScene::drawDeathEnemy(Enemy en){
+
+
+void GraphicsScene::drawDeathEnemy(int x, int y){
     enemyView * e = new enemyView();
-    e->defeated(en.getXPos(),en.getYPos());
-    graphScene->addItem(e);
+    e->defeated(x,y,stepsize);
+    scene->addItem(e);
+}
+
+void GraphicsScene::drawDeathPEnemy(int x, int y){
+    PEnemyView * e = new PEnemyView();
+    e->defeated(x,y,stepsize);
+    scene->addItem(e);
+    for(int i = x-1; i<=x+1;i++){
+        for(int j = y-1; j<=y+1;j++){
+            spreadPoison(i,j);
+        }
+    }
+
+}
+
+void GraphicsScene::drawEmptyHealtPack(int x, int y)
+{
+    healthPackView * e = new healthPackView();
+    e->defeated(x,y,stepsize);
+    scene->addItem(e);
 }
 
 void GraphicsScene::BeenThereDoneThat()
 {
     QGraphicsRectItem * tile = new QGraphicsRectItem();
     tile->setRect(player_ptr->xPos,player_ptr->yPos,stepsize,stepsize);
-    tile->setBrush(QBrush(QColor(50, 124,252,100)));
+    tile->setBrush(QBrush(QColor(50, 124,252,20)));
     tile->setZValue(0.7);
-    graphScene->addItem(tile);
+    scene->addItem(tile);
 }
 
 void GraphicsScene::highLightTiles(int index)
@@ -166,7 +203,7 @@ void GraphicsScene::highLightTiles(int index)
     tile->setRect(stepsize* index%columns,stepsize* index/columns,stepsize,stepsize);
     tile->setBrush(QBrush(QColor(50, 250,128,100)));
     tile->setZValue(0.7);
-    graphScene->addItem(tile);
+    scene->addItem(tile);
 }
 
 void GraphicsScene::showValue(int x, int y, int value)
@@ -176,16 +213,47 @@ void GraphicsScene::showValue(int x, int y, int value)
     text->setX(x*stepsize);
     text->setY(y*stepsize-25);
     text->setZValue(1.2);
-    QColor color(255, 0, 0); // red
+    QFont font = text->font();
+    font.setPointSize(12);  // Set the font size to 12 points
+    text->setFont(font);
+    QColor color(255, 150, 0);
     text->setDefaultTextColor(color);
-    graphScene->addItem(text);
+    scene->addItem(text);
+}
+
+void GraphicsScene::drawAll()
+{
+    for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
+            if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                    PEnemyView *e = new PEnemyView();
+                    e->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
+                    showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
+                    scene->addItem(e);
+                }
+                else{
+                    enemyView *e = new enemyView();
+                    e->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
+                    showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
+                    scene->addItem(e);
+                }
+            }
+            else
+            {
+                healthPackView * p = new healthPackView();
+                p->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
+                showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
+                scene->addItem(p);
+            }
+        }
 }
 
 
 void GraphicsScene::drawProtagonist(int xPos, int yPos){
-    player_ptr = new ProtagonistView();
-//    player_ptr->place(gameWord_ptr->getProtagonist()->getXPos(), gameWord_ptr->getProtagonist()->getYPos(),stepsize);
-    graphScene->addItem(player_ptr);
+    player_ptr->place(xPos,yPos,stepsize);
+    player_ptr->setZValue(1);
+    scene->addItem(player_ptr);
+    BeenThereDoneThat();
 }
 void GraphicsScene::drawTile(){
 //    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
@@ -204,7 +272,8 @@ void GraphicsScene::drawHealthPack(int xPos, int yPos){
 }
 void GraphicsScene::drawMovement(int xPos, int yPos){
     player_ptr->move( GameWorld::Instance()->protagonist->getXPos(), GameWorld::Instance()->protagonist->getYPos());
-
+    BeenThereDoneThat();
+    view->centerOn(player_ptr);
 
 /*    // if right
     for(int y = ypos-rangeAroundPro; y<ypos+rangeAroundPro;y++ ){

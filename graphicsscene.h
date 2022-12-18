@@ -5,21 +5,25 @@
 #include "protagonistview.h"
 #include "scene.h"
 #include <QGraphicsScene>
+#include <QMouseEvent>
 
 class GraphicsScene : public Scene
 {
 public:
     GraphicsScene();
-    QGraphicsScene *graphScene;
+    QGraphicsScene *scene;
 //    std::vector<std::unique_ptr<Tile>> tiles;
 
     int xpos;
     int ypos;
     int rangeAroundPro;
+    QGraphicsView *view;
 
     int rows;
     int columns;
-
+    void mousePressEvent(QMouseEvent * event);
+    void spreadPoison(int x, int y);
+    void drawDeathPEnemy(int x, int y);
     void drawEnemy(int xPos, int yPos);
     void drawPEnemy(int xPos, int yPos);
     void drawXEnemy(int xPos, int yPos);
@@ -27,11 +31,13 @@ public:
     void drawTile();
     void drawHealthPack(int xPos, int yPos);
     void drawMovement(int xPos, int yPos);
-    void drawDeathEnemy(Enemy en);
+    void drawDeathEnemy(int x, int y);
+    void drawEmptyHealtPack(int x, int y);
     int stepsize = 50;
     void BeenThereDoneThat();
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
+    void drawAll();
 
 public slots:
     void zoomIn();

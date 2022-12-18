@@ -13,7 +13,7 @@ public:
     int xPos;
     int yPos;
     int StepSize = 5;
-    void defeated(int x, int y);
+    void defeated(int x, int y, int StepSize);
 };
 
 #endif // ENEMYVIEW_H

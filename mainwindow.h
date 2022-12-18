@@ -4,6 +4,7 @@
 #include "commands.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QMouseEvent>
 
 namespace Ui {
 class MainWindow;
