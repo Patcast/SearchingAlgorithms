@@ -101,6 +101,14 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     this->widget = view;
 }
 
+void GraphicsScene::drawPEnemy(int xPos, int yPos){
+
+}
+
+void GraphicsScene::drawXEnemy(int xPos, int yPos){
+
+}
+
 void GraphicsScene::drawEnemy(int xPos, int yPos){
     int i = 0;
     for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){

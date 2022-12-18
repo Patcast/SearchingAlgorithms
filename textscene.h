@@ -18,6 +18,8 @@ public:
     void drawEnemy(std::pair<int,int> pos);
     void drawPEnemy(int xPos, int yPos);
     void drawPEnemy(std::pair<int,int> pos);
+    void drawXEnemy(int xPos, int yPos);
+    void drawXEnemy(std::pair<int,int> pos);
     void drawProtagonist(int xPos, int yPos);
     void drawProtagonist(std::pair<int,int> pos);
     void drawTile();
