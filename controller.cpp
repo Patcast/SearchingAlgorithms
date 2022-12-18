@@ -100,11 +100,12 @@ void Controller::move(int row, int col)
             // the tiles are highlighted
             for (int ind: listOfIndexes){
                 std::pair<int,int> coords = GameWorld::Instance()->getCoordinatesFromIndex(ind);
-                this->highlightPath(coords);
+
+                this->highlightPath(std::make_pair(coords.second, coords.first));
             }
             currentNodeIndex=listOfIndexes.size()-2;
             this->moveAutomatically();
-            movementTimer->start(1000);
+            movementTimer->start(timerSpeed);
 
         }
         else  std::cout<<"index of a wall"<<std::endl;
@@ -202,7 +203,7 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             try {
                 speedAmount = std::stoi(speedAmountString);
                 ("Setting animation speed to " + speedAmountString);
-                this->setHeuristic(speedAmount);
+                this->setAnimationSpeed(speedAmount);
             } catch(std::string query) {
                 displayStatus("speed: An amount was expected, but none given");
             }
@@ -255,7 +256,7 @@ void Controller::highlightPath(std::pair<int,int> coord) {
     }
     highlightTiles.push_back(coord);
 
-    QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
+    QTimer::singleShot(10000, this, &Controller::removeHighlightPath);
 }
 
 void Controller::removeHighlightPath() {
