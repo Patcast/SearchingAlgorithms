@@ -12,13 +12,12 @@ class AStar
 {
 public:
     AStar(int totalRows, int totalColumns);
-    int aStarSearch(int start_index, int goal_index);
     void printPathFound(int goalIndex);
     void setHeuristicFactor(float newHeuristicFactor);
     float getHeuristicFactor() const;
-    void testSpecialFigures();
+    std::vector<int> getShortestPath(int start_index, int goal_index);
 private:
-
+    int aStarSearch(int start_index, int goal_index);
     std::shared_ptr<Node> makeNode(int index);
     std::vector<int> getNeighboursTileIndex(std::pair<int, int> coordinates);
     inline void updateNode(int goalIndex,int neighborIndex, int topIndex, std::priority_queue<queuePair, std::vector<queuePair> > &openQueueRef);

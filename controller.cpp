@@ -1,6 +1,7 @@
 #include "controller.h"
 #include "qtimer.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include "gameworld.h"
@@ -12,14 +13,15 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     movementTimer = new QTimer();
-    GameWorld *gameWorld = GameWorld::Instance();
+
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton_2, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton2));
-    window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
+    window->connect( GameWorld::Instance()->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
+    aStarPtr=std::make_unique<AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->totalColumns);
 }
 
 
@@ -75,26 +77,22 @@ void Controller::move(moveDirection directionOfMovement)
     GameWorld::Instance()->moveProtagonist(directionOfMovement);
 }
 
-void Controller::move(int x, int y)
+void Controller::move(int row, int col)
 {
+    std::cout<<row<<"//"<<col<<std::endl;
+    listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
 
-//    int start = gameWorld->getIndexFromCoordinates(gameWorld->getProtagonist()->getYPos(),gameWorld->getProtagonist()->getXPos());
-//    int goal = gameWorld->getIndexFromCoordinates(y,x);
-//    int goal
-//    // aStarController.runAStar(start, goal, ###)
-//    // this vector should contain all indexes that lead to the goal
-//    // starting at the goal, and moving to the start
-//    //this->listOfIndexes.push_back()
+    currentNodeIndex=listOfIndexes.size()-2;
     this->moveAutomatically();
+    movementTimer->start(1000);
 }
 
 void Controller::moveAutomatically() {
-
-//    int destination = listOfIndexes.at(0);
-    GameWorld::Instance()->moveAdjacent(destination);
-
-    listOfIndexes.pop_back();
-//    movementTimer->start(1000);
+    GameWorld::Instance()->moveAdjacent(listOfIndexes[currentNodeIndex]);
+    currentNodeIndex--;
+    if(currentNodeIndex >=listOfIndexes.size()){
+        movementTimer->stop();
+    }
 }
 
 void Controller::pushButton()

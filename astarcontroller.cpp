@@ -11,7 +11,7 @@ AStarController::AStarController()
 
 void AStarController::runDijktra(int start_index, int goal_index)
 {
-    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,0.0));
+//    aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,0.0));
 }
 
 void AStarController::runAStar(int start_index, int goal_index,float heuristic)
@@ -21,6 +21,6 @@ void AStarController::runAStar(int start_index, int goal_index,float heuristic)
        std::cout<<"Searching algorithm: INDEX OUT OF BOUNDS"<<std::endl;
     }
 //    else  aStar->aStarSearch(start_index,goal_index,heuristic);
-    else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
+//    else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
 
 }

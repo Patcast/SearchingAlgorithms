@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "astarcontroller.h"
+#include "astar.h"
 #include "commands.h"
 #include "scene.h"
 #include "mainwindow.h"
@@ -21,7 +21,7 @@ public:
     void displayStatus(std::string error);
 
     Commands commandsProcessor = Commands();
-    void move(int x, int y);
+    void move(int row, int col);
     void moveAutomatically();
 
 signals:
@@ -47,9 +47,10 @@ protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
-    AStarController aStarController;
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
+    unsigned long currentNodeIndex{0};
+    std::unique_ptr<AStar> aStarPtr;
 
 };
 
