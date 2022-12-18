@@ -109,20 +109,19 @@ int GameWorld::moveProtagonist(moveDirection direction)
 
 int GameWorld::moveAdjacent(int destinationIndex) {
     if(destinationIndex>=0){//checks that character is not moving outside of the map.
-        std::cout<<"moving"<<std::endl;
+
         protagonist->setPos(getCoordinatesFromIndex(destinationIndex).second,getCoordinatesFromIndex(destinationIndex).first);//emits signal that protagonist moved.
         if(nodes[destinationIndex]->getSpecialFigure_ptr()!=nullptr){
             activateSpecialFigure(destinationIndex);
         }
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
     }
-    std::cout<<"END Protagonist (health energy || row column) ("<<protagonist->getHealth()<<","<<protagonist->getEnergy()<<"||"<<protagonist->getYPos()<<","<<protagonist->getXPos()<<")"<<std::endl;
+    std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<std::endl;
     return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? 0:1;
 }
 
 void GameWorld::activateSpecialFigure(int specialFigureIndex){
-    protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
-    nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.0);
+
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
             pEnemyReference->poison();
@@ -130,11 +129,15 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
         else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
             xEnemyReference->generateExplosions();
         }
-        else emit xEnemyReference->dead();
+        else emit enemyReference->dead();
+        protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
+        protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
     }
+    nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.01);//remove high initial cost of special figures
 }
 void GameWorld::poisonousAttack(int poisonValue)
 {
