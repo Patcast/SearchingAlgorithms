@@ -57,6 +57,7 @@ private:
     void loadEnemies(World &world);
     void createNodes(World &w);
     std::vector<int> getNeighboursTileIndex(int row, int col);
+    int checkForIndexisOutOfBounds(int row, int col);
     QString imagePath;
     int levelOfPoisonousAttack{0};
 
