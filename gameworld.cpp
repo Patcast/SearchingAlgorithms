@@ -66,8 +66,6 @@ const QString &GameWorld::getImagePath() const
 
 
 
-
-
 Protagonist*GameWorld::getProtagonist() const
 {
     return protagonist.get();

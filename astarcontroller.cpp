@@ -4,7 +4,6 @@
 
 AStarController::AStarController()
 {
-
     aStar = std::make_unique <AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->getTotalColumns());
      GameWorld::Instance()->testing();
 
@@ -24,4 +23,8 @@ void AStarController::runAStar(int start_index, int goal_index,float heuristic)
 //    else  aStar->aStarSearch(start_index,goal_index,heuristic);
     else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
 
+}
+
+void setHeuristic(int heuristic) {
+    // Heuristic will be between 0 and 100;
 }

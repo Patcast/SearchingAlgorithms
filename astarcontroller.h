@@ -14,7 +14,7 @@ public:
     AStarController();
     void runDijktra(int start_index, int goal_index);
     void runAStar(int start_index, int goal_index, float heuristic);
-
+    void setHeuristic(int heuristic);
 
 private:
     GameWorld* gameWord_ptr;

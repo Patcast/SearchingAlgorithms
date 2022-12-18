@@ -48,12 +48,6 @@ void MainWindow::ChangeEnergy(int energy)
     ui->EnergyBar->setValue(energy);
 }
 
-void MainWindow::heuristicsValue()
-{
-    heuristics = ui->HeuristicsInput->value();
-    //std::cout<<heuristics<< std::endl;
-}
-
 bool MainWindow::eventFilter(QObject* obj, QEvent *event)
 {
     if (obj == ui->lineEdit)

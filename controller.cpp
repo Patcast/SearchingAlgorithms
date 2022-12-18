@@ -12,6 +12,7 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     movementTimer = new QTimer();
+    aStarController = new AStarController();
 
 
     GameWorld *gameWorld = GameWorld::Instance();
@@ -22,6 +23,8 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
+    window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
+    window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
 }
 
 
@@ -150,7 +153,40 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             }
         } else {
             displayStatus ("move: Incorrect amount of arguments specified");
-        }
+        }        
+        break;
+    }
+    case heuristic: {
+        if (commands->size() == 1) {
+            std::string heuristicAmountString = commands->at(0);
+            int heuristicAmount;
+            try {
+                heuristicAmount = std::stoi(heuristicAmountString);
+                ("Setting heuristic to " + heuristicAmountString);
+                this->setHeuristic(heuristicAmount);
+            } catch(std::string query) {
+                displayStatus("heuristic: An amount was expected, but none given");
+            }
+        } else {
+            displayStatus("heuristic: An amount was expected, but none given");
+        }        
+        break;
+    }
+    case speed: {
+        if (commands->size() == 1) {
+            std::string speedAmountString = commands->at(0);
+            int speedAmount;
+            try {
+                speedAmount = std::stoi(speedAmountString);
+                ("Setting animation speed to " + speedAmountString);
+                this->setHeuristic(speedAmount);
+            } catch(std::string query) {
+                displayStatus("speed: An amount was expected, but none given");
+            }
+        } else {
+            displayStatus("speed: An amount was expected, but none given");
+        }        
+        break;
     }
     }
 }
@@ -170,4 +206,24 @@ std::vector<std::string> Controller::splitString(std::string fullString, std::st
 
 void Controller::displayStatus(std::string error) {
     this->controllerWindow->ui->label->setText(QString::fromStdString(error));
+}
+
+void Controller::setHeuristic(int heuristic) {
+    if (heuristic < 0) {
+        heuristic = 0;
+    } else if (heuristic > 100) {
+        heuristic = 100;
+    }
+    //this->aStarController->setHeuristic(heuristic);
+    this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);
+}
+
+void Controller::setAnimationSpeed(int speed) {
+    if (speed < 0) {
+        speed = 0;
+    } else if (speed > 100) {
+        speed = 100;
+    }
+    timerSpeed = speed*10;
+    this->controllerWindow->ui->SpeedInput->setValue(speed);
 }

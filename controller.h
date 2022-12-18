@@ -19,6 +19,8 @@ public:
     void handleCommand(std::string funct, std::vector<std::string> *commands);
     std::vector<std::string> splitString(std::string fullString, std::string delimiter);
     void displayStatus(std::string error);
+    void setHeuristic(int heuristic);
+    void setAnimationSpeed(int speed);
 
     Commands commandsProcessor = Commands();
     void move(int x, int y);
@@ -47,9 +49,10 @@ protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
-    AStarController aStarController;
+    AStarController *aStarController;
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
+    int timerSpeed = 500;
 };
 
 #endif // CONTROLLER_H
