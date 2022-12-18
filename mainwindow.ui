@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1277</width>
-    <height>677</height>
+    <width>1314</width>
+    <height>754</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>580</y>
+      <y>650</y>
       <width>501</width>
       <height>23</height>
      </rect>
@@ -27,14 +27,14 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>70</y>
+      <x>20</x>
+      <y>89</y>
       <width>1171</width>
-      <height>500</height>
+      <height>551</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page"/>
     <widget class="QWidget" name="page_2"/>
@@ -43,7 +43,7 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>610</y>
+      <y>680</y>
       <width>501</width>
       <height>16</height>
      </rect>
@@ -55,7 +55,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1180</x>
+      <x>1220</x>
       <y>70</y>
       <width>75</width>
       <height>24</height>
@@ -68,7 +68,7 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>1180</x>
+      <x>1220</x>
       <y>100</y>
       <width>75</width>
       <height>24</height>
@@ -81,7 +81,7 @@
    <widget class="QProgressBar" name="EnergyBar">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>760</x>
       <y>20</y>
       <width>551</width>
       <height>23</height>
@@ -107,7 +107,7 @@
    <widget class="QSpinBox" name="HeuristicsInput">
     <property name="geometry">
      <rect>
-      <x>1220</x>
+      <x>1260</x>
       <y>140</y>
       <width>42</width>
       <height>26</height>
@@ -117,10 +117,20 @@
    <widget class="QLCDNumber" name="lcdNumber">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>570</x>
       <y>0</y>
       <width>181</width>
       <height>71</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>1255</x>
+      <y>422</y>
+      <width>141</width>
+      <height>20</height>
      </rect>
     </property>
    </widget>
@@ -130,7 +140,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1277</width>
+     <width>1314</width>
      <height>26</height>
     </rect>
    </property>

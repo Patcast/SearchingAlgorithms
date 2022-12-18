@@ -21,11 +21,33 @@ GraphicsScene::GraphicsScene() : Scene("2d")
     columns =  GameWorld::Instance()->getTotalColumns();
     rows = GameWorld::Instance()->getTotalRows();
     scene = new QGraphicsScene();
-    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-    world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
-    //stepsize*rows
-    world->setZValue(0.5);
-    scene->addItem(world);
+
+    QString s =GameWorld::Instance()->getImagePath();
+    QString q = ":/images/maze3.png";
+    int x = QString::compare(s, q, Qt::CaseInsensitive);
+    if(x==0){
+        stepsize = 1;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        //world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
+    }
+    else{
+        stepsize = 50;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
+    }
+
+//    stepsize = 1;
+//    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+//    world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+//    //world->setScale(stepsize);
+//    world->setZValue(0.5);
+//    scene->addItem(world);
 
     drawProtagonist(GameWorld::Instance()->getProtagonist()->getXPos(),GameWorld::Instance()->getProtagonist()->getYPos());
 
@@ -268,11 +290,26 @@ void GraphicsScene::drawProtagonist(int xPos, int yPos){
     BeenThereDoneThat();
 }
 void GraphicsScene::drawTile(){
-//    for(std::unique_ptr<Tile> &t:gameWord_ptr->tiles){
-//        specialMap * e = new specialMap(t->getXPos()*50,t->getYPos()*50,t->getValue());
-//        graphScene->addItem(e);
-//    }
+    QString s =GameWorld::Instance()->getImagePath();
+    QString q = ":/images/maze3.png";
+    int x = QString::compare(s, q, Qt::CaseInsensitive);
+    if(x==0){
+        stepsize = 1;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        //world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
+    }
+    else{
+        stepsize = 50;
+        QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
+        world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()));
+        world->setScale(stepsize);
+        world->setZValue(0.5);
+        scene->addItem(world);
 
+    }
 }
 void GraphicsScene::drawHealthPack(int xPos, int yPos){
 //    for(std::unique_ptr<Tile> &t:gameWord_ptr->healthPacks){

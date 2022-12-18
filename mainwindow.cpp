@@ -10,7 +10,7 @@
 #include <iostream>
 #include <QLCDNumber>
 #include "gameworld.h"
-
+#include <QTextBrowser>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,9 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //GraphicsScene * scene = new GraphicsScene();
     ui->setupUi(this);
     //ui->graphicsView->setScene(scene);
+    ui->lineEdit->installEventFilter(this);
     ChangeHealth(GameWorld::Instance()->protagonist->getHealth());
     ChangeEnergy(GameWorld::Instance()->protagonist->getEnergy());
-    ui->lineEdit->installEventFilter(this);
+    ui->lcdNumber->display(GameWorld::Instance()->protagonist->getHealth());
+    ui->textBrowser->setGeometry(QRect(0, 0, 1, 1));
+    //showWin();
 }
 
 MainWindow::~MainWindow()
@@ -62,6 +65,22 @@ void MainWindow::ChangeHealthNumber(int x)
 {
     ui->lcdNumber->display(x);
 }
+
+void MainWindow::showWin()
+{
+    ui->textBrowser->setText("You win");
+    ui->textBrowser->setGeometry(QRect(400, 150, 500, 500));
+    ui->textBrowser->setStyleSheet("font-size: 100pt;");
+}
+
+void MainWindow::showLoss()
+{
+    ui->textBrowser->setText("You lose");
+    ui->textBrowser->setGeometry(QRect(400, 150, 500, 500));
+    ui->textBrowser->setStyleSheet("font-size: 100pt;");
+}
+
+
 
 bool MainWindow::eventFilter(QObject* obj, QEvent *event)
 {

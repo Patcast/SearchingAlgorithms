@@ -30,6 +30,8 @@ public slots:
   void ChangeEnergy(int energy);
   void heuristicsValue();
   void ChangeHealthNumber(int);
+  void showWin();
+  void showLoss();
 };
 
 
