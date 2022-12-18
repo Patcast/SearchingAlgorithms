@@ -21,6 +21,12 @@ public:
     void displayStatus(std::string error);
 
     Commands commandsProcessor = Commands();
+<<<<<<< Updated upstream
+=======
+    void move(NextDirection directionOfMovement);
+
+
+>>>>>>> Stashed changes
 signals:
     void playerMoveLeft();
     void playerMoveRight();
@@ -29,8 +35,16 @@ signals:
     void playerMove(int x, int y);
     void updateHE();
 
+<<<<<<< Updated upstream
 private slots:
   void handleCommand();
+=======
+
+
+private slots:
+  void handleCommand();
+  void newPos(int x,int y);
+>>>>>>> Stashed changes
   void pushButton();
   void pushButton1();
   void move(NextDirection directionOfMovement);

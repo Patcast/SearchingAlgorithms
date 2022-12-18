@@ -24,7 +24,7 @@ public:
     void drawProtagonist();
     void drawTile();
     void drawHealthPack();
-    void drawMovement();
+    void drawMovement(int x, int y);
     void drawDeathEnemy(Enemy en);
     int stepsize = 50;
     void BeenThereDoneThat();

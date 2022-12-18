@@ -32,6 +32,18 @@ void TextScene::drawTile(){
 void TextScene::drawHealthPack(){
 
 }
-void TextScene::drawMovement(){
+void TextScene::drawMovement(int x, int y){
 
 }
+<<<<<<< Updated upstream
+=======
+void TextScene::zoomIn()
+{
+
+}
+
+void TextScene::zoomOut()
+{
+
+}
+>>>>>>> Stashed changes

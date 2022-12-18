@@ -130,46 +130,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
-   <signal>pressed()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ZoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>599</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>588</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>pressed()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ZoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>610</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>607</x>
-     <y>227</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>EnergyBar</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>ChangeEnergy(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>459</x>
-     <y>51</y>
+     <x>650</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
      <x>603</x>
@@ -200,8 +168,8 @@
    <slot>heuristicsValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>197</y>
+     <x>1220</x>
+     <y>191</y>
     </hint>
     <hint type="destinationlabel">
      <x>599</x>

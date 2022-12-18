@@ -47,8 +47,6 @@ void GameWorld::createNodes(World &w)
 }
 
 
-
-
 Protagonist*GameWorld::getProtagonist() const
 {
     return protagonist.get();
