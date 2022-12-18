@@ -8,6 +8,8 @@ class Scene
 public:
     Scene(std::string description) : desc(description){};
     virtual void drawEnemy(int xPos, int yPos) = 0;
+    virtual void drawPEnemy(int xPos, int yPos) = 0;
+    virtual void drawXEnemy(int xPos, int yPos) = 0;
     virtual void drawProtagonist(int xPos, int yPos) = 0;
     virtual void drawTile() = 0;
     virtual void drawHealthPack(int xPos, int yPos) = 0;

@@ -21,6 +21,8 @@ public:
     int columns;
 
     void drawEnemy(int xPos, int yPos);
+    void drawPEnemy(int xPos, int yPos);
+    void drawXEnemy(int xPos, int yPos);
     void drawProtagonist(int xPos, int yPos);
     void drawTile();
     void drawHealthPack(int xPos, int yPos);

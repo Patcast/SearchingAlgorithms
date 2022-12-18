@@ -1,5 +1,9 @@
 #include "textscene.h"
 #include "gameworld.h"
+#include "xenemy.h"
+
+int DEFAULT_HSIZE = 15;
+int DEFAULT_VSIZE = 15;
 
 TextScene::TextScene() : Scene("text")
 {
@@ -11,9 +15,6 @@ TextScene::TextScene() : Scene("text")
 
     int hSize = gameWorld->getTotalColumns();
     int vSize = gameWorld->getTotalRows();
-
-    int DEFAULT_HSIZE = 15;
-    int DEFAULT_VSIZE = 15;
 
     this->_generate(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,
                     gameWorld->getSpecialFiguresVector(),
@@ -47,6 +48,13 @@ void TextScene::drawPEnemy(int xPos, int yPos){
 void TextScene::drawPEnemy(std::pair<int,int> pos){
     this->gameString->setElement(pos, QChar('F'));
 }
+
+void TextScene::drawXEnemy(int xPos, int yPos){
+    this->drawXEnemy(std::make_pair(xPos,yPos));
+}
+void TextScene::drawXEnemy(std::pair<int,int> pos){
+    this->gameString->setElement(pos, QChar('X'));
+}
 void TextScene::drawProtagonist(int xPos, int yPos){
     this->drawProtagonist(std::make_pair(xPos,yPos));
 }
@@ -69,9 +77,6 @@ void TextScene::drawMovement(int xPos, int yPos){
     int hSize = gameWorld->getTotalColumns();
     int vSize = gameWorld->getTotalRows();
 
-    int DEFAULT_HSIZE = 15;
-    int DEFAULT_VSIZE = 15;
-
     this->_generate(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,
                     gameWorld->getSpecialFiguresVector(),
                     std::make_pair(protagonist->getXPos(), protagonist->getYPos()));
@@ -83,6 +88,8 @@ void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements)
             this->drawPEnemy(element->getXPos(),element->getYPos());
         } else if (std::dynamic_pointer_cast<Enemy>(element) != nullptr) {
             this->drawEnemy(element->getXPos(),element->getYPos());
+        } else if (std::dynamic_pointer_cast<XEnemy>(element) != nullptr) {
+            this->drawXEnemy(element->getXPos(),element->getYPos());
         } else if (std::dynamic_pointer_cast<Protagonist>(element) != nullptr) {
 
         } else {
