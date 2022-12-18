@@ -94,13 +94,18 @@ void Controller::move(int row, int col)
     std::cout<<row<<"//"<<col<<std::endl;
     std::cout<<GameWorld::Instance()->getIndexFromCoordinates(row,col)<<std::endl;
     if(GameWorld::Instance()->getIndexFromCoordinates(row,col)<GameWorld::Instance()->totalColumns*GameWorld::Instance()->totalRows&&GameWorld::Instance()->getIndexFromCoordinates(row,col)>=0){
-        listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
-        // the tiles are highlighted
-        currentNodeIndex=listOfIndexes.size()-2;
-        this->moveAutomatically();
-        movementTimer->start(1000);
+        if(GameWorld::Instance()->getNodes()[GameWorld::Instance()->getIndexFromCoordinates(row,col)]->getIncomingCost()<10000){
+            listOfIndexes= aStarPtr->getShortestPath(GameWorld::Instance()->getIndexFromCoordinates(GameWorld::Instance()->getProtagonist()->getYPos(),GameWorld::Instance()->getProtagonist()->getXPos()),GameWorld::Instance()->getIndexFromCoordinates(row,col));
+            // the tiles are highlighted
+            currentNodeIndex=listOfIndexes.size()-2;
+            this->moveAutomatically();
+            movementTimer->start(1000);
+
+        }
+        else  std::cout<<"index of a wall"<<std::endl;
+
     }
-    else std::cout<<"indes out of bounds "<<std::endl;
+    else std::cout<<"index out of bounds "<<std::endl;
 
 }
 

@@ -1,6 +1,6 @@
 #include "xenemy.h"
-#include "qtimer.h"
-#include "gameworld.h"
+//#include "qtimer.h"
+//#include "gameworld.h"
 
 
 
