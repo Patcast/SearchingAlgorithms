@@ -87,15 +87,24 @@ void TextScene::drawMovement(int xPos, int yPos){
 
 void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements) {
     for (auto &element : elements) {
-        if (std::dynamic_pointer_cast<PEnemy>(element)) {
-            this->drawPEnemy(element->getXPos(),element->getYPos());
-        } else if (std::dynamic_pointer_cast<Enemy>(element) != nullptr) {
-            this->drawEnemy(element->getXPos(),element->getYPos());
-        } else if (std::dynamic_pointer_cast<XEnemy>(element) != nullptr) {
-            this->drawXEnemy(element->getXPos(),element->getYPos());
+        std::shared_ptr<PEnemy> penemy = std::dynamic_pointer_cast<PEnemy>(element);
+        std::shared_ptr<XEnemy> xenemy = std::dynamic_pointer_cast<XEnemy>(element);
+        std::shared_ptr<Enemy> enemy = std::dynamic_pointer_cast<Enemy>(element);
+        if (penemy != nullptr) {
+            if (!penemy->getDefeated()) {
+                this->drawPEnemy(element->getXPos(),element->getYPos());
+            }
+        } else if (xenemy != nullptr) {
+            if (!xenemy->getDefeated()) {
+                this->drawXEnemy(element->getXPos(),element->getYPos());
+            }
+        } else if (enemy != nullptr) {
+            if (!enemy->getDefeated()) {
+                this->drawEnemy(element->getXPos(),element->getYPos());
+            }
         } else if (std::dynamic_pointer_cast<Protagonist>(element) != nullptr) {
 
-        } else {
+        } else if (element->getValue() > 0){
             this->drawHealthPack(element->getXPos(),element->getYPos());
         }
     }
