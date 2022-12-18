@@ -1,20 +1,21 @@
-#ifndef HEALTHPACKVIEW_H
-#define HEALTHPACKVIEW_H
+#ifndef PENEMYVIEW_H
+#define PENEMYVIEW_H
 
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QPainter>
 #include <QKeyEvent>
 
-class healthPackView:public QGraphicsPixmapItem
+
+class PEnemyView: public QGraphicsPixmapItem
 {
 public:
-
     void place(int x, int y,int size);
     int xPos;
     int yPos;
     int StepSize = 5;
-    void defeated(int x, int y,int size);
+    void defeated(int x, int y, int size);
 };
 
-#endif // HEALTHPACKVIEW_H
+
+#endif // PENEMYVIEW_H

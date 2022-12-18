@@ -10,6 +10,7 @@
 #include <iostream>
 #include "gameworld.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //GraphicsScene * scene = new GraphicsScene();
     ui->setupUi(this);
     //ui->graphicsView->setScene(scene);
-    ChangeHealth(50);
+    ChangeHealth(GameWorld::Instance()->protagonist->getHealth());
+    ChangeEnergy(GameWorld::Instance()->protagonist->getEnergy());
     ui->lineEdit->installEventFilter(this);
 }
 
@@ -86,5 +88,6 @@ bool MainWindow::eventFilter(QObject* obj, QEvent *event)
     }
     return QMainWindow::eventFilter(obj, event);
 }
+
 
 
