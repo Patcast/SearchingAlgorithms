@@ -34,6 +34,9 @@ public:
     void drawPoisonous(int xPos, int yPos);
     void drawExplosive(int xPos, int yPos);
     void removePoisonous(int xPos, int yPos);
+    void drawExtra();
+
+    std::vector<std::pair<std::pair<int,int>,QChar>> extraElements;
 
 private:
     void _generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_VSIZE,

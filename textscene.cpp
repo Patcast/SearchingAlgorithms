@@ -124,6 +124,10 @@ void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_V
 
 }
 
+void TextScene::drawExtra() {
+
+}
+
 void TextScene::zoomIn()
 {
 
@@ -137,6 +141,7 @@ void TextScene::zoomOut()
 void TextScene::drawHighlight(int xPos, int yPos) {
 
 }
+
 void TextScene::removeHighlight(int xPos, int yPos) {
 
 }

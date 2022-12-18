@@ -248,7 +248,7 @@ void Controller::removeHighlightPath() {
     highlightTiles.pop_back();
 
     for (auto &scene : this->sceneCollection) {
-        scene->removeHighlight(coord);
+        scene->removeHighlight(coord.first, coord.second);
     }
 }
 
