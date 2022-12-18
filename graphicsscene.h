@@ -38,6 +38,9 @@ public:
     void highLightTiles(int index);
     void showValue(int x, int y,int value);
     void drawAll();
+    void drawPoisonous(int xPos, int yPos);
+    void drawExplosive(int xPos, int yPos);
+    void removePoisonous(int xPos, int yPos);
 
 public slots:
     void zoomIn();

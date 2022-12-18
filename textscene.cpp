@@ -133,3 +133,15 @@ void TextScene::zoomOut()
 {
 
 }
+
+void TextScene::drawPoisonous(int xPos, int yPos) {
+
+}
+
+void TextScene::drawExplosive(int xPos, int yPos) {
+
+}
+
+void TextScene::removePoisonous(int xPos, int yPos) {
+
+}
