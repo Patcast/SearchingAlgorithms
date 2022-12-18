@@ -36,6 +36,7 @@ signals:
 
 public slots:
     void move(moveDirection directionOfMovement);
+    void autoplay();
 
 private slots:
     void handleCommand();

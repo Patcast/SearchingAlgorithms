@@ -60,10 +60,11 @@ private:
     int checkForIndexisOutOfBounds(int row, int col);
     QString imagePath;
     int levelOfPoisonousAttack{0};
-
     void activateSpecialFigure(int specialFigureIndex);
     int getDestinationIndex(moveDirection direction, int row, int column);
     std::vector<int> getNeighboursTileToPoisonIndex(int index);
+
+
 protected:
     GameWorld(){}
     ~GameWorld() {}
