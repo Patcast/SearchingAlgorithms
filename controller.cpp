@@ -25,8 +25,8 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
   
     window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
     //window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
-    window->connect(gameWorld, &GameWorld::poisonTileInScene, this, &Controller::poisonousTile);
-    window->connect(gameWorld, &GameWorld::explosionTileInScene, this, &Controller::explosiveTile);
+    window->connect(GameWorld::Instance(), &GameWorld::poisonTileInScene, this, &Controller::poisonousTile);
+    window->connect(GameWorld::Instance(), &GameWorld::explosionTileInScene, this, &Controller::explosiveTile);
     aStarPtr=std::make_unique<AStar>( GameWorld::Instance()->getTotalRows(), GameWorld::Instance()->totalColumns);
 
 }
@@ -220,7 +220,7 @@ void Controller::setHeuristic(int heuristic) {
         heuristic = 100;
     }
     float inputHeuristic= heuristic/100;
-    aStarController->setHeuristic(inputHeuristic);
+    aStarPtr->setHeuristicFactor(inputHeuristic);
 
     this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);
 }

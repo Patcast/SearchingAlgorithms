@@ -41,7 +41,6 @@ public slots:
     void move(moveDirection directionOfMovement);
 
     void autoplay();
-
     void highlightPath(std::vector<std::pair<int,int>> coords);
     void removeHighlightPath();
 

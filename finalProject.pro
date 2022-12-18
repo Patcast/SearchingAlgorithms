@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     astar.cpp \
-    astarcontroller.cpp \
     commands.cpp \
     controller.cpp \
     enemyview.cpp \
@@ -29,7 +28,6 @@ SOURCES += \
 
 HEADERS += \
     astar.h \
-    astarcontroller.h \
     commands.h \
     controller.h \
     enemyview.h \
