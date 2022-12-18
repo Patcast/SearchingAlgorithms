@@ -172,6 +172,22 @@ void Controller::displayStatus(std::string error) {
     this->controllerWindow->ui->label->setText(QString::fromStdString(error));
 }
 
+void Controller::highlightPath(std::vector<std::pair<int,int>> coords) {
+    for (auto &coord : coords) {
+        for (auto &scene : this->sceneCollection) {
+            scene->drawHighlight(coord.first, coord.second);
+        }
+    }
+
+    QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
+}
+
+void Controller::removeHighlightPath() {
+    for (auto &scene : this->sceneCollection) {
+        scene->removeHighlight();
+    }
+}
+
 void Controller::poisonousTile(std::pair<int,int> coord, int poisonValue){
     for (auto &scene : this->sceneCollection) {
         scene->drawPoisonous(coord.first, coord.second);
@@ -179,11 +195,13 @@ void Controller::poisonousTile(std::pair<int,int> coord, int poisonValue){
     poisonousTiles.push_back(coord);
     QTimer::singleShot(2000,this,&Controller::removePoisonTile);
 }
+
 void Controller::explosiveTile(std::pair<int,int> coord, int explosiveValue){
     for (auto &scene : this->sceneCollection) {
         scene->drawExplosive(coord.first, coord.second);
     }
 }
+
 void Controller::removePoisonTile(){
     std::pair<int,int> coord = poisonousTiles.at(poisonousTiles.size() - 1);
     poisonousTiles.pop_back();

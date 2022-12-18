@@ -134,6 +134,13 @@ void TextScene::zoomOut()
 
 }
 
+void TextScene::drawHighlight(int xPos, int yPos) {
+
+}
+void TextScene::removeHighlight() {
+
+}
+
 void TextScene::drawPoisonous(int xPos, int yPos) {
 
 }

@@ -14,6 +14,8 @@ public:
     virtual void drawTile() = 0;
     virtual void drawHealthPack(int xPos, int yPos) = 0;
     virtual void drawMovement(int xPos, int yPos) = 0;
+    virtual void drawHighlight(int xPos, int yPos) = 0;
+    virtual void removeHighlight();
     virtual void drawPoisonous(int xPos, int yPos) = 0;
     virtual void drawExplosive(int xPos, int yPos) = 0;
     virtual void removePoisonous(int xPos, int yPos) = 0;

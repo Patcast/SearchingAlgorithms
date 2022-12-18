@@ -24,3 +24,7 @@ void AStarController::runAStar(int start_index, int goal_index,float heuristic)
     else aStar->printPathFound(aStar->aStarSearch(start_index,goal_index,heuristic));
 
 }
+
+void highlightPath(std::vector<std::pair<int,int>> coords) {
+    emit GameWorld::Instance()->highlightPath(coords);
+}
