@@ -11,12 +11,9 @@ public:
     virtual void drawProtagonist() = 0;
     virtual void drawTile() = 0;
     virtual void drawHealthPack() = 0;
-<<<<<<< Updated upstream
-    virtual void drawMovement() = 0;
-=======
+
     virtual void drawMovement(int x, int y) = 0;
 
->>>>>>> Stashed changes
     virtual void zoomIn() = 0;
     virtual void zoomOut() = 0;
     std::string getDescription() { return desc; };

@@ -16,19 +16,11 @@
 
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
-<<<<<<< Updated upstream
-    gameWord_ptr = GameWorld::Instance(":/images/maze2.png", 60, 20, 100.0);
-    player_ptr = new ProtagonistView();
-    columns = gameWord_ptr->getTotalColumns();
-    rows = gameWord_ptr->getTotalRows();
-    scene = new QGraphicsScene();
-    QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
-    world->setPixmap(QPixmap(":/images/maze2.png").scaledToHeight(stepsize*rows));
-=======
+
     player_ptr = new ProtagonistView();
     columns =  GameWorld::Instance()->getTotalColumns();
     rows = GameWorld::Instance()->getTotalRows();
-    graphScene = new QGraphicsScene();
+    scene = new QGraphicsScene();
     QGraphicsPixmapItem *world = new QGraphicsPixmapItem();
     world->setPixmap(QPixmap(GameWorld::Instance()->getImagePath()).scaledToHeight(stepsize*rows));
     std::cout<<rows << columns << std::endl;
@@ -36,7 +28,7 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 
     QString s = GameWorld::Instance()->getImagePath();
     std::cout<< qPrintable(s) << std::endl;
->>>>>>> Stashed changes
+
     //stepsize*rows
     world->setZValue(0.5);
     scene->addItem(world);
@@ -117,30 +109,6 @@ GraphicsScene::GraphicsScene() : Scene("2d")
 }
 
 void GraphicsScene::drawEnemy(){
-    int i = 0;
-<<<<<<< Updated upstream
-    for(int x = 0; x<columns; x++){
-        for(int y = 0; y<rows; y++){
-            if(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get() != nullptr){
-                if(Enemy * enemyReference = dynamic_cast<Enemy*>(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr().get())){
-                    enemyView *e = new enemyView();
-                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
-                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    scene->addItem(e);
-                    //scene->addItem(e);
-                    i++;
-                    }
-                else{
-                    healthPackView *e = new healthPackView();
-                    e->place(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),stepsize);
-                    showValue(gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getXPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getYPos(),gameWord_ptr->nodes[x+y*columns]->getSpecialFigure_ptr()->getValue());
-                    scene->addItem(e);
-                    //scene->addItem(e);
-                    }
-                }
-            }
-        }
-=======
     for(unsigned long i=0; i<GameWorld::Instance()->getSpecialFiguresVector().size();i++){
         if(Enemy* enemyReference =dynamic_cast<Enemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
             if(PEnemy* enemyReference =dynamic_cast<PEnemy*>(GameWorld::Instance()->getSpecialFiguresVector()[i].get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
@@ -150,7 +118,7 @@ void GraphicsScene::drawEnemy(){
                 enemyView *e = new enemyView();
                 e->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
                 showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
-                graphScene->addItem(e);
+                scene->addItem(e);
             }
         }
         else
@@ -158,7 +126,7 @@ void GraphicsScene::drawEnemy(){
             healthPackView * p = new healthPackView();
             p->place(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(),stepsize);
             showValue(GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getXPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getYPos(), GameWorld::Instance()->getSpecialFiguresVector()[i].get()->getValue());
-            graphScene->addItem(p);
+            scene->addItem(p);
         }
     }
 //    for(int x = 0; x<columns; x++){
@@ -180,8 +148,7 @@ void GraphicsScene::drawEnemy(){
 //                }
 //            }
 //        }
->>>>>>> Stashed changes
-    std::cout<<i<< std::endl;
+
 }
 void GraphicsScene::drawDeathEnemy(Enemy en){
     enemyView * e = new enemyView();
@@ -245,14 +212,9 @@ void GraphicsScene::drawHealthPack(){
 //        std::cout<<t->getXPos()<< std::endl;
 //    }
 }
-<<<<<<< Updated upstream
-void GraphicsScene::drawMovement(){
-    player_ptr->move(gameWord_ptr->protagonist->getXPos(),gameWord_ptr->protagonist->getYPos());
-=======
+
 void GraphicsScene::drawMovement(int x, int y){
     player_ptr->move(x,y);
-
->>>>>>> Stashed changes
 
 /*    // if right
     for(int y = ypos-rangeAroundPro; y<ypos+rangeAroundPro;y++ ){
