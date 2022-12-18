@@ -80,6 +80,9 @@ void TextScene::drawMovement(int xPos, int yPos){
     this->_generate(hSize, vSize, DEFAULT_HSIZE, DEFAULT_VSIZE,
                     gameWorld->getSpecialFiguresVector(),
                     std::make_pair(protagonist->getXPos(), protagonist->getYPos()));
+
+    QTextEdit *gameEdit = dynamic_cast<QTextEdit*>(this->widget);
+    gameEdit->setText(this->gameString->getGameString());
 }
 
 void TextScene::drawElements(const std::vector<std::shared_ptr<Tile>> &elements) {
@@ -108,6 +111,8 @@ void TextScene::_generate(int hSize, int vSize, int DEFAULT_HSIZE, int DEFAULT_V
 
     this->drawElements(elements);
     this->drawProtagonist(protPos);
+
+
 }
 
 void TextScene::zoomIn()

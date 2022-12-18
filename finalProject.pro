@@ -32,7 +32,6 @@ HEADERS += \
     commands.h \
     controller.h \
     enemyview.h \
-    game_config.h \
     gamestring.h \
     gameworld.h \
     graphicsscene.h \

@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "qtimer.h"
 #include "ui_mainwindow.h"
 #include <vector>
 #include <sstream>
@@ -10,10 +11,17 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     this->addView(primaryScene);
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
+    movementTimer = new QTimer();
+
+
+    GameWorld *gameWorld = GameWorld::Instance();
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton));
     window->connect(ui->pushButton_2, &QPushButton::pressed, this, qOverload<>(&Controller::pushButton2));
+    window->connect(gameWorld->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
+    window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
+    window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
 }
 
 
@@ -27,8 +35,12 @@ void Controller::view_switch(std::string newState) {
     catch (std::string errorScene) {
         displayStatus("switch: scene '" + errorScene + "' not found");
     }
+}
 
-
+void Controller::posChanged(int x, int y) {
+    for (auto &scene : this->sceneCollection) {
+        scene->drawMovement(x, y);
+    }
 }
 
 void Controller::addView(std::shared_ptr<Scene> scene) {
@@ -60,16 +72,31 @@ void Controller::handleCommand() {
     handleCommand(funct, &commands);
 }
 
-//void Controller::updateHE(){
-//    this->controllerWindow->ui->EnergyBar->setValue(GameWorld::Instance()->protagonist->getEnergy());
-//    this->controllerWindow->ui->HealthBar->setValue(GameWorld::Instance()->protagonist->getHealth());
-//}
-
-void Controller::move(NextDirection directionOfMovement)
+void Controller::move(moveDirection directionOfMovement)
 {
     GameWorld::Instance()->moveProtagonist(directionOfMovement);
-//    updateHE();
-    //We need a way to reference the correct special figure;  Maybe have a map of figures pointer and as the key the index of their tile.
+}
+
+void Controller::move(int x, int y)
+{
+    GameWorld *gameWorld = GameWorld::Instance();
+
+    int start = gameWorld->getIndexFromCoordinates(gameWorld->getProtagonist()->getYPos(),gameWorld->getProtagonist()->getXPos());
+    int goal = gameWorld->getIndexFromCoordinates(y,x);
+
+    // aStarController.runAStar(start, goal, ###)
+    // this vector should contain all indexes that lead to the goal
+    // starting at the goal, and moving to the start
+    //this->listOfIndexes.push_back()
+    this->moveAutomatically();
+}
+
+void Controller::moveAutomatically() {
+    int destination = listOfIndexes.at(0);
+    GameWorld::Instance()->moveAdjacent(destination);
+
+    listOfIndexes.pop_back();
+    movementTimer->start(1000);
 }
 
 void Controller::pushButton()
@@ -85,6 +112,7 @@ void Controller::pushButton2()
 void Controller::handleCommand(std::string funct, std::vector<std::string> *commands) {
     baseCommand result;
     moveDirection direction;
+
     try {
         result = this->commandsProcessor.resolve(funct, this->commandsProcessor.baseMap);
     } catch(std::string query) {
@@ -106,7 +134,9 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             try {
                 xInt = std::stoi(xString);
                 yInt = std::stoi(yString);
-                ("pmove: Moving to " + xString + "," + yString);
+                ("move: Moving to " + xString + "," + yString);
+                this->move(xInt, yInt);
+                break;
             } catch (const std::exception &e) {
                 displayStatus ("move: A coordinate pair was expected but no correct one was given");
             }
@@ -114,6 +144,7 @@ void Controller::handleCommand(std::string funct, std::vector<std::string> *comm
             try {
                 direction = this->commandsProcessor.resolve(commands->at(0), this->commandsProcessor.directionMap);
                 ("move: Moving " + commands->at(0));
+                this->move(direction);
             } catch(std::string query) {
                 displayStatus("move: A direction was expected but no correct one was given");
             }

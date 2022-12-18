@@ -1,11 +1,11 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include "astarcontroller.h"
 #include "commands.h"
 #include "scene.h"
 #include "mainwindow.h"
 #include <string>
-#include "game_config.h"
 
 
 
@@ -21,7 +21,9 @@ public:
     void displayStatus(std::string error);
 
     Commands commandsProcessor = Commands();
-    void move(NextDirection directionOfMovement);
+    void move(int x, int y);
+    void moveAutomatically();
+
 signals:
     void playerMoveLeft();
     void playerMoveRight();
@@ -32,17 +34,22 @@ signals:
     void algorithNodeturnOn(int specialFigureIndex);//this signa will be sent for every node that is part of the path.
     void algorithNodeturnOFF(int specialFigureIndex);
 
+public slots:
+    void move(moveDirection directionOfMovement);
 
 private slots:
-  void handleCommand();
-
-  void pushButton();
-  void pushButton2();
+    void handleCommand();
+    void posChanged(int x, int y);
+    void pushButton();
+    void pushButton2();
 
 protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
+    AStarController aStarController;
+    QTimer *movementTimer;
+    std::vector<int> listOfIndexes;
 };
 
 #endif // CONTROLLER_H
