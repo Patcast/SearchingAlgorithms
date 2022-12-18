@@ -121,25 +121,25 @@ int GameWorld::moveAdjacent(int destinationIndex) {
 }
 
 void GameWorld::activateSpecialFigure(int specialFigureIndex){
-
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-        if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
-            pEnemyReference->poison();
+        if(enemyReference->getDefeated()==false){
+            if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                pEnemyReference->poison();
+            }
+            else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
+                xEnemyReference->generateExplosions();
+            }
+            else {
+                protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+                emit enemyReference->setDefeated(true);
+            }
         }
-        else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
-            xEnemyReference->generateExplosions();
-        }
-        else {
-            emit enemyReference->dead();
-            protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
-        }
-
     }
     else {
         emit healthPackedUsed(specialFigureIndex) ;
         protagonist->setHealth(protagonist->getHealth()+nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+        nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0);
     }
-    nodes[specialFigureIndex]->getSpecialFigure_ptr()->setValue(0.01);//remove high initial cost of special figures
 }
 void GameWorld::poisonousAttack(int poisonValue)
 {
