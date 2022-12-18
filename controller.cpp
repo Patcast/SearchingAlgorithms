@@ -21,8 +21,8 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect( GameWorld::Instance()->getProtagonist(), &Protagonist::posChanged, this,&Controller::posChanged);
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
-    window->connect(gameWorld,&GameWorld::healthPackedUsed,this,qOverload<> (&::Controller::healthPack));
-    window->connect(gameWorld,&::GameWorld::enemyDied,this,&::Controller::deadEnemy);
+    window->connect(GameWorld::Instance(),&GameWorld::healthPackedUsed,this,qOverload<> (&::Controller::healthPack));
+    window->connect(GameWorld::Instance(),&GameWorld::enemyDied,this,&::Controller::deadEnemy);
   
     window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
     window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);

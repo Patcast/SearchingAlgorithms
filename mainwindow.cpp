@@ -57,7 +57,7 @@ void MainWindow::ChangeEnergy(int energy)
 
 void MainWindow::heuristicsValue()
 {
-    heuristics = ui->HeuristicsInput->value();
+    //heuristics = ui->HeuristicsInput->value();
     //std::cout<<heuristics<< std::endl;
 }
 
