@@ -124,7 +124,9 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
     if(Enemy* enemyReference =dynamic_cast<Enemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         if(enemyReference->getDefeated()==false){
             if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
+                levelOfPoisonousAttack=0;
                 pEnemyReference->poison();
+
             }
             else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
                 xEnemyReference->generateExplosions();
@@ -155,6 +157,7 @@ void GameWorld::poisonousAttack(int poisonValue)
             infectedTiles.pop_back();
         }
     }
+
 }
 
 void GameWorld::explosiveAttack(int explosiveValue,int row,int col)
@@ -207,15 +210,44 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 
 inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
 {
-    const int tileOffSets [8][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1}};
+    const int tileOffSets1 [9][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1},{0,0}};
+    const int tileOffSets2 [25][2] = {{-2,-2},{-2,-1},{-2,0},{-2,1},{-2,2},{-1,-2},{-1,-1},{-1,0},{-1,1},{-1,2},{0,-2},{0,-1},{0,0},{0,1},{0,2},{1,-2},{1,-1},{1,0},{1,1},{1,2},{2,-2},{2,-1},{2,0},{2,1},{2,2}};
+    const int tileOffSets3 [49][2] = {{-3,-3},{-3,-2},{-3,-1},{-3,0},{-3,1},{-3,2},{-3,3},{-2,-3},{-2,-2},{-2,-1},{-2,0},{-2,1},{-2,2},{-2,3},{-1,-3},{-1,-2},{-1,-1},{-1,0},{-1,1},{-1,2},{-1,3},{0,-3},{0,-2},{0,-1},{0,0},{0,1},{0,2},{0,3},{1,-3},{1,-2},{1,-1},{1,0},{1,1},{1,2},{1,3},{2,-3},{2,-2},{2,-1},{2,0},{2,1},{2,2},{2,3},{3,-3},{3,-2},{3,-1},{3,0},{3,1},{3,2},{3,3}};
+
     std::cout<<"index= "<<index<<std::endl;
     std::cout<<"infected tiles: ";
     std::vector<int> n;
-    for(int i =0;i<8;i++){
-        int nRow = getCoordinatesFromIndex(index).first+tileOffSets[i][0];
-        int nCol = getCoordinatesFromIndex(index).second+tileOffSets[i][1];
-        if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
-        std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+    if(levelOfPoisonousAttack==0){
+        n.push_back(index);
+        std::cout<<" "<<index;
+        levelOfPoisonousAttack++;
+    }
+    else if(levelOfPoisonousAttack==1){
+        for(int i =0;i<9;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets1[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets1[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack++;
+    }
+    else if(levelOfPoisonousAttack==1){
+        for(int i =0;i<25;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets2[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets2[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack++;
+    }
+    else {
+        for(int i =0;i<49;i++){
+            int nRow = getCoordinatesFromIndex(index).first+tileOffSets3[i][0];
+            int nCol = getCoordinatesFromIndex(index).second+tileOffSets3[i][1];
+            if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+            std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
+        }
+        levelOfPoisonousAttack=0;
     }
      std::cout<<" "<<std::endl;
     return n;
