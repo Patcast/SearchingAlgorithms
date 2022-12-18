@@ -2,22 +2,21 @@
 #define ASTARCONTROLLER_H
 
 #include "astar.h"
-#include "gameworld.h"
 
 
-//TODO:
-// MAKE GAMECONTROLLER A SINGLETON or initialize it in the constructor. Think about if you want to load different maps.
 
 class AStarController
 {
 public:
     AStarController();
     void runDijktra(int start_index, int goal_index);
-    void runAStar(int start_index, int goal_index, float heuristic);
-    void setHeuristic(int heuristic);
+    void runAStar(int start_index, int goal_index);
+
+
+    void setHeuristic(float newHeuristic);
 
 private:
-    GameWorld* gameWord_ptr;
+    float heuristic={0};
     std::unique_ptr<AStar> aStar;
 
 };

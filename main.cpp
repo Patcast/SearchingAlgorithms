@@ -1,4 +1,3 @@
-#include "astarcontroller.h"
 #include "controller.h"
 #include "gameworld.h"
 #include "graphicsscene.h"
@@ -32,8 +31,7 @@ int main(int argc, char *argv[])
     controller.addView(sharedTextScene);
     window.show();
     window.setSignalsFromProtagnist();
-    AStarController aStarController;
-//    aStarController.executeBreadthFirstSearch(0, 62);
+
 
     return a.exec();
 }

@@ -12,8 +12,7 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     Ui::MainWindow *ui = this->controllerWindow->ui;
     ui->stackedWidget->setCurrentWidget(primaryScene->getQView());
     movementTimer = new QTimer();
-    aStarController = new AStarController();
-
+    aStarController = std::make_unique<AStarController>(AStarController());
 
     GameWorld *gameWorld = GameWorld::Instance();
     window->connect(ui->lineEdit, &QLineEdit::returnPressed, this, qOverload<>(&Controller::handleCommand));
@@ -24,7 +23,7 @@ Controller::Controller(MainWindow *window, std::shared_ptr<Scene> primaryScene) 
     window->connect(this->controllerWindow, &MainWindow::arrowPress, this,qOverload<moveDirection>(&Controller::move));
     window->connect(movementTimer, &QTimer::timeout, this, qOverload<>(&Controller::moveAutomatically));
     window->connect(ui->HeuristicsInput, &QSpinBox::valueChanged, this, &Controller::setHeuristic);
-    window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
+    //window->connect(ui->SpeedInput, &QSpinBox::valueChanged, this, &Controller::setAnimationSpeed);
 }
 
 
@@ -214,7 +213,9 @@ void Controller::setHeuristic(int heuristic) {
     } else if (heuristic > 100) {
         heuristic = 100;
     }
-    //this->aStarController->setHeuristic(heuristic);
+    float inputHeuristic= heuristic/100;
+    aStarController->setHeuristic(inputHeuristic);
+
     this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);
 }
 

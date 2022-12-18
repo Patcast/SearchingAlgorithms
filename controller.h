@@ -49,7 +49,7 @@ protected:
     MainWindow *controllerWindow;
     std::string currentSceneState;
     std::vector<std::shared_ptr<Scene>> sceneCollection;
-    AStarController *aStarController;
+    std::unique_ptr<AStarController> aStarController;
     QTimer *movementTimer;
     std::vector<int> listOfIndexes;
     int timerSpeed = 500;
