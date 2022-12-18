@@ -81,9 +81,9 @@
    <widget class="QProgressBar" name="EnergyBar">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>700</x>
       <y>20</y>
-      <width>601</width>
+      <width>551</width>
       <height>23</height>
      </rect>
     </property>
@@ -96,7 +96,7 @@
      <rect>
       <x>30</x>
       <y>20</y>
-      <width>621</width>
+      <width>571</width>
       <height>23</height>
      </rect>
     </property>
@@ -114,6 +114,16 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="lcdNumber">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>0</y>
+      <width>181</width>
+      <height>71</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -121,7 +131,7 @@
      <x>0</x>
      <y>0</y>
      <width>1277</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

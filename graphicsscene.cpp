@@ -15,8 +15,6 @@
 #include <QGraphicsTextItem>
 #include <QTimer>
 
-
-
 GraphicsScene::GraphicsScene() : Scene("2d")
 {
     player_ptr = new ProtagonistView();

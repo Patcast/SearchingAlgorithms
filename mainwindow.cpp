@@ -8,6 +8,7 @@
 #include <QProgressBar>
 #include <QSpinBox>
 #include <iostream>
+#include <QLCDNumber>
 #include "gameworld.h"
 
 
@@ -32,6 +33,7 @@ void MainWindow::setSignalsFromProtagnist()
 {
     connect(GameWorld::Instance()->getProtagonist(),SIGNAL(energyChanged(int)),this,SLOT(ChangeEnergy(int)));
     connect(GameWorld::Instance()->getProtagonist(),SIGNAL(healthChanged(int)),this,SLOT(ChangeHealth(int)));
+    connect(GameWorld::Instance()->getProtagonist(),SIGNAL(healthChanged(int)),this,SLOT(ChangeHealthNumber(int)));
 }
 
 void MainWindow::ChangeHealth(int health)
@@ -54,6 +56,11 @@ void MainWindow::heuristicsValue()
 {
     heuristics = ui->HeuristicsInput->value();
     //std::cout<<heuristics<< std::endl;
+}
+
+void MainWindow::ChangeHealthNumber(int x)
+{
+    ui->lcdNumber->display(x);
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent *event)
