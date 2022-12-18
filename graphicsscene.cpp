@@ -315,6 +315,14 @@ void GraphicsScene::zoomOut(){
     viewWidget->scale(0.8, 0.8);
 }
 
+void GraphicsScene::drawHighlight(int xPos, int yPos) {
+
+}
+
+void GraphicsScene::removeHighlight() {
+
+}
+
 void GraphicsScene::drawPoisonous(int xPos, int yPos) {
 
 }

@@ -37,6 +37,8 @@ signals:
 
 public slots:
     void move(moveDirection directionOfMovement);
+    void highlightPath(std::vector<std::pair<int,int>> coords);
+    void removeHighlightPath();
 
 private slots:
     void handleCommand();
