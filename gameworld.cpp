@@ -49,6 +49,7 @@ void GameWorld::loadEnemies(World &w)
     }
 }
 
+
 void GameWorld::createNodes(World &w)
 {
     std::vector<std::unique_ptr<Tile>> tiles= w.getTiles();
@@ -57,6 +58,7 @@ void GameWorld::createNodes(World &w)
         nodes.emplace_back(std::make_unique<Node>(i,(1-tiles[i]->getValue()),totalRows,totalColumns));
     }
 }
+
 
 const QString &GameWorld::getImagePath() const
 {
@@ -184,7 +186,7 @@ int GameWorld::getDestinationIndex(moveDirection direction, int row, int column)
             break;
     }
     //returns -1 if movement is outside the map.
-    return (newRow<totalRows&&column<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
+    return (newRow<totalRows&&newCol<totalColumns)?getIndexFromCoordinates(newRow,newCol):-1;
 }
 
 
@@ -230,7 +232,7 @@ inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
         }
         levelOfPoisonousAttack++;
     }
-    else if(levelOfPoisonousAttack==1){
+    else if(levelOfPoisonousAttack==2){
         for(int i =0;i<25;i++){
             int nRow = getCoordinatesFromIndex(index).first+tileOffSets2[i][0];
             int nCol = getCoordinatesFromIndex(index).second+tileOffSets2[i][1];
