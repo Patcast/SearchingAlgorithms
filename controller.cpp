@@ -237,14 +237,18 @@ void Controller::highlightPath(std::vector<std::pair<int,int>> coords) {
         for (auto &scene : this->sceneCollection) {
             scene->drawHighlight(coord.first, coord.second);
         }
+        highlightTiles.push_back(coord);
     }
 
     QTimer::singleShot(1000, this, &Controller::removeHighlightPath);
 }
 
 void Controller::removeHighlightPath() {
+    std::pair<int,int> coord = highlightTiles.at(highlightTiles.size() - 1);
+    highlightTiles.pop_back();
+
     for (auto &scene : this->sceneCollection) {
-        scene->removeHighlight();
+        scene->removeHighlight(coord);
     }
 }
 
