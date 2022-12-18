@@ -79,6 +79,7 @@ std::vector<int> AStar::getShortestPath(int start_index, int goal_index)
 void AStar::setHeuristicFactor(float newHeuristicFactor)
 {
     heuristicFactor = newHeuristicFactor;
+
 }
 
 

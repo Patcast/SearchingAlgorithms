@@ -214,12 +214,8 @@ void Controller::displayStatus(std::string error) {
 }
 
 void Controller::setHeuristic(int heuristic) {
-    if (heuristic < 0) {
-        heuristic = 0;
-    } else if (heuristic > 100) {
-        heuristic = 100;
-    }
-    float inputHeuristic= heuristic/100;
+
+    float inputHeuristic= (float)heuristic/20;
     aStarPtr->setHeuristicFactor(inputHeuristic);
 
     this->controllerWindow->ui->HeuristicsInput->setValue(heuristic);
