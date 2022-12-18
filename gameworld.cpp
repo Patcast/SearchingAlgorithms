@@ -116,7 +116,7 @@ int GameWorld::moveAdjacent(int destinationIndex) {
         }
         protagonist->setEnergy(protagonist->getEnergy()-nodes[destinationIndex]->getIncomingCost());
     }
-    std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<std::endl;
+    std::cout<<"END Protagonist health: "<<protagonist->getHealth()<<", energy "<<protagonist->getEnergy()<<" row ="<<protagonist->getYPos()<<" col="<<protagonist->getXPos()<<" index="<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
     return (protagonist->getHealth()>0)&&(protagonist->getEnergy()>0)? 0:1;
 }
 
@@ -129,8 +129,10 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
         else if(XEnemy* xEnemyReference =dynamic_cast<XEnemy*>(nodes[specialFigureIndex]->getSpecialFigure_ptr().get())){
             xEnemyReference->generateExplosions();
         }
-        else emit enemyReference->dead();
-        protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+        else {
+            emit enemyReference->dead();
+            protagonist->setHealth(protagonist->getHealth()-nodes[specialFigureIndex]->getSpecialFigure_ptr()->getValue());
+        }
 
     }
     else {
@@ -141,12 +143,14 @@ void GameWorld::activateSpecialFigure(int specialFigureIndex){
 }
 void GameWorld::poisonousAttack(int poisonValue)
 {
-//    if(poisonOfAttack!=0){}
-//    int numOfAttack = poisonOfAttack%10-poisonValue%10;
+
     if(PEnemy* pEnemyReference =dynamic_cast<PEnemy*>(sender())){//check if it is an enemy. Also, enemyReference is a reference, so specialfigures[i] is only owner of pointer
         std::vector<int> infectedTiles=getNeighboursTileToPoisonIndex(getIndexFromCoordinates(pEnemyReference->getYPos(),pEnemyReference->getXPos()));
         while(!infectedTiles.empty()){
-            if((protagonist->getXPos()==pEnemyReference->getXPos())&&(protagonist->getYPos()==pEnemyReference->getYPos()))protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
+            if(getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())==infectedTiles.back()){
+                protagonist->setHealth(protagonist->getHealth()-pEnemyReference->getValue());
+                std::cout<<"PROTAGONIST POISON index "<<getIndexFromCoordinates(protagonist->getYPos(),protagonist->getXPos())<<std::endl;
+            }
             emit poisonTileInScene(infectedTiles.back(),poisonValue);
             infectedTiles.pop_back();
         }
@@ -209,13 +213,16 @@ void GameWorld::initializeProtagonist(float startingEnergy)
 inline std::vector<int> GameWorld::getNeighboursTileToPoisonIndex(int index)
 {
     const int tileOffSets [8][2] = {{-1, 0},{-1,1}, {0, 1},{1,1}, {1, 0},{1,-1},{-1,-1}, {0, -1}};
-
+    std::cout<<"index= "<<index<<std::endl;
+    std::cout<<"infected tiles: ";
     std::vector<int> n;
     for(int i =0;i<8;i++){
         int nRow = getCoordinatesFromIndex(index).first+tileOffSets[i][0];
         int nCol = getCoordinatesFromIndex(index).second+tileOffSets[i][1];
         if((nRow<totalRows)&&(nCol<totalColumns)&&(nRow>=0)&&(nCol>=0))n.push_back(getIndexFromCoordinates(nRow,nCol));
+        std::cout<<" "<<getIndexFromCoordinates(nRow,nCol);
     }
+     std::cout<<" "<<std::endl;
     return n;
 }
 
