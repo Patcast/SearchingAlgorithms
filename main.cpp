@@ -13,7 +13,7 @@ std::mutex GameWorld::mutex_;
 int main(int argc, char *argv[])
 {
     GameWorld * gameWord_ptr= GameWorld::Instance();
-    gameWord_ptr->setGameMap(":/images/maze1.png",20,60,100.0);
+    gameWord_ptr->setGameMap(":/images/maze3.png",20,60,100.0);
 
 
     QApplication a(argc, argv);
